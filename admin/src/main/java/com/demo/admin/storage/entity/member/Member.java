@@ -1,4 +1,4 @@
-package com.demo.admin.storage.entity.user;
+package com.demo.admin.storage.entity.member;
 
 import com.demo.admin.storage.entity.CommonTime;
 import jakarta.persistence.*;
@@ -11,24 +11,24 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-public class User extends CommonTime {
+public class Member extends CommonTime {
     @Id
-    @Column(name = "user_id")
+    @Column(name = "member_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_email")
+    @Column(name = "member_email")
     private String email;
 
-    @Column(name = "user_password")
+    @Column(name = "member_password")
     private String password;
 
-    @Column(name = "user_name")
+    @Column(name = "member_name")
     private String name;
 
     @OneToOne(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private UserRole role;
+    private MemberRole role;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<UserNotificationSetting> notificationSettings = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<MemberNotificationSetting> notificationSettings = new LinkedHashSet<>();
 }

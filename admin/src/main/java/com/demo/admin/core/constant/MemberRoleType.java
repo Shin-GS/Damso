@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum UserRoleType implements EnumInfo {
+public enum MemberRoleType implements EnumInfo {
     USER("개인회원"),
     USER_MANAGER("매니저 - 개인회원 관리 가능"),
     NOTIFICATION_MANAGER("매니저 - 개인회원 알림 발송 가능"),
