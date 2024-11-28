@@ -10,20 +10,20 @@
 <div class="jumbotron jumbotron-fluid">
     <h1>Member List</h1>
     <div>
-        <label for="memberId">Member ID:</label>
-        <input type="text" id="memberId"/>
+        <label for="filter-memberId">Member ID</label>
+        <input type="text" id="filter-memberId"/>
 
-        <label for="email">Email:</label>
-        <input type="text" id="email"/>
+        <label for="filter-email">Email</label>
+        <input type="text" id="filter-email"/>
 
-        <label for="name">Name:</label>
-        <input type="text" id="name"/>
+        <label for="filter-name">Name</label>
+        <input type="text" id="filter-name"/>
 
-        <label for="startDate">Start Date:</label>
-        <input type="date" id="startDate"/>
+        <label for="filter-startDate">Start Date</label>
+        <input type="date" id="filter-startDate"/>
 
-        <label for="endDate">End Date:</label>
-        <input type="date" id="endDate"/>
+        <label for="filter-endDate">End Date</label>
+        <input type="date" id="filter-endDate"/>
 
         <button id="searchBtn">Search</button>
         <button id="clearBtn">Clear</button>
@@ -47,14 +47,14 @@
     <div id="memberAddModal"
          style="display:none; position:fixed; top:10%; left:50%; transform:translate(-50%, 0); width:400px; background-color:white; padding:20px; border:1px solid #ccc; box-shadow:0 0 10px rgba(0,0,0,0.1);">
         <h2>회원 추가</h2>
-        <label for="newName">이름:</label>
-        <input type="text" id="newName" required/><br/>
+        <label for="register-name">이름</label>
+        <input type="text" id="register-name" required/><br/>
 
-        <label for="newEmail">이메일:</label>
-        <input type="email" id="newEmail" required/><br/>
+        <label for="register-email">이메일</label>
+        <input type="email" id="register-email" required/><br/>
 
-        <label for="userRole">회원 룰:</label>
-        <select id="userRole">
+        <label for="register-role">권한</label>
+        <select id="register-role" required>
             <option value="USER" selected>USER</option>
             <option value="USER_MANAGER">USER_MANAGER</option>
             <option value="NOTIFICATION_MANAGER">NOTIFICATION_MANAGER</option>

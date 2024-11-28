@@ -23,7 +23,7 @@ public class MemberRepositorySupport {
         List<Member> members = queryFactory.select(member)
                 .from(member)
                 .where(
-                        MemberExpression.idEq(command.memberId()),
+                        MemberExpression.memberIdEq(command.memberId()),
                         MemberExpression.emailLike(command.email()),
                         MemberExpression.nameLike(command.name()),
                         MemberExpression.joinedAtGoe(command.startDate()),
@@ -37,7 +37,7 @@ public class MemberRepositorySupport {
         JPAQuery<Long> total = queryFactory.select(member.count())
                 .from(member)
                 .where(
-                        MemberExpression.idEq(command.memberId()),
+                        MemberExpression.memberIdEq(command.memberId()),
                         MemberExpression.emailLike(command.email()),
                         MemberExpression.nameLike(command.name()),
                         MemberExpression.joinedAtGoe(command.startDate()),

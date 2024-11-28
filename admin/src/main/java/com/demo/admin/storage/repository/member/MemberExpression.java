@@ -11,7 +11,7 @@ public class MemberExpression {
     private MemberExpression() {
     }
 
-    public static BooleanExpression idEq(Long memberId) {
+    public static BooleanExpression memberIdEq(Long memberId) {
         return memberId == null ? null : member.id.eq(memberId);
     }
 

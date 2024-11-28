@@ -1,32 +1,41 @@
 document.addEventListener("DOMContentLoaded", function () {
     let currentPage = 1;
     const pageSize = 1;
-    const searchFields = ["memberId", "email", "name", "startDate", "endDate"];
+
+    const searchFields = {
+        "filter-memberId": "memberId",
+        "filter-email": "email",
+        "filter-name": "name",
+        "filter-startDate": "startDate",
+        "filter-endDate": "endDate"
+    };
 
     function setInitialSearchParams() {
         const urlParams = new URLSearchParams(window.location.search);
-        searchFields.forEach(function (field) {
-            const input = document.getElementById(field);
+        Object.keys(searchFields).forEach(function (filterId) {
+            const input = document.getElementById(filterId);
             if (input) {
-                input.value = urlParams.get(field) || "";
+                input.value = urlParams.get(searchFields[filterId]) || "";
             }
         });
     }
 
     function getSearchParams() {
         const params = {};
-        searchFields.forEach(function (field) {
-            const input = document.getElementById(field);
+        Object.entries(searchFields).forEach(function ([filterId, fieldName]) {
+            const input = document.getElementById(filterId);
             if (input && input.value) {
-                params[field] = input.value;
+                params[fieldName] = input.value;
             }
         });
         return params;
     }
 
     function loadMembers(page) {
+        if (page < 1) page = 1;
+
         const params = getSearchParams();
-        params.page = page;
+        params.page = page - 1;
         params.size = pageSize;
 
         const queryParams = new URLSearchParams(params).toString();
@@ -38,8 +47,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 return response.json();
             })
             .then(function (data) {
-                renderMembers(data.members);
-                updatePagination(data.totalPages, page);
+                const members = data.result.content;
+                const totalPages = data.result.totalPages;
+
+                renderMembers(members);
+                updatePagination(totalPages, page);
             });
     }
 
@@ -61,12 +73,12 @@ document.addEventListener("DOMContentLoaded", function () {
     function updatePagination(totalPages, currentPage) {
         const pagination = document.getElementById("pagination");
         pagination.innerHTML = "";
-        for (let i = 1; i <= totalPages; i++) {
+        for (let i = 1; i <= totalPages; i++) { // 화면에 1부터 시작하는 번호 표시
             const pageButton = document.createElement("button");
-            pageButton.textContent = i;
+            pageButton.textContent = i; // 1부터 표시
             pageButton.disabled = i === currentPage;
             pageButton.addEventListener("click", function () {
-                loadMembers(i);
+                loadMembers(i); // 화면 번호를 그대로 사용
             });
             pagination.appendChild(pageButton);
         }
@@ -78,8 +90,8 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     document.getElementById("clearBtn").addEventListener("click", function () {
-        searchFields.forEach(function (field) {
-            const input = document.getElementById(field);
+        Object.keys(searchFields).forEach(function (filterId) {
+            const input = document.getElementById(filterId);
             if (input) {
                 input.value = "";
             }
@@ -99,6 +111,48 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.getElementById('closeModalBtn').addEventListener('click', function () {
         document.getElementById('memberAddModal').style.display = 'none';
+    });
+
+    // 회원 추가 요청 처리
+    document.getElementById('addMemberBtn').addEventListener('click', function () {
+        const name = document.getElementById('register-name').value;
+        const email = document.getElementById('register-email').value;
+        const role = document.getElementById('register-role').value;
+
+        if (!name || !email || !role) {
+            alert("모든 필드를 입력해주세요.");
+            return;
+        }
+
+        const memberData = {
+            name,
+            email,
+            role
+        };
+
+        fetch('/api/members', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(memberData)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(err => {
+                        throw new Error(err.message || "회원 추가 실패");
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert("회원이 성공적으로 추가되었습니다.");
+                document.getElementById('memberAddModal').style.display = 'none';
+                loadMembers(currentPage);
+            })
+            .catch(error => {
+                alert(`오류 발생: ${error.message}`);
+            });
     });
 
     setInitialSearchParams();
