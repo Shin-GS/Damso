@@ -1,15 +1,74 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <div th:replace="/fragments/header.html :: fragment-header"></div>
-    </head>
+<head>
+    <div th:replace="/fragments/header.html :: fragment-header"></div>
+    <script type="text/javascript" src="/script/memberList.js"></script>
+</head>
 <body>
-    <div th:replace="/fragments/nav.html :: fragment-nav"></div>
+<div th:replace="/fragments/nav.html :: fragment-nav"></div>
 
-    <div class="jumbotron jumbotron-fluid">
-        member list
+<div class="jumbotron jumbotron-fluid">
+    <h1>Member List</h1>
+    <div>
+        <label for="memberId">Member ID:</label>
+        <input type="text" id="memberId"/>
+
+        <label for="email">Email:</label>
+        <input type="text" id="email"/>
+
+        <label for="name">Name:</label>
+        <input type="text" id="name"/>
+
+        <label for="startDate">Start Date:</label>
+        <input type="date" id="startDate"/>
+
+        <label for="endDate">End Date:</label>
+        <input type="date" id="endDate"/>
+
+        <button id="searchBtn">Search</button>
+        <button id="clearBtn">Clear</button>
+        <button id="downloadBtn">Download Excel</button>
     </div>
 
-    <footer th:replace="/fragments/footer.html :: fragment-footer"></footer>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>Member ID</th>
+            <th>Email</th>
+            <th>Name</th>
+            <th>Join Date</th>
+        </tr>
+        </thead>
+        <tbody id="memberTableBody"></tbody>
+    </table>
+
+    <div id="pagination"></div>
+
+    <div id="memberAddModal"
+         style="display:none; position:fixed; top:10%; left:50%; transform:translate(-50%, 0); width:400px; background-color:white; padding:20px; border:1px solid #ccc; box-shadow:0 0 10px rgba(0,0,0,0.1);">
+        <h2>회원 추가</h2>
+        <label for="newName">이름:</label>
+        <input type="text" id="newName" required/><br/>
+
+        <label for="newEmail">이메일:</label>
+        <input type="email" id="newEmail" required/><br/>
+
+        <label for="userRole">회원 룰:</label>
+        <select id="userRole">
+            <option value="USER" selected>USER</option>
+            <option value="USER_MANAGER">USER_MANAGER</option>
+            <option value="NOTIFICATION_MANAGER">NOTIFICATION_MANAGER</option>
+            <option value="ADMIN">ADMIN</option>
+            <option value="SUPER_ADMIN">SUPER_ADMIN</option>
+        </select><br/>
+
+        <button id="addMemberBtn">추가</button>
+        <button id="closeModalBtn">닫기</button>
+    </div>
+
+    <button id="openModalBtn">회원 추가</button>
+</div>
+
+<footer th:replace="/fragments/footer.html :: fragment-footer"></footer>
 </body>
 </html>
