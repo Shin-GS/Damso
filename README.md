@@ -1,2 +1,5 @@
-# notiffication-manager
-다양한 종류의 사용자 알림(Mail, SMS, Push 등)을 관리할 수 있는 서비스 Demo
+#담소(Damso)
+구독 플랫폼 담소
+
+#Notion
+https://www.notion.so/150d484dae8180f882a5e2f25d5d0c6d

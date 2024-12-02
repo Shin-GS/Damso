@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/notiffication-manager.iml" filepath="$PROJECT_DIR$/.idea/notiffication-manager.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/damso.iml" filepath="$PROJECT_DIR$/.idea/damso.iml" />
     </modules>
   </component>
 </project>
