@@ -11,6 +11,7 @@ public enum ErrorCode {
 
     //D : DB 관련
     ENTITY_NOT_FOUND(400, "D001", "entity not found"),
+    MEMBER_NOT_FOUND(400, "D002", "존재하지 않는 회원입니다."),
 
     //B : 비즈니스 로직 관련
     MEMBER_EMAIL_DUPLICATED(400, "B001", "중복된 이메일입니다."),

@@ -7,6 +7,7 @@ import lombok.Getter;
 @Getter
 public enum MemberRoleType implements EnumInfo {
     USER("개인회원"),
+    CREATOR("콘텐츠 제작자"),
     USER_MANAGER("매니저 - 개인회원 관리 가능"),
     NOTIFICATION_MANAGER("매니저 - 개인회원 알림 발송 가능"),
     ADMIN("운영자 - 개인회원 관리와 알림 발송 가능"),

@@ -26,6 +26,8 @@ public class MemberRepositorySupport {
                         MemberExpression.memberIdEq(command.memberId()),
                         MemberExpression.emailLike(command.email()),
                         MemberExpression.nameLike(command.name()),
+                        MemberExpression.roleEq(command.role()),
+                        MemberExpression.statusEq(command.status()),
                         MemberExpression.joinedAtGoe(command.startDate()),
                         MemberExpression.joinedAtLoe(command.endDate())
                 )
@@ -40,6 +42,8 @@ public class MemberRepositorySupport {
                         MemberExpression.memberIdEq(command.memberId()),
                         MemberExpression.emailLike(command.email()),
                         MemberExpression.nameLike(command.name()),
+                        MemberExpression.roleEq(command.role()),
+                        MemberExpression.statusEq(command.status()),
                         MemberExpression.joinedAtGoe(command.startDate()),
                         MemberExpression.joinedAtLoe(command.endDate())
                 );

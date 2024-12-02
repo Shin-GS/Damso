@@ -1,5 +1,7 @@
 package com.damso.admin.storage.repository.member;
 
+import com.damso.admin.core.constant.MemberRoleType;
+import com.damso.admin.core.constant.MemberStatusType;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import org.springframework.util.StringUtils;
 
@@ -29,6 +31,14 @@ public class MemberExpression {
 
     public static BooleanExpression nameLike(String name) {
         return !StringUtils.hasText(name) ? null : member.name.like(name);
+    }
+
+    public static BooleanExpression roleEq(MemberRoleType role) {
+        return role == null ? null : member.role.eq(role);
+    }
+
+    public static BooleanExpression statusEq(MemberStatusType status) {
+        return status == null ? null : member.status.eq(status);
     }
 
     public static BooleanExpression joinedAtGoe(LocalDate date) {
