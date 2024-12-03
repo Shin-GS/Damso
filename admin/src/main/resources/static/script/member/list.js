@@ -74,14 +74,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     <td>${member.memberId}</td>
                     <td>${member.email}</td>
                     <td>${member.name}</td>
-                    <td>ACTIVE</td>
+                    <td>${member.role}</td>
+                    <td>${member.status}</td>
                     <td>${member.joinDate}</td>
                     <td>
-                        <button class="editMemberBtn" 
-                                data-id="${member.memberId}" 
-                                data-name="${member.name}" 
-                                data-email="${member.email}" 
-                                data-status="${member.status}">
+                        <button class="editMemberBtn" data-id="${member.memberId}">
                             Edit
                         </button>
                     </td>
@@ -116,6 +113,9 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
         window.history.replaceState(null, '', '/members');
+
+        // 목록 갱신
+        window.location.reload();
     });
 
     // 초기 설정

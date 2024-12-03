@@ -75,10 +75,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 alert("회원이 성공적으로 추가되었습니다.");
                 memberAddModal.style.display = 'none';
 
-                // 회원 목록 갱신 - 외부에 정의된 loadMembers 함수 호출
-                if (typeof loadMembers === "function") {
-                    loadMembers(1); // 첫 페이지로 목록 갱신
-                }
+                // 목록 갱신
+                window.location.reload();
             })
             .catch(error => {
                 alert(`${error.message}`);

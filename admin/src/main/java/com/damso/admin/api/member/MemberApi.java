@@ -3,6 +3,7 @@ package com.damso.admin.api.member;
 import com.damso.admin.core.response.success.SuccessCode;
 import com.damso.admin.core.response.success.SuccessResponse;
 import com.damso.admin.service.member.MemberEditor;
+import com.damso.admin.service.member.MemberFinder;
 import com.damso.admin.service.member.command.MemberModifyCommand;
 import com.damso.admin.service.member.command.MemberRegisterCommand;
 import com.damso.admin.service.member.command.MemberSearchCommand;
@@ -15,13 +16,14 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/members")
 @RequiredArgsConstructor
 public class MemberApi {
+    private final MemberFinder memberFinder;
     private final MemberEditor memberEditor;
 
     @GetMapping
     public SuccessResponse search(MemberSearchCommand command,
                                   @PageableDefault(size = 1) Pageable pageable) {
         return SuccessResponse.of(SuccessCode.SUCCESS,
-                memberEditor.findMembers(command, pageable));
+                memberFinder.findMembers(command, pageable));
     }
 
     @PostMapping
@@ -32,7 +34,7 @@ public class MemberApi {
 
     @GetMapping("/{memberId}")
     public SuccessResponse get(@PathVariable("memberId") Long memberId) {
-        return SuccessResponse.of(SuccessCode.SUCCESS, memberEditor.get(memberId));
+        return SuccessResponse.of(SuccessCode.SUCCESS, memberFinder.get(memberId));
     }
 
     @PutMapping("/{memberId}")
