@@ -1,0 +1,6 @@
+rootProject.name = 'Damso'
+
+include('core')
+include('admin')
+include('user')
+include('repository')
