@@ -1,3 +1,11 @@
+server.port: 8081
+
 spring:
   application:
     name: user
+  config:
+    import:
+      - 'application-core.yml'
+      - 'application-repository.yml'
+  thymeleaf:
+    cache: false
