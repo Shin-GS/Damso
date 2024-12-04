@@ -1,12 +1,12 @@
 package com.damso.admin.api.member;
 
-import com.damso.admin.core.response.success.SuccessCode;
-import com.damso.admin.core.response.success.SuccessResponse;
 import com.damso.admin.service.member.MemberEditor;
 import com.damso.admin.service.member.MemberFinder;
 import com.damso.admin.service.member.command.MemberModifyCommand;
 import com.damso.admin.service.member.command.MemberRegisterCommand;
 import com.damso.admin.service.member.command.MemberSearchCommand;
+import com.damso.core.response.success.SuccessCode;
+import com.damso.core.response.success.SuccessResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;

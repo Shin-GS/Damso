@@ -1,0 +1,18 @@
+springBoot {
+	mainClass = 'com.damso.user.UserApplication'
+}
+
+dependencies {
+	implementation project(':core')
+	implementation project(':repository')
+
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}

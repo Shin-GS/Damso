@@ -1,13 +1,13 @@
 package com.damso.admin.service.member;
 
-import com.damso.admin.core.response.error.ErrorCode;
-import com.damso.admin.core.response.exception.BusinessException;
 import com.damso.admin.service.member.command.MemberSearchCommand;
 import com.damso.admin.service.member.model.MemberInfoModel;
 import com.damso.admin.service.member.model.MemberSearchModel;
-import com.damso.admin.storage.entity.member.Member;
-import com.damso.admin.storage.repository.member.MemberRepository;
-import com.damso.admin.storage.repository.member.MemberRepositorySupport;
+import com.damso.core.response.error.ErrorCode;
+import com.damso.core.response.exception.BusinessException;
+import com.damso.repository.db.entity.member.Member;
+import com.damso.repository.db.repository.member.MemberRepository;
+import com.damso.repository.db.repository.member.MemberRepositorySupport;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,7 +24,15 @@ public class MemberFinderImpl implements MemberFinder {
     @Override
     public Page<MemberSearchModel> findMembers(MemberSearchCommand command,
                                                Pageable pageable) {
-        return memberRepositorySupport.findAllMembers(command, pageable)
+        return memberRepositorySupport.findAllMembers(
+                        command.memberId(),
+                        command.email(),
+                        command.name(),
+                        command.role(),
+                        command.status(),
+                        command.startDate(),
+                        command.endDate(),
+                        pageable)
                 .map(MemberSearchModel::of);
     }
 

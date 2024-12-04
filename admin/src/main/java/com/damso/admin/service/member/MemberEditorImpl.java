@@ -1,11 +1,11 @@
 package com.damso.admin.service.member;
 
-import com.damso.admin.core.response.error.ErrorCode;
-import com.damso.admin.core.response.exception.BusinessException;
 import com.damso.admin.service.member.command.MemberModifyCommand;
 import com.damso.admin.service.member.command.MemberRegisterCommand;
-import com.damso.admin.storage.entity.member.Member;
-import com.damso.admin.storage.repository.member.MemberRepository;
+import com.damso.core.response.error.ErrorCode;
+import com.damso.core.response.exception.BusinessException;
+import com.damso.repository.db.entity.member.Member;
+import com.damso.repository.db.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
