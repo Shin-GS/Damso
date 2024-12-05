@@ -1,0 +1,148 @@
+/* 인덱스 페이지 전용 설정 */
+body.index-page {
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+}
+
+/* Hero 섹션 */
+body.index-page .hero {
+    text-align: center;
+    padding: 50px 20px;
+    background-color: #f8f9fa;
+}
+
+body.index-page .hero h1 {
+    font-size: 2em;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+body.index-page .hero p {
+    font-size: 1.2em;
+    margin-bottom: 30px;
+    color: #666;
+}
+
+body.index-page .cta-buttons .btn-cta {
+    display: inline-block;
+    margin: 10px;
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+body.index-page .cta-buttons .btn-cta:hover {
+    background-color: #0056b3;
+}
+
+/* Features 섹션 */
+body.index-page .features {
+    padding: 40px 20px;
+    text-align: center;
+    background-color: #ffffff;
+}
+
+body.index-page .features h2 {
+    margin-bottom: 30px;
+    color: #333;
+}
+
+body.index-page .features .feature-list {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+body.index-page .features .feature-item {
+    width: 250px;
+    text-align: center;
+}
+
+body.index-page .features .feature-item h3 {
+    margin-bottom: 10px;
+    color: #007BFF;
+}
+
+/* Popular Creators 섹션 */
+body.index-page .popular-creators {
+    padding: 40px 20px;
+    text-align: center;
+    background-color: #f8f9fa;
+}
+
+body.index-page .popular-creators .creator-list {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+body.index-page .popular-creators .creator-card {
+    width: 250px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+body.index-page .popular-creators .creator-card img {
+    width: 100%;
+    border-radius: 4px;
+}
+
+body.index-page .popular-creators .creator-card h3 {
+    margin: 10px 0;
+    color: #333;
+}
+
+body.index-page .popular-creators .creator-card .btn-view {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 8px 16px;
+    background-color: #007BFF;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+body.index-page .popular-creators .creator-card .btn-view:hover {
+    background-color: #0056b3;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    body.index-page .features .feature-list,
+    body.index-page .popular-creators .creator-list {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+@media (max-width: 480px) {
+    body.index-page .hero h1 {
+        font-size: 1.5em;
+    }
+
+    body.index-page .hero p {
+        font-size: 1em;
+    }
+
+    body.index-page .features .feature-item {
+        width: 100%;
+    }
+
+    body.index-page .popular-creators .creator-card {
+        width: 100%;
+    }
+}

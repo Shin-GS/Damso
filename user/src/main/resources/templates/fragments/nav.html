@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<nav th:fragment="nav" class="nav-container">
+    <!-- 타이틀 -->
+    <div class="nav-title">
+        <a th:href="@{/}">담소</a>
+    </div>
+
+    <!-- 검색창 -->
+    <div class="search-bar">
+        <input type="text" placeholder="크리에이터 검색">
+        <button class="search-icon">
+            <i class="fas fa-search"></i> <!-- 망원경 모양 검색 아이콘 -->
+        </button>
+    </div>
+
+    <!-- 햄버거 메뉴 버튼 -->
+    <button class="hamburger-menu" aria-label="Toggle Menu">
+        <i class="fas fa-bars"></i> <!-- 파란색 햄버거 메뉴 아이콘 -->
+    </button>
+
+    <!-- 네비게이션 메뉴 -->
+    <ul class="nav-menu">
+        <li><a th:href="@{/categories}">카테고리</a></li>
+        <li><a th:href="@{/creators/popular}">인기 크리에이터</a></li>
+        <li><a th:href="@{/subscriptions}">내 구독</a></li>
+        <li><a th:href="@{/login}">로그인</a></li>
+    </ul>
+</nav>
+</body>
+</html>

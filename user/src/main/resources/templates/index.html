@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: head(additionalCss='/css/index.css')">
+    <title>담소 - 홈</title>
+</head>
+<body class="index-page">
+<!-- Header -->
+<header th:replace="fragments/header :: header"></header>
+
+<!-- Main Content -->
+<main>
+    <section class="hero">
+        <h1>담소에서 당신만의 크리에이터를 만나보세요.</h1>
+        <p>원하는 카테고리와 콘텐츠를 검색하고 독점 콘텐츠를 구독하세요.</p>
+        <div class="cta-buttons">
+            <a th:href="@{/creators}" class="btn-cta">크리에이터 찾아보기</a>
+            <a th:href="@{/categories}" class="btn-cta">카테고리 둘러보기</a>
+        </div>
+    </section>
+
+    <section class="features">
+        <h2>담소의 주요 기능</h2>
+        <div class="feature-list">
+            <div class="feature-item">
+                <h3>다양한 크리에이터</h3>
+                <p>음악, 요리, 뷰티 등 다양한 카테고리의 크리에이터를 만나보세요.</p>
+            </div>
+            <div class="feature-item">
+                <h3>독점 콘텐츠</h3>
+                <p>구독자만을 위한 특별한 콘텐츠를 즐겨보세요.</p>
+            </div>
+            <div class="feature-item">
+                <h3>간편한 관리</h3>
+                <p>구독 관리와 결제가 간편합니다.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="popular-creators">
+        <h2>인기 크리에이터</h2>
+        <div class="creator-list">
+            <div class="creator-card">
+                <img th:src="@{/images/creator1.jpg}" alt="크리에이터 1">
+                <h3>크리에이터 이름 1</h3>
+                <p>카테고리: 음악</p>
+                <a th:href="@{/creators/1}" class="btn-view">자세히 보기</a>
+            </div>
+            <div class="creator-card">
+                <img th:src="@{/images/creator2.jpg}" alt="크리에이터 2">
+                <h3>크리에이터 이름 2</h3>
+                <p>카테고리: 요리</p>
+                <a th:href="@{/creators/2}" class="btn-view">자세히 보기</a>
+            </div>
+            <div class="creator-card">
+                <img th:src="@{/images/creator3.jpg}" alt="크리에이터 3">
+                <h3>크리에이터 이름 3</h3>
+                <p>카테고리: 뷰티</p>
+                <a th:href="@{/creators/3}" class="btn-view">자세히 보기</a>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- Footer -->
+<footer th:replace="fragments/footer :: footer"></footer>
+</body>
+</html>

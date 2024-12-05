@@ -1,0 +1,194 @@
+/* 로그인 페이지 전용 설정 */
+body.login-page {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column; /* 위에서 아래로 정렬 */
+    min-height: 100vh;
+    background-color: #f9f9f9;
+}
+
+/* 로그인 컨테이너 */
+body.login-page .login-container {
+    position: relative; /* 다른 요소와 독립적인 레이어 */
+    z-index: 5; /* 푸터보다 위로 설정 */
+    width: 90%;
+    max-width: 400px;
+    background-color: white;
+    padding: 25px 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin: 50px auto 50px; /* 헤더와 푸터 사이 간격 */
+}
+
+body.login-page .login-container h2 {
+    margin-bottom: 20px;
+    font-size: 1.6em;
+    font-weight: bold;
+    color: #333;
+}
+
+body.login-page .form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+body.login-page label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+body.login-page input[type="email"],
+body.login-page input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+    box-sizing: border-box;
+}
+
+body.login-page input[type="email"]:focus,
+body.login-page input[type="password"]:focus {
+    border-color: #007BFF;
+    outline: none;
+}
+
+/* 로그인 옵션 */
+body.login-page .login-options {
+    display: flex;
+    justify-content: space-between;
+    margin: 15px 0;
+    font-size: 0.9em;
+    color: #666;
+}
+
+body.login-page .login-options label {
+    display: flex;
+    align-items: center;
+}
+
+body.login-page .login-options input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+/* 로그인 버튼 */
+body.login-page .btn-login {
+    width: 100%;
+    padding: 12px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.1em;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+body.login-page .btn-login:hover {
+    background-color: #0056b3;
+}
+
+/* 소셜 로그인 */
+body.login-page .social-login {
+    margin-top: 20px;
+    text-align: center;
+}
+
+body.login-page .social-login p {
+    margin-bottom: 15px;
+    font-size: 0.9em;
+    color: #666;
+}
+
+body.login-page .btn-social {
+    display: block;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 4px;
+    font-weight: bold;
+    text-align: center;
+    color: white;
+    font-size: 1em;
+    transition: transform 0.2s ease;
+}
+
+body.login-page .btn-social:hover {
+    transform: translateY(-3px);
+}
+
+body.login-page .btn-social.google {
+    background-color: #DB4437;
+}
+
+body.login-page .btn-social.google:hover {
+    background-color: #b3362c;
+}
+
+body.login-page .btn-social.x {
+    background-color: #1DA1F2;
+}
+
+body.login-page .btn-social.x:hover {
+    background-color: #0d8aec;
+}
+
+body.login-page .btn-social.instagram {
+    background-color: #E4405F;
+}
+
+body.login-page .btn-social.instagram:hover {
+    background-color: #c7354d;
+}
+
+body.login-page .btn-social.naver {
+    background-color: #03C75A;
+}
+
+body.login-page .btn-social.naver:hover {
+    background-color: #029a4a;
+}
+
+/* 아이디/비밀번호 찾기 */
+body.login-page .helper-links {
+    margin-top: 20px;
+    font-size: 0.9em;
+}
+
+body.login-page .helper-links a {
+    color: #007BFF;
+    margin: 0 10px;
+    font-weight: bold;
+}
+
+body.login-page .helper-links a:hover {
+    text-decoration: underline;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 600px) {
+    body.login-page .login-container {
+        padding: 20px;
+    }
+
+    body.login-page h2 {
+        font-size: 1.4em;
+    }
+
+    body.login-page input[type="email"],
+    body.login-page input[type="password"] {
+        font-size: 0.9em;
+    }
+
+    body.login-page .btn-login {
+        font-size: 1em;
+    }
+
+    body.login-page .btn-social {
+        font-size: 0.9em;
+    }
+}
