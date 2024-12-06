@@ -28,6 +28,9 @@ public class Member extends CommonTime {
     @Column(name = "member_name", nullable = false)
     private String name;
 
+    @Column(name = "member_password", nullable = false)
+    private String password;
+
     @Column(name = "member_role", nullable = false)
     @Enumerated(EnumType.STRING)
     private MemberRoleType role;

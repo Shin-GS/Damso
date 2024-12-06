@@ -1,0 +1,5 @@
+core:
+  crypto:
+    aes-key: "kIq8c8q1MRjCxFg9FUEt+71FsDLF1xkvflGSw8UOYzA="
+    aes-iv: "Jf92jfbSf82jfksf"
+    bcrypt-strength: 12
