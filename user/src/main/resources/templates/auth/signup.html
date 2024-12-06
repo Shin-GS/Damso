@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: head(additionalCss='/css/auth/signup.css')">
+    <title>회원가입 - 담소</title>
+</head>
+<body class="signup-page">
+<!-- Header -->
+<header th:replace="fragments/header :: header"></header>
+
+<!-- Main Content -->
+<main>
+    <section class="signup-container">
+        <h2>회원가입</h2>
+        <form th:action="@{/signup}" method="post" id="signup-form">
+            <!-- 이름 입력 -->
+            <div class="form-group">
+                <label for="name">이름</label>
+                <input type="text" id="name" name="name" placeholder="이름을 입력하세요" required>
+            </div>
+
+            <!-- 이메일 입력 및 인증 -->
+            <div class="form-group">
+                <label for="email">이메일</label>
+                <input type="email" id="email" name="email" placeholder="이메일을 입력하세요" required>
+                <button type="button" id="email-verify-button" class="btn-verify">인증 요청</button>
+                <input type="text" id="email-code" name="emailCode" placeholder="인증 코드를 입력하세요" style="display:none;">
+                <button type="button" id="email-verify-check" class="btn-verify" style="display:none;">코드 확인</button>
+            </div>
+
+            <!-- 비밀번호 입력 -->
+            <div class="form-group">
+                <label for="password">비밀번호</label>
+                <input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요" required>
+            </div>
+
+            <!-- 비밀번호 확인 -->
+            <div class="form-group">
+                <label for="confirm-password">비밀번호 확인</label>
+                <input type="password" id="confirm-password" name="confirmPassword" placeholder="비밀번호를 다시 입력하세요" required>
+            </div>
+
+            <!-- 약관 동의 -->
+            <div class="terms">
+                <label><input type="checkbox" name="termsAgreed" required> 약관에 동의합니다</label>
+            </div>
+
+            <!-- 회원가입 버튼 -->
+            <button type="submit" class="btn-signup" disabled>회원가입</button>
+        </form>
+
+        <!-- SNS 회원가입 -->
+        <div class="social-signup">
+            <p>소셜 계정으로 회원가입</p>
+            <a th:href="@{/oauth2/authorization/google}" class="btn-social google">Google 회원가입</a>
+            <a th:href="@{/oauth2/authorization/x}" class="btn-social x">X 회원가입</a>
+            <a th:href="@{/oauth2/authorization/instagram}" class="btn-social instagram">Instagram 회원가입</a>
+            <a th:href="@{/oauth2/authorization/naver}" class="btn-social naver">네이버 회원가입</a>
+        </div>
+
+        <!-- 로그인 링크 -->
+        <div class="helper-links">
+            <p>이미 계정이 있으신가요? <a th:href="@{/login}">로그인</a></p>
+        </div>
+    </section>
+</main>
+
+<!-- Footer -->
+<footer th:replace="fragments/footer :: footer"></footer>
+
+<script>
+    const emailVerifyButton = document.getElementById("email-verify-button");
+    const emailCodeInput = document.getElementById("email-code");
+    const emailVerifyCheck = document.getElementById("email-verify-check");
+    const signupButton = document.querySelector(".btn-signup");
+    const passwordInput = document.getElementById("password");
+    const confirmPasswordInput = document.getElementById("confirm-password");
+    const nameInput = document.getElementById("name");
+    const emailInput = document.getElementById("email");
+
+    let emailVerified = false;
+
+    // 정규식 패턴
+    const namePattern = /^[a-zA-Z가-힣]{2,50}(-[a-zA-Z가-힣]{2,50})?$/;
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const passwordPattern = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,64}$/;
+
+    // 설명문 표시 함수
+    function showErrorMessage(element, message) {
+        let errorMessage = element.nextElementSibling;
+        if (!errorMessage || !errorMessage.classList.contains("error-message")) {
+            errorMessage = document.createElement("div");
+            errorMessage.classList.add("error-message");
+            element.after(errorMessage);
+        }
+        errorMessage.textContent = message;
+    }
+
+    function clearErrorMessage(element) {
+        const errorMessage = element.nextElementSibling;
+        if (errorMessage && errorMessage.classList.contains("error-message")) {
+            errorMessage.textContent = "";
+        }
+    }
+
+    // 이름 유효성 검사
+    nameInput.addEventListener("input", function () {
+        if (!namePattern.test(nameInput.value)) {
+            showErrorMessage(nameInput, "이름은 2~50자의 한글, 영어만 가능합니다.");
+        } else {
+            clearErrorMessage(nameInput);
+        }
+    });
+
+    // 이메일 인증 요청
+    emailVerifyButton.addEventListener("click", function () {
+        if (!emailPattern.test(emailInput.value)) {
+            showErrorMessage(emailInput, "유효한 이메일 형식을 입력하세요.");
+            return;
+        }
+        clearErrorMessage(emailInput);
+
+        fetch("/api/verify/email", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: emailInput.value })
+        }).then(response => {
+            if (response.ok) {
+                alert("이메일로 인증 코드가 전송되었습니다.");
+                emailCodeInput.style.display = "block";
+                emailVerifyCheck.style.display = "block";
+            } else {
+                alert("이메일 인증 요청에 실패했습니다.");
+            }
+        });
+    });
+
+    // 이메일 인증 코드 확인
+    emailVerifyCheck.addEventListener("click", function () {
+        fetch("/api/verify/email/check", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: emailInput.value, code: emailCodeInput.value })
+        }).then(response => {
+            if (response.ok) {
+                alert("이메일 인증이 완료되었습니다.");
+                emailVerified = true;
+                enableSignup();
+            } else {
+                alert("인증 코드가 올바르지 않습니다.");
+            }
+        });
+    });
+
+    // 비밀번호 유효성 검사
+    passwordInput.addEventListener("input", validatePasswords);
+    confirmPasswordInput.addEventListener("input", validatePasswords);
+
+    function validatePasswords() {
+        if (!passwordPattern.test(passwordInput.value)) {
+            showErrorMessage(passwordInput, "비밀번호는 8~64자, 대문자, 소문자, 숫자, 특수문자를 포함해야 합니다.");
+        } else {
+            clearErrorMessage(passwordInput);
+        }
+
+        if (passwordInput.value === confirmPasswordInput.value) {
+            confirmPasswordInput.style.borderColor = "green";
+            clearErrorMessage(confirmPasswordInput);
+        } else {
+            confirmPasswordInput.style.borderColor = "red";
+            showErrorMessage(confirmPasswordInput, "비밀번호가 일치하지 않습니다.");
+        }
+        enableSignup();
+    }
+
+    // 회원가입 버튼 활성화
+    function enableSignup() {
+        if (emailVerified && passwordInput.value === confirmPasswordInput.value &&
+            namePattern.test(nameInput.value) &&
+            emailPattern.test(emailInput.value) &&
+            passwordPattern.test(passwordInput.value)) {
+            signupButton.disabled = false;
+        } else {
+            signupButton.disabled = true;
+        }
+    }
+</script>
+</body>
+</html>

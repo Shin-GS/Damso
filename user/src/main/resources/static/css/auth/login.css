@@ -169,6 +169,39 @@ body.login-page .helper-links a:hover {
     text-decoration: underline;
 }
 
+/* 회원가입 버튼 섹션 */
+body.login-page .register-link {
+    margin-top: 20px;
+    text-align: center;
+}
+
+body.login-page .register-link p {
+    margin-bottom: 10px;
+    font-size: 0.9em;
+    color: #666;
+}
+
+body.login-page .btn-register {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1em;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+body.login-page .btn-register:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+body.login-page .btn-register:active {
+    transform: translateY(0);
+}
+
 /* 반응형 디자인 */
 @media (max-width: 600px) {
     body.login-page .login-container {

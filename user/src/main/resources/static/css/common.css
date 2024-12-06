@@ -153,6 +153,36 @@ ul {
     color: white;
 }
 
+/* Footer 스타일 */
+footer {
+    background-color: #333; /* 배경 색상 */
+    color: #fff; /* 텍스트 색상 */
+    text-align: center; /* 가운데 정렬 */
+    padding: 20px 10px; /* 내부 여백 */
+    font-size: 0.9em; /* 텍스트 크기 */
+    border-top: 1px solid #444; /* 상단 테두리 */
+}
+
+footer p {
+    margin: 0; /* 기본 마진 제거 */
+    padding: 5px 0; /* 텍스트 위아래 간격 */
+}
+
+footer nav {
+    margin-top: 10px; /* 네비게이션과 텍스트 사이 간격 */
+}
+
+footer nav a {
+    color: #aaa; /* 링크 색상 */
+    margin: 0 5px; /* 링크 간격 */
+    text-decoration: none; /* 밑줄 제거 */
+    transition: color 0.3s ease; /* 색상 변경 애니메이션 */
+}
+
+footer nav a:hover {
+    color: #007BFF; /* 호버 상태 색상 */
+}
+
 /* 반응형 디자인 */
 /* ~ 480px */
 @media (max-width: 480px) {
@@ -170,6 +200,15 @@ ul {
 
     .nav-menu {
         display: none;
+    }
+
+    footer {
+        font-size: 0.8em; /* 작은 화면에서는 텍스트 크기 축소 */
+        padding: 15px 5px; /* 패딩 축소 */
+    }
+
+    footer nav a {
+        margin: 0 3px; /* 링크 간격 축소 */
     }
 }
 
@@ -190,6 +229,15 @@ ul {
     .nav-menu {
         display: none;
     }
+
+    footer {
+        font-size: 0.9em;
+        padding: 18px 8px;
+    }
+
+    footer nav a {
+        margin: 0 4px;
+    }
 }
 
 /* 769px ~ 1024px */
@@ -205,6 +253,15 @@ ul {
     .nav-menu {
         display: flex;
     }
+
+    footer {
+        font-size: 1em;
+        padding: 20px 10px;
+    }
+
+    footer nav a {
+        margin: 0 5px;
+    }
 }
 
 /* 1025px 이상 */
@@ -219,5 +276,14 @@ ul {
 
     .nav-menu {
         display: flex;
+    }
+
+    footer {
+        font-size: 1em;
+        padding: 20px 10px;
+    }
+
+    footer nav a {
+        margin: 0 7px;
     }
 }

@@ -1,0 +1,216 @@
+/* 회원가입 페이지 전용 스타일 */
+body.signup-page {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+body.signup-page .signup-container {
+    width: 90%;
+    max-width: 450px;
+    background-color: white;
+    padding: 30px 35px;
+    margin: 50px auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+body.signup-page .signup-container h2 {
+    margin-bottom: 20px;
+    font-size: 1.8em;
+    color: #333;
+    font-weight: bold;
+}
+
+body.signup-page .form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+body.signup-page label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+body.signup-page input[type="text"],
+body.signup-page input[type="email"],
+body.signup-page input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+    box-sizing: border-box;
+}
+
+body.signup-page input:focus {
+    border-color: #007BFF;
+    outline: none;
+}
+
+/* 오류 메시지 스타일 */
+body.signup-page .error-message {
+    color: red;
+    font-size: 0.8em;
+    margin-top: 5px;
+    margin-left: 5px;
+}
+
+/* 약관 동의 */
+body.signup-page .terms {
+    margin: 15px 0;
+    text-align: left;
+    font-size: 0.9em;
+    color: #666;
+}
+
+body.signup-page .terms input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+/* 회원가입 버튼 */
+body.signup-page .btn-signup {
+    width: 100%;
+    padding: 12px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.1em;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+body.signup-page .btn-signup:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+body.signup-page .btn-signup:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* 이메일 인증 버튼 */
+body.signup-page .btn-verify {
+    margin-top: 10px;
+    padding: 8px 12px;
+    background-color: #17a2b8;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+body.signup-page .btn-verify:hover {
+    background-color: #117a8b;
+}
+
+/* 소셜 회원가입 */
+body.signup-page .social-signup {
+    margin-top: 30px;
+}
+
+body.signup-page .social-signup p {
+    margin-bottom: 15px;
+    font-size: 0.9em;
+    color: #666;
+}
+
+body.signup-page .btn-social {
+    display: block;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 4px;
+    font-weight: bold;
+    text-align: center;
+    color: white;
+    font-size: 1em;
+    transition: transform 0.2s ease;
+}
+
+body.signup-page .btn-social:hover {
+    transform: translateY(-3px);
+}
+
+body.signup-page .btn-social.google {
+    background-color: #DB4437;
+}
+
+body.signup-page .btn-social.google:hover {
+    background-color: #b3362c;
+}
+
+body.signup-page .btn-social.x {
+    background-color: #1DA1F2;
+}
+
+body.signup-page .btn-social.x:hover {
+    background-color: #0d8aec;
+}
+
+body.signup-page .btn-social.instagram {
+    background-color: #E4405F;
+}
+
+body.signup-page .btn-social.instagram:hover {
+    background-color: #c7354d;
+}
+
+body.signup-page .btn-social.naver {
+    background-color: #03C75A;
+}
+
+body.signup-page .btn-social.naver:hover {
+    background-color: #029a4a;
+}
+
+/* 로그인 링크 */
+body.signup-page .helper-links {
+    margin-top: 20px;
+    font-size: 0.9em;
+    color: #666;
+}
+
+body.signup-page .helper-links a {
+    color: #007BFF;
+    font-weight: bold;
+}
+
+body.signup-page .helper-links a:hover {
+    text-decoration: underline;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 600px) {
+    body.signup-page .signup-container {
+        padding: 20px;
+    }
+
+    body.signup-page .signup-container h2 {
+        font-size: 1.6em;
+    }
+
+    body.signup-page input[type="text"],
+    body.signup-page input[type="email"],
+    body.signup-page input[type="password"] {
+        font-size: 0.9em;
+    }
+
+    body.signup-page .btn-signup {
+        font-size: 1em;
+    }
+
+    body.signup-page .btn-social {
+        font-size: 0.9em;
+    }
+}

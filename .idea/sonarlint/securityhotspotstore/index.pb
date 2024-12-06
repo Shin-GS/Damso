@@ -25,9 +25,5 @@ f
 6user/src/main/java/com/damso/user/UserApplication.java,8\d\8def2f2000c51ff6fc9bf29f5ea9fa6278da6dce
 9
 	README.md,8\e\8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
-u
-Euser/src/main/java/com/damso/user/controller/auth/AuthController.java,e\f\efa8ed888c99be462408db62f5c46d7e68c5d205
 r
 Badmin/src/main/java/com/damso/admin/controller/HomeController.java,a\3\a35fb598dfdcec1231a4d310b8dd789d5eb78b50
-p
-@user/src/main/java/com/damso/user/controller/HomeController.java,0\8\08609f13fa2cd72b7fb4690e18c64bea0aa69183
