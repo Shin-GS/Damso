@@ -42,6 +42,9 @@ public class Member extends CommonTime {
     private MemberStatusType status;
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<MemberSocialAccount> socialAccounts = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<MemberNotificationSetting> notificationSettings = new LinkedHashSet<>();
 
     public Member(String email,
