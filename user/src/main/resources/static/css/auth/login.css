@@ -9,7 +9,6 @@ body.login-page {
     background-color: #f9f9f9;
 }
 
-/* 로그인 컨테이너 */
 body.login-page .login-container {
     position: relative; /* 다른 요소와 독립적인 레이어 */
     z-index: 5; /* 푸터보다 위로 설정 */
@@ -30,20 +29,20 @@ body.login-page .login-container h2 {
     color: #333;
 }
 
-body.login-page .form-group {
+body.login-page .login-container .form-group {
     margin-bottom: 20px;
     text-align: left;
 }
 
-body.login-page label {
+body.login-page .login-container label {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
     color: #333;
 }
 
-body.login-page input[type="email"],
-body.login-page input[type="password"] {
+body.login-page .login-container input[type="email"],
+body.login-page .login-container input[type="password"] {
     width: 100%;
     padding: 12px;
     border: 1px solid #ccc;
@@ -52,14 +51,14 @@ body.login-page input[type="password"] {
     box-sizing: border-box;
 }
 
-body.login-page input[type="email"]:focus,
-body.login-page input[type="password"]:focus {
+body.login-page .login-container input[type="email"]:focus,
+body.login-page .login-container input[type="password"]:focus {
     border-color: #007BFF;
     outline: none;
 }
 
 /* 로그인 옵션 */
-body.login-page .login-options {
+body.login-page .login-container .login-options {
     display: flex;
     justify-content: space-between;
     margin: 15px 0;
@@ -67,17 +66,17 @@ body.login-page .login-options {
     color: #666;
 }
 
-body.login-page .login-options label {
+body.login-page .login-container .login-options label {
     display: flex;
     align-items: center;
 }
 
-body.login-page .login-options input[type="checkbox"] {
+body.login-page .login-container .login-options input[type="checkbox"] {
     margin-right: 5px;
 }
 
 /* 로그인 버튼 */
-body.login-page .btn-login {
+body.login-page .login-container .btn-login {
     width: 100%;
     padding: 12px;
     background-color: #007BFF;
@@ -89,23 +88,23 @@ body.login-page .btn-login {
     transition: background-color 0.3s ease;
 }
 
-body.login-page .btn-login:hover {
+body.login-page .login-container .btn-login:hover {
     background-color: #0056b3;
 }
 
 /* 소셜 로그인 */
-body.login-page .social-login {
+body.login-page .login-container .social-login {
     margin-top: 20px;
     text-align: center;
 }
 
-body.login-page .social-login p {
+body.login-page .login-container .social-login p {
     margin-bottom: 15px;
     font-size: 0.9em;
     color: #666;
 }
 
-body.login-page .btn-social {
+body.login-page .login-container .btn-social {
     display: block;
     margin-bottom: 10px;
     padding: 10px;
@@ -117,71 +116,71 @@ body.login-page .btn-social {
     transition: transform 0.2s ease;
 }
 
-body.login-page .btn-social:hover {
+body.login-page .login-container .btn-social:hover {
     transform: translateY(-3px);
 }
 
-body.login-page .btn-social.google {
+body.login-page .login-container .btn-social.google {
     background-color: #DB4437;
 }
 
-body.login-page .btn-social.google:hover {
+body.login-page .login-container .btn-social.google:hover {
     background-color: #b3362c;
 }
 
-body.login-page .btn-social.x {
+body.login-page .login-container .btn-social.x {
     background-color: #1DA1F2;
 }
 
-body.login-page .btn-social.x:hover {
+body.login-page .login-container .btn-social.x:hover {
     background-color: #0d8aec;
 }
 
-body.login-page .btn-social.instagram {
+body.login-page .login-container .btn-social.instagram {
     background-color: #E4405F;
 }
 
-body.login-page .btn-social.instagram:hover {
+body.login-page .login-container .btn-social.instagram:hover {
     background-color: #c7354d;
 }
 
-body.login-page .btn-social.naver {
+body.login-page .login-container .btn-social.naver {
     background-color: #03C75A;
 }
 
-body.login-page .btn-social.naver:hover {
+body.login-page .login-container .btn-social.naver:hover {
     background-color: #029a4a;
 }
 
 /* 아이디/비밀번호 찾기 */
-body.login-page .helper-links {
+body.login-page .login-container .helper-links {
     margin-top: 20px;
     font-size: 0.9em;
 }
 
-body.login-page .helper-links a {
+body.login-page .login-container .helper-links a {
     color: #007BFF;
     margin: 0 10px;
     font-weight: bold;
 }
 
-body.login-page .helper-links a:hover {
+body.login-page .login-container .helper-links a:hover {
     text-decoration: underline;
 }
 
 /* 회원가입 버튼 섹션 */
-body.login-page .register-link {
+body.login-page .login-container .register-link {
     margin-top: 20px;
     text-align: center;
 }
 
-body.login-page .register-link p {
+body.login-page .login-container .register-link p {
     margin-bottom: 10px;
     font-size: 0.9em;
     color: #666;
 }
 
-body.login-page .btn-register {
+body.login-page .login-container .btn-register {
     display: inline-block;
     padding: 10px 20px;
     background-color: #007BFF;
@@ -193,12 +192,12 @@ body.login-page .btn-register {
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-body.login-page .btn-register:hover {
+body.login-page .login-container .btn-register:hover {
     background-color: #0056b3;
     transform: translateY(-2px);
 }
 
-body.login-page .btn-register:active {
+body.login-page .login-container .btn-register:active {
     transform: translateY(0);
 }
 
@@ -208,20 +207,20 @@ body.login-page .btn-register:active {
         padding: 20px;
     }
 
-    body.login-page h2 {
+    body.login-page .login-container h2 {
         font-size: 1.4em;
     }
 
-    body.login-page input[type="email"],
-    body.login-page input[type="password"] {
+    body.login-page .login-container input[type="email"],
+    body.login-page .login-container input[type="password"] {
         font-size: 0.9em;
     }
 
-    body.login-page .btn-login {
+    body.login-page .login-container .btn-login {
         font-size: 1em;
     }
 
-    body.login-page .btn-social {
+    body.login-page .login-container .btn-social {
         font-size: 0.9em;
     }
 }

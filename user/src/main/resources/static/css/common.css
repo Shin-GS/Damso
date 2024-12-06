@@ -18,141 +18,6 @@ ul {
     margin: 0;
 }
 
-/* Navigation 컨테이너 */
-.nav-container {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    align-items: center;
-    background-color: #ffffff;
-    padding: 15px 20px;
-    border-bottom: 1px solid #ddd;
-    position: relative;
-    gap: 20px; /* 그리드 간격 */
-}
-
-/* 타이틀 스타일 */
-.nav-title {
-    justify-self: start;
-}
-
-.nav-title a {
-    font-size: 2.2em;
-    font-weight: 700;
-    color: #007BFF;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    white-space: nowrap;
-}
-
-/* 검색창 스타일 */
-.search-bar {
-    justify-self: center;
-    display: flex;
-    align-items: center;
-}
-
-.search-bar input[type="text"] {
-    padding: 8px 12px;
-    border: 1px solid #ccc;
-    border-radius: 4px 0 0 4px;
-    outline: none;
-    font-size: 1em;
-    width: 300px;
-    transition: box-shadow 0.3s ease;
-}
-
-.search-bar input[type="text"]:focus {
-    border-color: #007BFF;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-}
-
-.search-bar button.search-icon {
-    padding: 8px 12px;
-    border: 1px solid #007BFF;
-    background-color: #007BFF;
-    color: white;
-    border-radius: 0 4px 4px 0;
-    cursor: pointer;
-    font-size: 1.2em;
-    transition: background-color 0.3s ease;
-}
-
-.search-bar button.search-icon i {
-    font-size: 1.2em;
-}
-
-/* 햄버거 메뉴 스타일 */
-.hamburger-menu {
-    display: none; /* 기본적으로 숨김 */
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 2em;
-    color: #007BFF;
-    justify-self: end;
-}
-
-.hamburger-menu i {
-    font-size: 2em;
-}
-
-/* 네비게이션 메뉴 스타일 */
-.nav-menu {
-    display: flex;
-    justify-content: flex-end;
-    gap: 20px;
-    justify-self: end;
-}
-
-.nav-menu li a {
-    font-size: 1.2em;
-    font-weight: 500;
-    color: #333;
-    padding: 10px 15px;
-    border-radius: 4px;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.nav-menu li a:hover {
-    background-color: #f0f0f0;
-    color: #007BFF;
-}
-
-/* 햄버거 메뉴 모달 상태 스타일 */
-.nav-menu.active {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%; /* 100% 너비 */
-    height: 100%; /* 화면 전체를 덮음 */
-    background-color: rgba(0, 0, 0, 0.8); /* 반투명 배경 */
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-    z-index: 1000;
-    padding: 0;
-}
-
-.nav-menu.active li {
-    width: 100%; /* 메뉴 항목이 100% 너비 */
-    text-align: center;
-}
-
-.nav-menu.active li a {
-    font-size: 1.5em;
-    padding: 15px 0;
-    background-color: #ffffff;
-    color: #333;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    display: block;
-}
-
-.nav-menu.active li a:hover {
-    background-color: #007BFF;
-    color: white;
-}
-
 /* Footer 스타일 */
 footer {
     background-color: #333; /* 배경 색상 */
@@ -163,127 +28,35 @@ footer {
     border-top: 1px solid #444; /* 상단 테두리 */
 }
 
-footer p {
-    margin: 0; /* 기본 마진 제거 */
-    padding: 5px 0; /* 텍스트 위아래 간격 */
-}
-
-footer nav {
-    margin-top: 10px; /* 네비게이션과 텍스트 사이 간격 */
-}
-
-footer nav a {
-    color: #aaa; /* 링크 색상 */
-    margin: 0 5px; /* 링크 간격 */
-    text-decoration: none; /* 밑줄 제거 */
-    transition: color 0.3s ease; /* 색상 변경 애니메이션 */
-}
-
-footer nav a:hover {
-    color: #007BFF; /* 호버 상태 색상 */
-}
-
 /* 반응형 디자인 */
 /* ~ 480px */
 @media (max-width: 480px) {
-    .nav-title a {
-        font-size: 1.8em;
-    }
-
-    .search-bar input[type="text"] {
-        display: none;
-    }
-
-    .hamburger-menu {
-        display: block;
-    }
-
-    .nav-menu {
-        display: none;
-    }
-
     footer {
         font-size: 0.8em; /* 작은 화면에서는 텍스트 크기 축소 */
         padding: 15px 5px; /* 패딩 축소 */
-    }
-
-    footer nav a {
-        margin: 0 3px; /* 링크 간격 축소 */
     }
 }
 
 /* 481px ~ 768px */
 @media (min-width: 481px) and (max-width: 768px) {
-    .nav-title a {
-        font-size: 2em;
-    }
-
-    .search-bar input[type="text"] {
-        display: none;
-    }
-
-    .hamburger-menu {
-        display: block;
-    }
-
-    .nav-menu {
-        display: none;
-    }
-
     footer {
         font-size: 0.9em;
         padding: 18px 8px;
-    }
-
-    footer nav a {
-        margin: 0 4px;
     }
 }
 
 /* 769px ~ 1024px */
 @media (min-width: 769px) and (max-width: 1024px) {
-    .nav-title a {
-        font-size: 2.2em;
-    }
-
-    .hamburger-menu {
-        display: none;
-    }
-
-    .nav-menu {
-        display: flex;
-    }
-
     footer {
         font-size: 1em;
         padding: 20px 10px;
-    }
-
-    footer nav a {
-        margin: 0 5px;
     }
 }
 
 /* 1025px 이상 */
 @media (min-width: 1025px) {
-    .nav-title a {
-        font-size: 2.5em;
-    }
-
-    .hamburger-menu {
-        display: none;
-    }
-
-    .nav-menu {
-        display: flex;
-    }
-
     footer {
         font-size: 1em;
         padding: 20px 10px;
-    }
-
-    footer nav a {
-        margin: 0 7px;
     }
 }
