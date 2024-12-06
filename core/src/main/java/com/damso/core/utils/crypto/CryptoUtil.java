@@ -46,6 +46,14 @@ public class CryptoUtil {
         }
     }
 
+    public String encryptEmail(String email) {
+        return encrypt(email);
+    }
+
+    public String decryptEmail(String encryptedEmail) {
+        return decrypt(encryptedEmail);
+    }
+
     public String hashPassword(String rawPassword) {
         return passwordEncoder.encode(rawPassword);
     }

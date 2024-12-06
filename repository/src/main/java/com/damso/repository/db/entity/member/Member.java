@@ -2,6 +2,7 @@ package com.damso.repository.db.entity.member;
 
 import com.damso.core.constant.MemberRoleType;
 import com.damso.core.constant.MemberStatusType;
+import com.damso.repository.db.converter.EmailConverter;
 import com.damso.repository.db.entity.CommonTime;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -23,6 +24,7 @@ public class Member extends CommonTime {
     private Long id;
 
     @Column(name = "member_email", unique = true, nullable = false)
+    @Convert(converter = EmailConverter.class)
     private String email;
 
     @Column(name = "member_name", nullable = false)
