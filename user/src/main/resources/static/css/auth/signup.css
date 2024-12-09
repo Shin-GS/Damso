@@ -43,6 +43,7 @@ body.signup-page .signup-container label {
 
 body.signup-page .signup-container input[type="text"],
 body.signup-page .signup-container input[type="email"],
+body.signup-page .signup-container input[type="email-verify-button"],
 body.signup-page .signup-container input[type="password"] {
     width: 100%;
     padding: 12px;
@@ -204,6 +205,7 @@ body.signup-page .signup-container .helper-links a:hover {
 
     body.signup-page .signup-container input[type="text"],
     body.signup-page .signup-container input[type="email"],
+    body.signup-page .signup-container input[type="email-verify-button"],
     body.signup-page .signup-container input[type="password"] {
         font-size: 0.9em;
     }

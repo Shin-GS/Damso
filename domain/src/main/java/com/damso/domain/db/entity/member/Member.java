@@ -1,6 +1,7 @@
 package com.damso.domain.db.entity.member;
 
 import com.damso.core.constant.MemberRoleType;
+import com.damso.core.constant.MemberSocialAccountType;
 import com.damso.core.constant.MemberStatusType;
 import com.damso.domain.db.converter.EmailConverter;
 import com.damso.domain.db.entity.CommonTime;
@@ -30,7 +31,7 @@ public class Member extends CommonTime {
     @Column(name = "member_name", nullable = false)
     private String name;
 
-    @Column(name = "member_password", nullable = false)
+    @Column(name = "member_password")
     private String password;
 
     @Column(name = "member_role", nullable = false)
@@ -56,6 +57,31 @@ public class Member extends CommonTime {
         this.status = MemberStatusType.ACTIVE;
     }
 
+    public static Member ofEmailUser(String email,
+                                     String name,
+                                     String password) {
+        Member member = new Member();
+        member.setEmail(email);
+        member.setName(name);
+        member.setPassword(password);
+        member.setRole(MemberRoleType.USER);
+        member.setStatus(MemberStatusType.ACTIVE);
+        return member;
+    }
+
+    public static Member ofSnsUser(String email,
+                                   String name,
+                                   MemberSocialAccountType provider,
+                                   String providerAccountId) {
+        Member member = new Member();
+        member.setEmail(email);
+        member.setName(name);
+        member.setRole(MemberRoleType.USER);
+        member.setStatus(MemberStatusType.ACTIVE);
+        member.linkSns(provider, providerAccountId);
+        return member;
+    }
+
     public void update(String email,
                        String name,
                        MemberRoleType role,
@@ -64,5 +90,18 @@ public class Member extends CommonTime {
         this.name = name;
         this.role = role;
         this.status = status;
+    }
+
+    private void linkSns(MemberSocialAccountType provider,
+                         String providerAccountId) {
+        if (this.socialAccounts.stream()
+                .filter(socialAccount -> socialAccount.getProvider().equals(provider) && socialAccount.getProviderAccountId().equals(providerAccountId))
+                .count() > 1) {
+            return;
+        }
+
+        this.socialAccounts.add(MemberSocialAccount.of(this,
+                provider,
+                providerAccountId));
     }
 }

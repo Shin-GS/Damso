@@ -1,6 +1,7 @@
 package com.damso.user.config;
 
 import com.damso.core.constant.MemberRoleType;
+import com.damso.user.service.member.auth.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -13,13 +14,13 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -27,6 +28,8 @@ import java.util.Set;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
+    private final CustomOAuth2UserService customOAuth2UserService;
+
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
@@ -45,7 +48,14 @@ public class SecurityConfig {
         return http.httpBasic(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(corsCustomizer -> corsCustomizer.configurationSource(corsConfigurationSource()))
-                .formLogin(AbstractHttpConfigurer::disable)
+                .formLogin(form -> form.loginPage("/login"))
+                .headers(headersConfigurer -> headersConfigurer.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
+                .oauth2Login(oauth2 -> oauth2
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/api/auth/oauth2/success", true)
+                        .failureUrl("/login?error=true")
+                        .userInfoEndpoint(info -> info.userService(customOAuth2UserService))
+                )
                 .authorizeHttpRequests(SecurityConfig::getRequestMatchers)
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .build();
@@ -58,8 +68,10 @@ public class SecurityConfig {
         Set<String> creatorRolePatterns = Set.of(
         );
 
-        request.requestMatchers(new HashSet<>(userRolePatterns).toArray(String[]::new)).hasAnyRole(MemberRoleType.USER.name())
-                .requestMatchers(new HashSet<>(creatorRolePatterns).toArray(String[]::new)).hasAnyRole(MemberRoleType.CREATOR.name())
+        request
+                .requestMatchers(userRolePatterns.toArray(String[]::new)).hasAnyRole(MemberRoleType.USER.name())
+                .requestMatchers(creatorRolePatterns.toArray(String[]::new)).hasAnyRole(MemberRoleType.CREATOR.name())
+                .requestMatchers("/api/auth/oauth2/success").authenticated()
                 .anyRequest().permitAll();
     }
 
