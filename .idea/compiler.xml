@@ -16,7 +16,7 @@
       </profile>
       <profile name="Gradle Imported" enabled="true">
         <outputRelativeToContentRoot value="true" />
-        <option name="querydsl.generatedSourcesDir" value="C:\Users\rudtjq1213\Desktop\Damso\repository\build\generated\sources\annotationProcessor\java\main" />
+        <option name="querydsl.generatedSourcesDir" value="C:\Users\rudtjq1213\Desktop\Damso\domain\build\generated\sources\annotationProcessor\java\main" />
         <processorPath useClasspath="false">
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.36/5a30490a6e14977d97d9c73c924c1f1b5311ea95/lombok-1.18.36.jar" />
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.querydsl/querydsl-apt/5.0.0/d48657412f2b96d787bbe5ae393e33815c94b4d0/querydsl-apt-5.0.0-jakarta.jar" />
@@ -30,15 +30,15 @@
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.mysema.commons/mysema-commons-lang/0.2.4/d09c8489d54251a6c22fbce804bdd4a070557317/mysema-commons-lang-0.2.4.jar" />
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.eclipse.jdt/ecj/3.26.0/4837be609a3368a0f7e7cf0dc1bdbc7fe94993de/ecj-3.26.0.jar" />
         </processorPath>
-        <module name="damso.repository.main" />
+        <module name="damso.domain.main" />
       </profile>
       <profile name="Gradle Imported" enabled="true">
         <outputRelativeToContentRoot value="true" />
-        <option name="querydsl.generatedSourcesDir" value="C:\Users\rudtjq1213\Desktop\Damso\repository\build\generated\sources\annotationProcessor\java\main" />
+        <option name="querydsl.generatedSourcesDir" value="C:\Users\rudtjq1213\Desktop\Damso\domain\build\generated\sources\annotationProcessor\java\main" />
         <processorPath useClasspath="false">
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.36/5a30490a6e14977d97d9c73c924c1f1b5311ea95/lombok-1.18.36.jar" />
         </processorPath>
-        <module name="damso.repository.test" />
+        <module name="damso.domain.test" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="17" />

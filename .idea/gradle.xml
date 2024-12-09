@@ -11,7 +11,7 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/admin" />
             <option value="$PROJECT_DIR$/core" />
-            <option value="$PROJECT_DIR$/repository" />
+            <option value="$PROJECT_DIR$/domain" />
             <option value="$PROJECT_DIR$/user" />
           </set>
         </option>

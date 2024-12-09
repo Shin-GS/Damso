@@ -51,5 +51,5 @@ tasks.named('jar') {
 
 dependencies {
     implementation project(':core')
-    implementation project(':repository')
+    implementation project(':domain')
 }

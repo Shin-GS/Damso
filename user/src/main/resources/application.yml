@@ -6,6 +6,6 @@ spring:
   config:
     import:
       - 'application-core.yml'
-      - 'application-repository.yml'
+      - 'application-domain.yml'
   thymeleaf:
     cache: false

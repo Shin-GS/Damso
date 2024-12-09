@@ -1,6 +1,6 @@
 rootProject.name = 'damso'
 
 include('core')
-include('repository')
+include('domain')
 include('admin')
 include('user')
