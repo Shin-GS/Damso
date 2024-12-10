@@ -15,7 +15,9 @@ public enum ErrorCode {
 
     //B : 비즈니스 로직 관련
     MEMBER_EMAIL_DUPLICATED(400, "B001", "중복된 이메일입니다."),
-    OAUTH_INFO_NOT_VALID(400, "B002", "OAuth 정보가 유효하지 않습니다."),
+    MEMBER_SNS_DUPLICATED(400, "B002", "중복된 SNS 계정입니다."),
+    OAUTH_INFO_NOT_VALID(400, "B003", "OAuth 정보가 유효하지 않습니다."),
+    PASSWORD_NOT_MATCHED(400, "B004", "비밀번호가 일치하지 않습니다."),
 
     //S : 서버에러
     INTERNAL_SERVER_ERROR(500, "S001", "internal server error");

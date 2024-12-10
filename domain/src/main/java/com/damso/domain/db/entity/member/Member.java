@@ -104,4 +104,8 @@ public class Member extends CommonTime {
                 provider,
                 providerAccountId));
     }
+
+    public boolean isActive() {
+        return this.status == MemberStatusType.ACTIVE;
+    }
 }

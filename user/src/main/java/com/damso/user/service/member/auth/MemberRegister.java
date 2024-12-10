@@ -1,13 +1,15 @@
 package com.damso.user.service.member.auth;
 
-import com.damso.domain.db.entity.member.Member;
-import com.damso.user.service.member.auth.command.SignupCommand;
-import com.damso.user.service.member.auth.command.SnsInfoCommand;
+import com.damso.core.constant.MemberSocialAccountType;
+import com.damso.user.service.member.auth.command.EmailSignupCommand;
+import com.damso.user.service.member.auth.command.SNSSignupCommand;
 
 public interface MemberRegister {
     void checkEmailDuplication(String email);
 
-    void signup(SignupCommand command);
+    void checkSNSDuplication(MemberSocialAccountType provider, String providerAccountId);
 
-    Member signup(SnsInfoCommand command);
+    void signup(EmailSignupCommand command);
+
+    void signup(SNSSignupCommand command);
 }
