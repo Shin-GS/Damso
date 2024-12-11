@@ -4,9 +4,12 @@ spring:
   application:
     name: user
   config:
+    activate:
+      on-profile: local
     import:
-      - 'application-core.yml'
-      - 'application-domain.yml'
+      - application-core.yml
+      - application-domain.yml
+      - optional:application-local.yml
   thymeleaf:
     cache: false
   security:
@@ -14,8 +17,8 @@ spring:
       client:
         registration:
           google:
-            client-id: YOUR_GOOGLE_CLIENT_ID
-            client-secret: YOUR_GOOGLE_CLIENT_SECRET
+            client-id: 844554796460-s7btovt5g6pbtf2btd4pvslnu7cqacdm.apps.googleusercontent.com
+            client-secret: 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
             scope:
               - email
               - profile

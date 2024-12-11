@@ -11,15 +11,10 @@ Sadmin/src/main/java/com/damso/admin/service/member/command/MemberModifyCommand.
 Sadmin/src/main/java/com/damso/admin/service/member/command/MemberSearchCommand.java,6\8\6823dd4af8f4f42fde8f962ac4cd51cf21911286
 Ö
 Uadmin/src/main/java/com/damso/admin/service/member/command/MemberRegisterCommand.java,7\b\7b89862010826f397ac19a82749d297875a73906
-9
-	README.md,8\e\8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
 r
 Badmin/src/main/java/com/damso/admin/controller/HomeController.java,a\3\a35fb598dfdcec1231a4d310b8dd789d5eb78b50
 {
 Kadmin/src/main/java/com/damso/admin/controller/member/MemberController.java,0\0\00d1885e3305e8af166c654f2d46b041ef79466f
-:
-
-.gitignore,a\5\a5cc2925ca8258af241be7e5b0381edf30266302
 n
 >admin/src/test/java/com/damso/admin/AdminApplicationTests.java,7\a\7a329b2c626ca57bd07668ba96768a1b15a2ead8
 \
@@ -38,8 +33,6 @@ C
 domain/build.gradle,a\3\a3021bb5ba623a461b5fdb89ae51923a4945c354
 Å
 Qdomain/src/main/java/com/damso/domain/db/entity/notification/NotificationLog.java,e\9\e9983471dc55e1fd214e2b81335b58be18907dec
-<
-build.gradle,f\0\f07866736216be0ee2aba49e392191aeae700a35
 Ö
 Udomain/src/main/java/com/damso/domain/db/entity/notification/NotificationChannel.java,2\8\287b141db679d7b58ac056ac5e199ea0ee9ed608
 }
@@ -70,8 +63,6 @@ x
 Hadmin/src/main/java/com/damso/admin/service/member/MemberEditorImpl.java,3\1\3178c780736d3de1708254371e119edd307776d2
 B
 admin/build.gradle,c\2\c2e8984bedaffd028745b7d87c1027c26e7cc6c1
-?
-settings.gradle,0\5\05efc8b1657769a27696d478ded1e95f38737233
 á
 Wdomain/src/main/java/com/damso/domain/db/repository/member/MemberRepositorySupport.java,8\5\8554c4c582fc6db99ab94559b1047ed0dba0f28a
 v
