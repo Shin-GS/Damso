@@ -171,6 +171,10 @@ fabric.properties
 # .idea/misc.xml
 # *.ipr
 
+## 로컬 설정
+*-local.yml
+/java_pid*
+
 # Sonarlint plugin
 # https://plugins.jetbrains.com/plugin/7973-sonarlint
 .idea/**/sonarlint/
