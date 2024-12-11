@@ -1,4 +1,4 @@
-package com.damso.user.filter;
+package com.damso.user.service.member.auth;
 
 import org.springframework.security.core.Authentication;
 

@@ -27,10 +27,10 @@
         <!-- SNS 로그인 -->
         <div class="social-login">
             <p>소셜 계정으로 로그인</p>
-            <button class="btn-social google" onclick="snsLogin('google')">Google 로그인</button>
-            <button class="btn-social x" onclick="snsLogin('x')">X 로그인</button>
-            <button class="btn-social instagram" onclick="snsLogin('instagram')">Instagram 로그인</button>
-            <button class="btn-social naver" onclick="snsLogin('naver')">Naver 로그인</button>
+            <a th:href="@{/oauth2/authorization/google}" class="btn-social google">Google 로그인</a>
+            <a th:href="@{/oauth2/authorization/x}" class="btn-social x">X 로그인</a>
+            <a th:href="@{/oauth2/authorization/instagram}" class="btn-social instagram">Instagram 로그인</a>
+            <a th:href="@{/oauth2/authorization/naver}" class="btn-social naver">네이버 로그인</a>
         </div>
 
         <!-- 회원가입 링크 -->
@@ -68,30 +68,6 @@
             })
             .catch(() => alert("네트워크 오류"));
     });
-
-    // SNS 로그인 처리
-    function snsLogin(provider) {
-        const snsToken = prompt(`${provider} 토큰을 입력하세요:`);
-        if (!snsToken) return;
-
-        fetchWithCredentials(`/api/login/sns/${provider}`, {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({snsToken})
-        })
-            .then(response => {
-                if (response.ok) {
-                    response.json().then(data => {
-                        localStorage.setItem("auth", data.result);
-                        alert(`${provider} 로그인 성공!`);
-                        window.location.href = "/";
-                    });
-                } else {
-                    response.json().then(err => alert(err.message || "SNS 로그인 실패"));
-                }
-            })
-            .catch(() => alert("네트워크 오류"));
-    }
 </script>
 </body>
 </html>

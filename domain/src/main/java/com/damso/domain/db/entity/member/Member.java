@@ -69,16 +69,16 @@ public class Member extends CommonTime {
         return member;
     }
 
-    public static Member ofSnsUser(String email,
-                                   String name,
-                                   MemberSocialAccountType provider,
-                                   String providerAccountId) {
+    public static Member ofSnsUser(MemberSocialAccountType provider,
+                                   String providerAccountId,
+                                   String email,
+                                   String name) {
         Member member = new Member();
+        member.linkSns(provider, providerAccountId);
         member.setEmail(email);
         member.setName(name);
         member.setRole(MemberRoleType.USER);
         member.setStatus(MemberStatusType.ACTIVE);
-        member.linkSns(provider, providerAccountId);
         return member;
     }
 

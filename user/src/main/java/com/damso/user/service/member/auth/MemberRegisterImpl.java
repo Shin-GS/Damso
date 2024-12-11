@@ -7,8 +7,8 @@ import com.damso.core.utils.crypto.CryptoUtil;
 import com.damso.domain.db.entity.member.Member;
 import com.damso.domain.db.repository.member.MemberRepository;
 import com.damso.domain.db.repository.member.MemberSocialAccountRepository;
+import com.damso.user.client.auth.OAuth2ClientImpl;
 import com.damso.user.service.member.auth.command.EmailSignupCommand;
-import com.damso.user.service.member.auth.command.SNSSignupCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +20,7 @@ public class MemberRegisterImpl implements MemberRegister {
     private final MemberRepository memberRepository;
     private final MemberSocialAccountRepository memberSocialAccountRepository;
     private final CryptoUtil cryptoUtil;
+    private final OAuth2ClientImpl oAuth2Client;
 
     @Override
     public void checkEmailDuplication(String email) {
@@ -36,23 +37,23 @@ public class MemberRegisterImpl implements MemberRegister {
     }
 
     @Override
-    public void signup(EmailSignupCommand command) {
+    public Long signup(EmailSignupCommand command) {
         checkEmailDuplication(command.email());
-        memberRepository.save(Member.ofEmailUser(
+        return memberRepository.save(Member.ofEmailUser(
                 command.email(),
                 command.name(),
                 cryptoUtil.hashPassword(command.password()))
-        );
+        ).getId();
     }
 
     @Override
-    public void signup(SNSSignupCommand command) {
-        checkSNSDuplication(command.provider(), command.providerAccountId());
-        memberRepository.save(Member.ofSnsUser(
-                command.email(),
-                command.name(),
-                command.provider(),
-                command.providerAccountId())
-        );
+    public Long signup(MemberSocialAccountType provider, String providerAccountId, String email, String name) {
+        checkSNSDuplication(provider, providerAccountId);
+        return memberRepository.save(Member.ofSnsUser(
+                provider,
+                providerAccountId,
+                email,
+                name)
+        ).getId();
     }
 }

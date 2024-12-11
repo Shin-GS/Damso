@@ -2,7 +2,8 @@ package com.damso.user.config;
 
 import com.damso.core.constant.MemberRoleType;
 import com.damso.user.filter.CustomAuthenticationFilter;
-import com.damso.user.filter.JwtTokenProvider;
+import com.damso.user.filter.OAuth2AuthenticationSuccessHandler;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -33,7 +34,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final CustomAuthenticationFilter customAuthenticationFilter;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -41,19 +42,15 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(corsCustomizer -> corsCustomizer.configurationSource(corsConfigurationSource()))
                 .formLogin(AbstractHttpConfigurer::disable)
-//                .formLogin(form -> form.loginPage("/login"))
-//                .oauth2Login(oauth2 -> oauth2
-//                        .loginPage("/login")
-//                        .successHandler((request, response, authentication) -> {
-//                            String token = jwtTokenProvider.generateToken(authentication);
-//                            response.setContentType("application/json");
-//                            response.getWriter().write("{\"token\":\"" + token + "\"}");
-//                        })
-//                        .failureHandler((request, response, exception) -> {
-//                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-//                            response.getWriter().write("SNS 인증 실패: " + exception.getMessage());
-//                        })
-//                )
+                .oauth2Login(oauth2 -> oauth2
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/", true)
+                        .successHandler(oAuth2AuthenticationSuccessHandler)
+                        .failureHandler((request, response, exception) -> {
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                            response.getWriter().write("SNS 인증 실패: " + exception.getMessage());
+                        })
+                )
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(customAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .headers(headersConfigurer -> headersConfigurer.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))

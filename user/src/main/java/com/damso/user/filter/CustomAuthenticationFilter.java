@@ -1,6 +1,7 @@
 package com.damso.user.filter;
 
 import com.damso.domain.cache.repository.auth.CacheAuthTokenRepository;
+import com.damso.user.service.member.auth.JwtTokenProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

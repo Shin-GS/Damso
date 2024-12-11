@@ -52,10 +52,10 @@
         <!-- SNS 회원가입 -->
         <div class="social-signup">
             <p>소셜 계정으로 회원가입</p>
-            <button class="btn-social google" onclick="snsSignup('google')">Google 회원가입</button>
-            <button class="btn-social x" onclick="snsSignup('x')">X 회원가입</button>
-            <button class="btn-social instagram" onclick="snsSignup('instagram')">Instagram 회원가입</button>
-            <button class="btn-social naver" onclick="snsSignup('naver')">Naver 회원가입</button>
+            <a th:href="@{/oauth2/authorization/google}" class="btn-social google">Google 회원가입</a>
+            <a th:href="@{/oauth2/authorization/x}" class="btn-social x">X 회원가입</a>
+            <a th:href="@{/oauth2/authorization/instagram}" class="btn-social instagram">Instagram 회원가입</a>
+            <a th:href="@{/oauth2/authorization/naver}" class="btn-social naver">네이버 회원가입</a>
         </div>
 
         <!-- 로그인 링크 -->
