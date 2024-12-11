@@ -35,7 +35,8 @@
             <!-- 비밀번호 확인 -->
             <div class="form-group">
                 <label for="confirm-password">비밀번호 확인</label>
-                <input type="password" id="confirm-password" name="confirmPassword" placeholder="비밀번호를 다시 입력하세요" required>
+                <input type="password" id="confirm-password" name="confirmPassword" placeholder="비밀번호를 다시 입력하세요"
+                       required>
                 <div id="confirm-password-error" class="error-message"></div>
             </div>
 
@@ -66,7 +67,9 @@
 
 <footer th:replace="fragments/footer :: footer"></footer>
 
-<script>
+<script type="module">
+    import {fetchWithCredentials} from '/script/customFetch.js';
+
     const emailVerifyButton = document.getElementById("email-verify-button");
     const signupButton = document.querySelector(".btn-signup");
     const passwordInput = document.getElementById("password");
@@ -97,7 +100,7 @@
         const snsToken = prompt(`${provider} 토큰을 입력하세요:`); // SNS 인증 토큰 입력
         if (!snsToken) return;
 
-        fetch(`/api/signup/sns/${provider}`, {
+        fetchWithCredentials(`/api/signup/sns/${provider}`, {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({snsToken})
@@ -135,7 +138,7 @@
         }
         clearErrorMessage("email");
 
-        fetch("/api/signup/email/check-email", {
+        fetchWithCredentials("/api/signup/email/check-email", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({email: emailInput.value})
@@ -187,7 +190,7 @@
         const formData = new FormData(this);
         const data = Object.fromEntries(formData);
 
-        fetch("/api/signup/email", {
+        fetchWithCredentials("/api/signup/email", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(data)

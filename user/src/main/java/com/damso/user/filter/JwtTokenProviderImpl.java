@@ -1,5 +1,9 @@
-package com.damso.user.service.member.auth;
+package com.damso.user.filter;
 
+import com.damso.core.response.error.ErrorCode;
+import com.damso.core.response.exception.BusinessException;
+import com.damso.domain.cache.entity.auth.CacheAuthToken;
+import com.damso.domain.cache.repository.auth.CacheAuthTokenRepository;
 import com.damso.domain.db.entity.member.Member;
 import com.damso.domain.db.repository.member.MemberRepository;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -7,7 +11,6 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import javax.crypto.SecretKey;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,22 +26,19 @@ import java.util.Map;
 @Slf4j
 @Component
 public class JwtTokenProviderImpl implements JwtTokenProvider {
-    private final SecretKey JWT_SIGNING_KEY;
+    private final SecretKey jwtSigningKey;
     private final long validityInMilliseconds;
+    private final long validityRefreshInMilliseconds;
     private final MemberRepository memberRepository;
+    private final CacheAuthTokenRepository cacheAuthTokenRepository;
 
-    public JwtTokenProviderImpl(MemberRepository memberRepository) {
-        this.JWT_SIGNING_KEY = Keys.hmacShaKeyFor(Decoders.BASE64.decode("kIq8c8q1MRjCxFg9FUEt+71FsDLF1xkvflGSw8UOYzA="));
-        this.validityInMilliseconds = 3600000;
+    public JwtTokenProviderImpl(MemberRepository memberRepository,
+                                CacheAuthTokenRepository cacheAuthTokenRepository) {
+        this.jwtSigningKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode("kIq8c8q1MRjCxFg9FUEt+71FsDLF1xkvflGSw8UOYzA="));
+        this.validityInMilliseconds = 86400000L;
+        this.validityRefreshInMilliseconds = 2419200000L;
         this.memberRepository = memberRepository;
-    }
-
-    @Override
-    public String extractToken(HttpServletRequest request) {
-        String authorizationToken = request.getHeader("Authorization");
-        return StringUtils.hasText(authorizationToken) && authorizationToken.startsWith("Bearer ")
-                ? authorizationToken.substring(7)
-                : null;
+        this.cacheAuthTokenRepository = cacheAuthTokenRepository;
     }
 
     @Override
@@ -48,7 +49,7 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
             }
 
             Jwts.parser()
-                    .verifyWith(JWT_SIGNING_KEY)
+                    .verifyWith(jwtSigningKey)
                     .build()
                     .parseSignedClaims(token)
                     .getPayload();
@@ -70,11 +71,9 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
     @Override
     public Authentication getAuthentication(String token) {
         try {
-            String memberIdString = getMemberId(token);
-            Long memberId = Long.valueOf(memberIdString);
-
+            Long memberId = Long.valueOf(getMemberId(token));
             return memberRepository.findById(memberId)
-                    .map(member -> new UsernamePasswordAuthenticationToken(member, member.getPassword()))
+                    .map(member -> new UsernamePasswordAuthenticationToken(member, null))
                     .orElse(null);
         } catch (Exception e) {
             log.error("Failed to get authentication from token", e);
@@ -84,7 +83,7 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
 
     private String getMemberId(String token) {
         return Jwts.parser()
-                .verifyWith(JWT_SIGNING_KEY)
+                .verifyWith(jwtSigningKey)
                 .build()
                 .parseSignedClaims(token)
                 .getPayload()
@@ -93,13 +92,22 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
     }
 
     @Override
-    public String generateToken(Authentication authentication) {
-        Member member = (Member) authentication.getPrincipal();
+    public String generateAccessToken(Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
+        CacheAuthToken cacheAuthToken = cacheAuthTokenRepository.save(CacheAuthToken.of(member.getId(),
+                generateToken(member, validityInMilliseconds),
+                generateToken(member, validityRefreshInMilliseconds),
+                LocalDateTime.now().plusWeeks(2)));
+        return cacheAuthToken.getAccessToken();
+    }
+
+    private String generateToken(Member member, long validityInMilliseconds) {
         Date now = new Date();
         return Jwts.builder()
                 .claims(createClaims(member))
                 .subject(String.valueOf(member.getId()))
-                .signWith(JWT_SIGNING_KEY)
+                .signWith(jwtSigningKey)
                 .issuedAt(now)
                 .expiration(new Date(now.getTime() + validityInMilliseconds))
                 .compact();

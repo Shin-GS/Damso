@@ -1,6 +1,8 @@
 package com.damso.user.config;
 
 import com.damso.core.constant.MemberRoleType;
+import com.damso.user.filter.CustomAuthenticationFilter;
+import com.damso.user.filter.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -30,8 +32,8 @@ import java.util.Set;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-//    private final CustomAuthenticationFilter customAuthenticationFilter;
-//    private final JwtTokenProvider jwtTokenProvider;
+    private final CustomAuthenticationFilter customAuthenticationFilter;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -53,11 +55,10 @@ public class SecurityConfig {
 //                        })
 //                )
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//                .addFilterBefore(customAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(customAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .headers(headersConfigurer -> headersConfigurer.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
                 .authorizeHttpRequests(SecurityConfig::getRequestMatchers)
                 .build();
-
     }
 
     @Bean
