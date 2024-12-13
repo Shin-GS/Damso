@@ -1,11 +1,11 @@
-package com.damso.user.filter;
+package com.damso.user.security.handler;
 
 import com.damso.core.constant.MemberSocialAccountType;
 import com.damso.domain.db.entity.member.MemberSocialAccount;
 import com.damso.domain.db.repository.member.MemberSocialAccountRepository;
 import com.damso.user.client.auth.OAuth2ClientImpl;
 import com.damso.user.client.auth.model.OAuth2Model;
-import com.damso.user.service.member.auth.JwtTokenProvider;
+import com.damso.user.security.token.JwtTokenProvider;
 import com.damso.user.service.member.auth.MemberRegister;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

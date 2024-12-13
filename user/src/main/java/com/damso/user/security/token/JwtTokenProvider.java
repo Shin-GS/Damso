@@ -1,4 +1,4 @@
-package com.damso.user.service.member.auth;
+package com.damso.user.security.token;
 
 import org.springframework.security.core.Authentication;
 

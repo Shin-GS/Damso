@@ -1,4 +1,4 @@
-package com.damso.user.filter;
+package com.damso.user.security;
 
 import com.damso.core.response.error.ErrorCode;
 import com.damso.core.response.exception.BusinessException;

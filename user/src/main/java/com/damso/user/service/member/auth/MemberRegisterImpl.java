@@ -7,7 +7,6 @@ import com.damso.core.utils.crypto.CryptoUtil;
 import com.damso.domain.db.entity.member.Member;
 import com.damso.domain.db.repository.member.MemberRepository;
 import com.damso.domain.db.repository.member.MemberSocialAccountRepository;
-import com.damso.user.client.auth.OAuth2ClientImpl;
 import com.damso.user.service.member.auth.command.EmailSignupCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,7 +19,6 @@ public class MemberRegisterImpl implements MemberRegister {
     private final MemberRepository memberRepository;
     private final MemberSocialAccountRepository memberSocialAccountRepository;
     private final CryptoUtil cryptoUtil;
-    private final OAuth2ClientImpl oAuth2Client;
 
     @Override
     public void checkEmailDuplication(String email) {

@@ -1,4 +1,4 @@
-package com.damso.user.service.member.auth;
+package com.damso.user.security.token;
 
 import com.damso.core.response.error.ErrorCode;
 import com.damso.core.response.exception.BusinessException;
@@ -6,6 +6,7 @@ import com.damso.domain.cache.entity.auth.CacheAuthToken;
 import com.damso.domain.cache.repository.auth.CacheAuthTokenRepository;
 import com.damso.domain.db.entity.member.Member;
 import com.damso.domain.db.repository.member.MemberRepository;
+import com.damso.user.security.model.SessionMember;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -73,7 +74,7 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
         try {
             Long memberId = Long.valueOf(getMemberId(token));
             return memberRepository.findById(memberId)
-                    .map(member -> new UsernamePasswordAuthenticationToken(member, null))
+                    .map(member -> new UsernamePasswordAuthenticationToken(new SessionMember(member), null))
                     .orElse(null);
         } catch (Exception e) {
             log.error("Failed to get authentication from token", e);

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/logout")
 @RequiredArgsConstructor
-public class LogoutController {
+public class LogoutApi {
     @PostMapping
     public SuccessResponse logout(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
         return SuccessResponse.of(SuccessCode.SUCCESS);
