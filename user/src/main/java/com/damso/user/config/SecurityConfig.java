@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -20,7 +21,9 @@ import org.springframework.security.config.annotation.web.configurers.HeadersCon
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -51,6 +54,7 @@ public class SecurityConfig {
                             response.getWriter().write("SNS 인증 실패: " + exception.getMessage());
                         })
                 )
+                .exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(unauthorizedEntryPoint()))
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(customAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .headers(headersConfigurer -> headersConfigurer.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
@@ -73,6 +77,11 @@ public class SecurityConfig {
     }
 
     private static void getRequestMatchers(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry request) {
+        Set<String> memberRolePatterns = Set.of(
+                "/member/**",
+                "/api/member/**"
+        );
+
         Set<String> userRolePatterns = Set.of(
         );
 
@@ -80,6 +89,7 @@ public class SecurityConfig {
         );
 
         request
+                .requestMatchers(memberRolePatterns.toArray(String[]::new)).hasAnyRole(MemberRoleType.USER.name(), MemberRoleType.CREATOR.name())
                 .requestMatchers(userRolePatterns.toArray(String[]::new)).hasAnyRole(MemberRoleType.USER.name())
                 .requestMatchers(creatorRolePatterns.toArray(String[]::new)).hasAnyRole(MemberRoleType.CREATOR.name())
                 .anyRequest().permitAll();
@@ -98,5 +108,10 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationEntryPoint unauthorizedEntryPoint() {
+        return new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED);
     }
 }
