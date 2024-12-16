@@ -15,6 +15,7 @@ import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -22,6 +23,7 @@ import javax.crypto.SecretKey;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -49,10 +51,12 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
                 return false;
             }
 
+            CacheAuthToken cacheAuthToken = cacheAuthTokenRepository.findByAccessToken(token)
+                    .orElseThrow(() -> new NullPointerException("Token not found in cache"));
             Jwts.parser()
                     .verifyWith(jwtSigningKey)
                     .build()
-                    .parseSignedClaims(token)
+                    .parseSignedClaims(cacheAuthToken.getAccessToken())
                     .getPayload();
             return true;
 
@@ -74,8 +78,13 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
         try {
             Long memberId = Long.valueOf(getMemberId(token));
             return memberRepository.findById(memberId)
-                    .map(member -> new UsernamePasswordAuthenticationToken(new SessionMember(member), null))
+                    .map(member -> new UsernamePasswordAuthenticationToken(
+                            new SessionMember(member),
+                            null,
+                            List.of(new SimpleGrantedAuthority(SessionMember.ROLE_PREFIX + member.getRole().name())))
+                    )
                     .orElse(null);
+
         } catch (Exception e) {
             log.error("Failed to get authentication from token", e);
             return null;

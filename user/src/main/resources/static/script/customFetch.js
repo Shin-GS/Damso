@@ -26,10 +26,17 @@ export function fetchWithCredentials(url, options = {}) {
     // Return fetch call with then/catch for promise handling
     return fetch(url, mergedOptions)
         .then((response) => {
+            // Remove invalid token
+            if (response.headers.get('Clear-Token') === 'true') {
+                console.warn("Invalid token detected. Removing token from local storage.");
+                localStorage.removeItem('auth');
+            }
+
             if (!response.ok) {
                 // Throw error for non-2xx status codes
                 return Promise.reject(new Error(`HTTP error! Status: ${response.status}`));
             }
+
             // Parse JSON response if applicable
             return response;
         })

@@ -41,30 +41,40 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
                 return;
             }
 
-            cacheAuthTokenRepository.findByAccessToken(authorizationHeader.substring(7))
-                    .ifPresent(cacheAuthToken -> {
-                        String token = cacheAuthToken.getAccessToken();
-                        if (StringUtils.hasText(token) && jwtTokenProvider.validate(token)) {
-                            Authentication authentication = jwtTokenProvider.getAuthentication(token);
+            String accessToken = authorizationHeader.substring(7);
+            if (jwtTokenProvider.validate(accessToken)) {
+                cacheAuthTokenRepository.findByAccessToken(accessToken)
+                        .ifPresent(cacheAuthToken -> {
+                            Authentication authentication = jwtTokenProvider.getAuthentication(cacheAuthToken.getAccessToken());
                             SecurityContextHolder.getContext().setAuthentication(authentication);
-                        }
-                    });
+                        });
+            } else {
+                setErrorResponse(HttpStatus.UNAUTHORIZED, response, "Invalid Token", true);
+                return;
+            }
 
             filterChain.doFilter(request, response);
 
         } catch (UsernameNotFoundException exception) {
-            setErrorResponse(HttpStatus.UNAUTHORIZED, response, exception);
+            setErrorResponse(HttpStatus.UNAUTHORIZED, response, exception.getMessage(), true);
         } catch (RuntimeException exception) {
-            setErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, response, exception);
+            setErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, response, exception.getMessage(), false);
         }
     }
 
-    private void setErrorResponse(HttpStatus httpStatus, HttpServletResponse response, Throwable throwable) throws IOException {
+    private void setErrorResponse(HttpStatus httpStatus,
+                                  HttpServletResponse response,
+                                  String message,
+                                  boolean isClearToken) throws IOException {
         response.setStatus(httpStatus.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
         Map<String, Object> result = new HashMap<>();
-        result.put("message", throwable.getMessage());
+        result.put("message", message);
+
+        if (isClearToken) {
+            response.addHeader("Clear-Token", "true");
+        }
 
         PrintWriter writer = response.getWriter();
         writer.print(objectMapper.writeValueAsString(result));

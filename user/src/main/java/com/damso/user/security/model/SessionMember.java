@@ -10,7 +10,7 @@ import java.util.List;
 
 @Getter
 public class SessionMember extends User {
-    private static final String ROLE_PREFIX = "ROLE_";
+    public static final String ROLE_PREFIX = "ROLE_";
     private final Long memberId;
     private final String name;
     private final String email;
@@ -18,7 +18,7 @@ public class SessionMember extends User {
     public SessionMember(Member member) {
         super(StringUtils.hasText(member.getEmail()) ? member.getEmail() : "",
                 StringUtils.hasText(member.getPassword()) ? member.getPassword() : "",
-                List.of(new SimpleGrantedAuthority(ROLE_PREFIX + member.getRole())));
+                List.of(new SimpleGrantedAuthority(ROLE_PREFIX + member.getRole().name())));
         this.memberId = member.getId();
         this.name = member.getName();
         this.email = member.getEmail();
