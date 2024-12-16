@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
         navMenu.classList.toggle('active');
     });
 
-    //auth 토큰 세팅
+    //url을 통해 auth 토큰 세팅
     const urlParams = new URLSearchParams(window.location.search);
     const auth = urlParams.get('auth');
     if (auth) {
@@ -19,13 +19,22 @@ document.addEventListener('DOMContentLoaded', function () {
         window.history.replaceState({}, document.title, cleanUrl);
     }
 
-    //회원정보 세팅
-    fetchWithCredentials('/api/member/info')
-        .then(response => response.json())
-        .then(data => {
-            console.log('Member Info:', data);
-        })
-        .catch(error => {
-            console.error('Error fetching member info:', error);
-        });
+    //api를 통해 회원정보 세팅
+    function fetchMemberInfo() {
+        const authToken = localStorage.getItem("auth");
+        if (!authToken) {
+            return;
+        }
+
+        fetchWithCredentials('/api/member/info')
+            .then(response => response.json())
+            .then(data => {
+                console.log('Member Info:', data);
+            })
+            .catch(error => {
+                console.error('Error fetching member info:', error);
+            });
+    }
+
+    fetchMemberInfo();
 });
