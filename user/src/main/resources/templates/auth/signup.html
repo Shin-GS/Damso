@@ -95,31 +95,6 @@
         errorElement.textContent = "";
     }
 
-    // SNS 회원가입 처리
-    function snsSignup(provider) {
-        const snsToken = prompt(`${provider} 토큰을 입력하세요:`); // SNS 인증 토큰 입력
-        if (!snsToken) return;
-
-        fetchWithCredentials(`/api/signup/sns/${provider}`, {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({snsToken})
-        })
-            .then(response => {
-                if (response.ok) {
-                    alert(`${provider} 회원가입 성공!`);
-                    window.location.href = "/login";
-                } else {
-                    response.json().then(err => {
-                        alert(err.message || "SNS 회원가입 실패");
-                    });
-                }
-            })
-            .catch(() => {
-                alert("네트워크 오류");
-            });
-    }
-
     // 이름 유효성 검사
     nameInput.addEventListener("input", function () {
         if (!namePattern.test(nameInput.value)) {
@@ -141,17 +116,25 @@
         fetchWithCredentials("/api/signup/email/check-email", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({email: emailInput.value})
+            body: {email: emailInput.value}
         }).then(response => {
-            if (response.ok) {
+            if (!response.ok) {
+                return response.json().then(error => {
+                    return Promise.reject(new Error(error.message || "중복된 이메일입니다."));
+                });
+            }
+
+            return response.json();
+        })
+            .then(data => {
                 emailVerified = true;
                 alert("사용 가능한 이메일입니다.");
-            } else {
+                enableSignup();
+            })
+            .catch((error) => {
                 emailVerified = false;
-                showErrorMessage("email", "중복된 이메일입니다.");
-            }
-            enableSignup();
-        });
+                showErrorMessage("email", error.message);
+            });
     });
 
     // 비밀번호 유효성 검사
@@ -193,17 +176,24 @@
         fetchWithCredentials("/api/signup/email", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(data)
+            body: data
         })
             .then(response => {
-                if (response.ok) {
-                    alert("회원가입 성공!");
-                    window.location.href = "/login";
-                } else {
-                    response.json().then(err => alert(err.message || "오류 발생"));
+                if (!response.ok) {
+                    return response.json().then(error => {
+                        return Promise.reject(new Error(error.message || "회원가입 실패"));
+                    });
                 }
+
+                return response.json();
             })
-            .catch(() => alert("네트워크 오류"));
+            .then(data => {
+                alert("회원가입 성공!");
+                localStorage.setItem("auth", data.result.auth);
+                localStorage.setItem("refresh", data.result.refresh);
+                window.location.href = "/";
+            })
+            .catch((error) => alert(error.message || "회원가입 실패"));
     });
 </script>
 </body>

@@ -20,7 +20,7 @@ public class CacheAuthToken implements Serializable {
     @Indexed
     private String refreshToken;
 
-    private LocalDateTime refreshTime;
+    private LocalDateTime lastRefreshTime;
 
     public static CacheAuthToken of(Long memberId,
                                     String accessToken,
@@ -30,13 +30,13 @@ public class CacheAuthToken implements Serializable {
         cacheAuthToken.memberId = memberId;
         cacheAuthToken.accessToken = accessToken;
         cacheAuthToken.refreshToken = refreshToken;
-        cacheAuthToken.refreshTime = refreshTime;
+        cacheAuthToken.lastRefreshTime = refreshTime;
         return cacheAuthToken;
     }
 
     public CacheAuthToken refresh(String accessToken) {
         this.accessToken = accessToken;
-        this.refreshTime = LocalDateTime.now();
+        this.lastRefreshTime = LocalDateTime.now();
         return this;
     }
 }

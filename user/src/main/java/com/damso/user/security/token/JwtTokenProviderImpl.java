@@ -1,5 +1,6 @@
 package com.damso.user.security.token;
 
+import com.damso.core.constant.AuthTokenStatus;
 import com.damso.core.response.error.ErrorCode;
 import com.damso.core.response.exception.BusinessException;
 import com.damso.domain.cache.entity.auth.CacheAuthToken;
@@ -7,6 +8,7 @@ import com.damso.domain.cache.repository.auth.CacheAuthTokenRepository;
 import com.damso.domain.db.entity.member.Member;
 import com.damso.domain.db.repository.member.MemberRepository;
 import com.damso.user.security.model.SessionMember;
+import com.damso.user.service.member.auth.model.MemberAuthModel;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -45,32 +47,31 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
     }
 
     @Override
-    public boolean validate(String token) {
+    public AuthTokenStatus validate(String token) {
         try {
             if (!StringUtils.hasText(token)) {
-                return false;
+                return AuthTokenStatus.EMPTY;
             }
 
-            CacheAuthToken cacheAuthToken = cacheAuthTokenRepository.findByAccessToken(token)
-                    .orElseThrow(() -> new NullPointerException("Token not found in cache"));
             Jwts.parser()
                     .verifyWith(jwtSigningKey)
                     .build()
-                    .parseSignedClaims(cacheAuthToken.getAccessToken())
+                    .parseSignedClaims(token)
                     .getPayload();
-            return true;
+            return AuthTokenStatus.NORMAL;
 
         } catch (ExpiredJwtException exception) {
             log.error("Token Expired");
+            return AuthTokenStatus.EXPIRED;
 
         } catch (JwtException exception) {
             log.error("Token Tampered");
+            return AuthTokenStatus.TAMPERED;
 
         } catch (NullPointerException exception) {
             log.error("Token is null");
+            return AuthTokenStatus.EMPTY;
         }
-
-        return false;
     }
 
     @Override
@@ -102,14 +103,28 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
     }
 
     @Override
-    public String generateAccessToken(Long memberId) {
+    public MemberAuthModel generateAccessToken(Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
-        CacheAuthToken cacheAuthToken = cacheAuthTokenRepository.save(CacheAuthToken.of(member.getId(),
-                generateToken(member, validityInMilliseconds),
-                generateToken(member, validityRefreshInMilliseconds),
-                LocalDateTime.now().plusWeeks(2)));
-        return cacheAuthToken.getAccessToken();
+        CacheAuthToken cacheAuthToken = cacheAuthTokenRepository.findById(memberId)
+                .orElse(CacheAuthToken.of(
+                        member.getId(),
+                        generateToken(member, validityInMilliseconds),
+                        generateToken(member, validityRefreshInMilliseconds),
+                        LocalDateTime.now().plusWeeks(2)));
+        cacheAuthTokenRepository.save(cacheAuthToken);
+        return MemberAuthModel.of(cacheAuthToken);
+    }
+
+    @Override
+    public MemberAuthModel refreshToken(String refreshToken) {
+        CacheAuthToken cacheAuthToken = cacheAuthTokenRepository.findByRefreshToken(refreshToken)
+                .orElseThrow(() -> new BusinessException(ErrorCode.REFRESH_TOKEN_NOT_FOUND));
+        Member member = memberRepository.findById(cacheAuthToken.getMemberId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
+        cacheAuthToken.refresh(generateToken(member, validityInMilliseconds));
+        cacheAuthTokenRepository.save(cacheAuthToken);
+        return MemberAuthModel.of(cacheAuthToken);
     }
 
     private String generateToken(Member member, long validityInMilliseconds) {
@@ -119,7 +134,7 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
                 .subject(String.valueOf(member.getId()))
                 .signWith(jwtSigningKey)
                 .issuedAt(now)
-                .expiration(new Date(now.getTime() + validityInMilliseconds))
+                .expiration(new Date(System.currentTimeMillis() + validityInMilliseconds))
                 .compact();
     }
 

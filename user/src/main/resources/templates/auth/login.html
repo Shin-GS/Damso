@@ -53,20 +53,24 @@
         fetchWithCredentials("/api/login/email", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(data)
+            body: data
         })
             .then(response => {
-                if (response.ok) {
-                    response.json().then(data => {
-                        localStorage.setItem("auth", data.result);
-                        alert("로그인 성공!");
-                        window.location.href = "/";
+                if (!response.ok) {
+                    return response.json().then(error => {
+                        return Promise.reject(new Error(error.message || "로그인 실패"));
                     });
-                } else {
-                    response.json().then(err => alert(err.message || "로그인 실패"));
                 }
+
+                return response.json();
             })
-            .catch(() => alert("네트워크 오류"));
+            .then(data => {
+                alert("로그인 성공!");
+                localStorage.setItem("auth", data.result.auth);
+                localStorage.setItem("refresh", data.result.refresh);
+                window.location.href = "/";
+            })
+            .catch((error) => alert(error.message || "로그인 실패"));
     });
 </script>
 </body>

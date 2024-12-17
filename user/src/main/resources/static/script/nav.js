@@ -8,11 +8,20 @@ document.addEventListener('DOMContentLoaded', function () {
         navMenu.classList.toggle('active');
     });
 
-    //url을 통해 auth 토큰 세팅
-    const urlParams = new URLSearchParams(window.location.search);
-    const auth = urlParams.get('auth');
-    if (auth) {
-        localStorage.setItem('auth', auth);
+    function fetchToken() {
+        const urlParams = new URLSearchParams(window.location.search);
+
+        //url을 통해 auth 토큰 세팅
+        const auth = urlParams.get('auth');
+        if (auth) {
+            localStorage.setItem('auth', auth);
+        }
+
+        //url을 통해 refresh 토큰 세팅
+        const refresh = urlParams.get('refresh');
+        if (refresh) {
+            localStorage.setItem('refresh', refresh);
+        }
 
         // URL에서 토큰 정보 제거
         const cleanUrl = window.location.origin + window.location.pathname;
@@ -36,5 +45,6 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 
+    fetchToken();
     fetchMemberInfo();
 });

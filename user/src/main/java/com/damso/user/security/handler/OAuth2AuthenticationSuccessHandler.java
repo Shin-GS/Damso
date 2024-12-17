@@ -7,6 +7,7 @@ import com.damso.user.client.auth.OAuth2ClientImpl;
 import com.damso.user.client.auth.model.OAuth2Model;
 import com.damso.user.security.token.JwtTokenProvider;
 import com.damso.user.service.member.auth.MemberRegister;
+import com.damso.user.service.member.auth.model.MemberAuthModel;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,6 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 
@@ -53,10 +53,11 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
 
         MemberSocialAccountType provider = extractProvider(oauth2Auth);
         OAuth2Model snsUser = oAuth2Client.getUser(provider, accessToken);
-        String authToken = memberSocialAccountRepository.findByProviderAndProviderAccountId(provider, snsUser.getProviderAccountId())
+        MemberAuthModel authModel = memberSocialAccountRepository.findByProviderAndProviderAccountId(provider, snsUser.getProviderAccountId())
                 .map(this::login)
                 .orElseGet(() -> register(provider, snsUser));
-        response.sendRedirect(StringUtils.hasText(authToken) ? REDIRECT_HOME + authToken : REDIRECT_ROOT);
+
+        response.sendRedirect(authModel != null ? REDIRECT_HOME + authModel.auth() + "&refresh=" + authModel.refresh() : REDIRECT_ROOT);
     }
 
     private MemberSocialAccountType extractProvider(OAuth2AuthenticationToken oauth2Auth) {
@@ -70,11 +71,11 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
         );
     }
 
-    private String login(MemberSocialAccount socialAccount) {
+    private MemberAuthModel login(MemberSocialAccount socialAccount) {
         return jwtTokenProvider.generateAccessToken(socialAccount.getMember().getId());
     }
 
-    private String register(MemberSocialAccountType provider, OAuth2Model snsUser) {
+    private MemberAuthModel register(MemberSocialAccountType provider, OAuth2Model snsUser) {
         Long memberId = memberRegister.signup(provider, snsUser.getProviderAccountId(), snsUser.getEmail(), snsUser.getName());
         return jwtTokenProvider.generateAccessToken(memberId);
     }

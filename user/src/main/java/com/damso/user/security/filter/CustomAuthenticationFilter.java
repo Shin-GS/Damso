@@ -1,5 +1,6 @@
 package com.damso.user.security.filter;
 
+import com.damso.core.constant.AuthTokenStatus;
 import com.damso.domain.cache.repository.auth.CacheAuthTokenRepository;
 import com.damso.user.security.token.JwtTokenProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -43,8 +44,9 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
                 return;
             }
 
-            if (!jwtTokenProvider.validate(accessToken)) {
-                setErrorResponse(HttpStatus.UNAUTHORIZED, response, "Invalid Token", true);
+            AuthTokenStatus tokenStatus = jwtTokenProvider.validate(accessToken);
+            if (!tokenStatus.equals(AuthTokenStatus.NORMAL)) {
+                setErrorResponse(HttpStatus.UNAUTHORIZED, response, "Invalid Token", tokenStatus);
                 return;
             }
 
@@ -52,9 +54,9 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
 
         } catch (UsernameNotFoundException exception) {
-            setErrorResponse(HttpStatus.UNAUTHORIZED, response, exception.getMessage(), true);
+            setErrorResponse(HttpStatus.UNAUTHORIZED, response, exception.getMessage(), AuthTokenStatus.EMPTY);
         } catch (RuntimeException exception) {
-            setErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, response, exception.getMessage(), false);
+            setErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, response, exception.getMessage(), AuthTokenStatus.EMPTY);
         }
     }
 
@@ -77,25 +79,26 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
 
                             // redis 캐시에는 토큰이 있지만 DB에는 토큰이 삭제된 경우
                             else {
-                                setErrorResponse(HttpStatus.UNAUTHORIZED, response, "Invalid Token", true);
+                                setErrorResponse(HttpStatus.UNAUTHORIZED, response, "Invalid Token", AuthTokenStatus.TAMPERED);
                             }
                         },
-                        () -> setErrorResponse(HttpStatus.UNAUTHORIZED, response, "Token Not Found", true)
+                        () -> setErrorResponse(HttpStatus.UNAUTHORIZED, response, "Token Not Found", AuthTokenStatus.EMPTY)
                 );
     }
 
     private void setErrorResponse(HttpStatus httpStatus,
                                   HttpServletResponse response,
                                   String message,
-                                  boolean isClearToken) {
+                                  AuthTokenStatus status) {
         response.setStatus(httpStatus.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
         Map<String, Object> result = new HashMap<>();
         result.put("message", message);
 
-        if (isClearToken) {
-            response.addHeader("Clear-Token", "true");
+        switch (status) {
+            case EXPIRED -> response.addHeader("refresh-Token", "true");
+            case TAMPERED, EMPTY -> response.addHeader("Clear-Token", "true");
         }
 
         try (PrintWriter writer = response.getWriter()) {

@@ -2,6 +2,7 @@ package com.damso.user.api.auth;
 
 import com.damso.core.response.success.SuccessCode;
 import com.damso.core.response.success.SuccessResponse;
+import com.damso.user.security.token.JwtTokenProvider;
 import com.damso.user.service.member.auth.MemberRegister;
 import com.damso.user.service.member.auth.command.EmailDuplicationCommand;
 import com.damso.user.service.member.auth.command.EmailSignupCommand;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/signup")
 @RequiredArgsConstructor
 public class SignupApi {
+    private final JwtTokenProvider jwtTokenProvider;
     private final MemberRegister memberRegister;
 
     @PostMapping("/email/check-email")
@@ -26,7 +28,7 @@ public class SignupApi {
 
     @PostMapping("/email")
     public SuccessResponse signup(@Valid @RequestBody EmailSignupCommand command) {
-        memberRegister.signup(command);
-        return SuccessResponse.of(SuccessCode.SUCCESS);
+        Long memberId = memberRegister.signup(command);
+        return SuccessResponse.of(SuccessCode.SUCCESS, jwtTokenProvider.generateAccessToken(memberId));
     }
 }

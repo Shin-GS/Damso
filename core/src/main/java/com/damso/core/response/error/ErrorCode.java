@@ -9,6 +9,11 @@ public enum ErrorCode {
     //I : 사용자의 입력 관련
     INVALID_INPUT_VALUE(400, "I001", "Invalid Input Value"),
 
+    //T : 사용자 토큰 관련
+    TOKEN_EXPIRED(400, "T001", "인증번호 유효기간이 만료되었습니다."),
+    REFRESH_TOKEN_NOT_FOUND(401, "T002", "Refresh Token Not Found"),
+    REFRESH_TOKEN_INVALID(401, "T003", "Refresh Token is invalid"),
+
     //D : DB 관련
     ENTITY_NOT_FOUND(400, "D001", "entity not found"),
     MEMBER_NOT_FOUND(400, "D002", "존재하지 않는 회원입니다."),
