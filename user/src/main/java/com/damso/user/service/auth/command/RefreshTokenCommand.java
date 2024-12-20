@@ -1,4 +1,4 @@
-package com.damso.user.service.member.auth.command;
+package com.damso.user.service.auth.command;
 
 import jakarta.validation.constraints.NotBlank;
 

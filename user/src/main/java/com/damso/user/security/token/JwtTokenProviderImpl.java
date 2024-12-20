@@ -8,7 +8,7 @@ import com.damso.domain.cache.repository.auth.CacheAuthTokenRepository;
 import com.damso.domain.db.entity.member.Member;
 import com.damso.domain.db.repository.member.MemberRepository;
 import com.damso.user.security.model.SessionMember;
-import com.damso.user.service.member.auth.model.MemberAuthModel;
+import com.damso.user.service.auth.model.MemberAuthModel;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;

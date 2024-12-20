@@ -1,4 +1,4 @@
-package com.damso.user.service.member.auth;
+package com.damso.user.service.auth;
 
 import com.damso.core.constant.MemberSocialAccountType;
 import com.damso.core.response.error.ErrorCode;
@@ -7,7 +7,7 @@ import com.damso.core.utils.crypto.CryptoUtil;
 import com.damso.domain.db.entity.member.Member;
 import com.damso.domain.db.repository.member.MemberRepository;
 import com.damso.domain.db.repository.member.MemberSocialAccountRepository;
-import com.damso.user.service.member.auth.command.EmailSignupCommand;
+import com.damso.user.service.auth.command.EmailSignupCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

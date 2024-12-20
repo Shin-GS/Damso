@@ -1,4 +1,4 @@
-package com.damso.user.service.member.auth.model;
+package com.damso.user.service.auth.model;
 
 import com.damso.domain.cache.entity.auth.CacheAuthToken;
 

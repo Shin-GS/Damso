@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        fetchWithCredentials('/api/member/info')
+        fetchWithCredentials('/api/member/refresh-info')
             .then(response => response.json())
             .then(data => {
                 console.log('Member Info:', data);

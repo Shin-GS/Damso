@@ -1,7 +1,7 @@
-package com.damso.user.service.member.auth;
+package com.damso.user.service.auth;
 
 import com.damso.core.constant.MemberSocialAccountType;
-import com.damso.user.service.member.auth.command.EmailSignupCommand;
+import com.damso.user.service.auth.command.EmailSignupCommand;
 
 public interface MemberRegister {
     void checkEmailDuplication(String email);
