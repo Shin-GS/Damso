@@ -1,4 +1,4 @@
-import { fetchWithCredentials } from "./customFetch.js";
+import {fetchWithCredentials} from "./customFetch.js";
 
 document.addEventListener('DOMContentLoaded', function () {
     const navMenu = document.querySelector('.nav-menu');
@@ -62,6 +62,50 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(error => {
                 console.error('Error fetching member info:', error);
             });
+    }
+
+    // 로그아웃 처리
+    function handleLogout() {
+        const authToken = localStorage.getItem('auth');
+        if (!authToken) {
+            window.location.href = '/';
+            return;
+        }
+
+        fetchWithCredentials("/api/logout", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"}
+        })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(error => {
+                        return Promise.reject(new Error(error.message || "로그아웃 실패"));
+                    });
+                }
+                return response.json();
+            })
+            .then(() => {
+                localStorage.removeItem('auth');
+                localStorage.removeItem('refresh');
+                window.location.href = '/'; // 홈 화면으로 이동
+            })
+            .catch((error) => {
+                console.error('Error during logout:', error);
+
+                // 로그아웃 실패 시에도 토큰 제거 및 홈으로 이동
+                localStorage.removeItem('auth');
+                localStorage.removeItem('refresh');
+                window.location.href = '/';
+            });
+    }
+
+    // 로그아웃 버튼 이벤트 추가
+    const logoutButton = userSubmenu.querySelector('#logout');
+    if (logoutButton) {
+        logoutButton.addEventListener('click', function (event) {
+            event.preventDefault(); // 기본 동작 막기
+            handleLogout();
+        });
     }
 
     // 초기화 함수 호출
