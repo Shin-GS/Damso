@@ -8,6 +8,8 @@
     border-bottom: 1px solid #ddd;
     position: relative;
     gap: 20px; /* 그리드 간격 */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 10;
 }
 
 /* 타이틀 스타일 */
@@ -16,12 +18,18 @@
 }
 
 .nav-container .nav-title a {
-    font-size: 2.2em;
+    font-size: 2.4em;
     font-weight: 700;
     color: #007BFF;
     text-transform: uppercase;
     letter-spacing: 1px;
     white-space: nowrap;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.nav-container .nav-title a:hover {
+    color: #0056b3;
 }
 
 /* 검색창 스타일 */
@@ -32,22 +40,22 @@
 }
 
 .nav-container .search-bar input[type="text"] {
-    padding: 8px 12px;
+    padding: 10px 15px;
     border: 1px solid #ccc;
     border-radius: 4px 0 0 4px;
     outline: none;
     font-size: 1em;
     width: 300px;
-    transition: box-shadow 0.3s ease;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
 .nav-container .search-bar input[type="text"]:focus {
     border-color: #007BFF;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
 }
 
 .nav-container .search-bar button.search-icon {
-    padding: 8px 12px;
+    padding: 10px 15px;
     border: 1px solid #007BFF;
     background-color: #007BFF;
     color: white;
@@ -55,6 +63,10 @@
     cursor: pointer;
     font-size: 1.2em;
     transition: background-color 0.3s ease;
+}
+
+.nav-container .search-bar button.search-icon:hover {
+    background-color: #0056b3;
 }
 
 .nav-container .search-bar button.search-icon i {
@@ -70,6 +82,11 @@
     font-size: 2em;
     color: #007BFF;
     justify-self: end;
+    transition: color 0.3s ease;
+}
+
+.nav-container .hamburger-menu:hover {
+    color: #0056b3;
 }
 
 .nav-container .hamburger-menu i {
@@ -82,6 +99,11 @@
     justify-content: flex-end;
     gap: 20px;
     justify-self: end;
+    align-items: center;
+}
+
+.nav-container .nav-menu li {
+    list-style: none;
 }
 
 .nav-container .nav-menu li a {
@@ -91,11 +113,72 @@
     padding: 10px 15px;
     border-radius: 4px;
     transition: background-color 0.3s ease, color 0.3s ease;
+    text-decoration: none;
 }
 
 .nav-container .nav-menu li a:hover {
     background-color: #f0f0f0;
     color: #007BFF;
+}
+
+/* 사용자 정보 스타일 */
+.nav-container #user-info {
+    display: none;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+    cursor: pointer;
+}
+
+.nav-container #user-info img {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: 1px solid #ddd;
+    object-fit: cover;
+}
+
+.nav-container #user-info span {
+    font-size: 1.2em;
+    font-weight: 500;
+    color: #333;
+}
+
+.nav-container #user-info .user-submenu {
+    display: none;
+    position: absolute;
+    top: 50px;
+    right: 0;
+    background: #fff;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 10px;
+    min-width: 150px;
+    z-index: 10;
+}
+
+.nav-container #user-info .user-submenu li {
+    list-style: none;
+    padding: 10px;
+}
+
+.nav-container #user-info .user-submenu li a {
+    text-decoration: none;
+    color: #333;
+    font-size: 1em;
+    transition: color 0.3s ease, background-color 0.3s ease;
+    display: block;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+.nav-container #user-info .user-submenu li a:hover {
+    background-color: #007BFF;
+    color: #fff;
+}
+
+.nav-container #user-info:hover .user-submenu {
+    display: block;
 }
 
 /* 햄버거 메뉴 모달 상태 스타일 */
@@ -136,19 +219,43 @@
 /* 반응형 디자인 */
 /* 480px 이하 */
 @media (max-width: 480px) {
-    .nav-container .nav-title a {
-        font-size: 1.8em;
+    .nav-container {
+        grid-template-columns: auto auto auto;
     }
 
-    .nav-container .search-bar input[type="text"] {
+    .nav-container .nav-title {
         display: none;
     }
 
-    .nav-container .hamburger-menu {
-        display: block;
+    .nav-container .search-bar {
+        display: none;
     }
 
     .nav-container .nav-menu {
+        justify-content: space-between;
+        gap: 0;
+    }
+
+    .nav-container .nav-menu li a {
+        font-size: 0;
+        padding: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .nav-container .nav-menu li a:before {
+        content: attr(data-icon);
+        font-family: "FontAwesome";
+        font-size: 1.5em;
+        color: #333;
+    }
+
+    .nav-container #user-info {
+        display: flex;
+    }
+
+    .nav-container #user-info span {
         display: none;
     }
 }
@@ -170,12 +277,18 @@
     .nav-container .nav-menu {
         display: none;
     }
+
+    .nav-container #user-info .user-submenu {
+        top: 40px;
+        right: 10px;
+        min-width: 100%;
+    }
 }
 
 /* 769px 이상 */
 @media (min-width: 769px) {
     .nav-container .nav-title a {
-        font-size: 2.2em;
+        font-size: 2.4em;
     }
 
     .nav-container .hamburger-menu {

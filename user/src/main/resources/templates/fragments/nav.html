@@ -24,9 +24,19 @@
     <ul class="nav-menu">
         <li><a th:href="@{/categories}">카테고리</a></li>
         <li><a th:href="@{/creators/popular}">인기 크리에이터</a></li>
-        <li><a th:href="@{/subscriptions}">내 구독</a></li>
-        <li><a th:href="@{/login}">로그인</a></li>
+
+        <li id="login-button"><a th:href="@{/login}">로그인</a></li>
+        <li id="user-info" style="display: none; position: relative;">
+            <img id="profile-picture" src="" alt="프로필 사진" style="width: 30px; height: 30px; border-radius: 50%;">
+            <span id="user-name"></span>
+            <ul class="user-submenu" style="display: none; position: absolute; top: 40px; right: 0; background: white; box-shadow: 0px 2px 5px rgba(0,0,0,0.2); border-radius: 4px; padding: 10px;">
+                <li><a th:href="@{/subscriptions}">내 구독</a></li>
+                <li><a th:href="@{/notifications}">알림</a></li>
+                <li><a th:href="@{/payment-methods}">결제방법 관리</a></li>
+                <li><a th:href="@{/messages}">메시지</a></li>
+                <li><a th:href="@{/settings}">설정</a></li>
+                <li><a th:href="@{/logout}">로그아웃</a></li>
+            </ul>
+        </li>
     </ul>
 </nav>
-</body>
-</html>
