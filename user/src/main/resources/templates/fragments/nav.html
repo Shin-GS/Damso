@@ -11,25 +11,25 @@
     <div class="search-bar">
         <input type="text" placeholder="크리에이터 검색">
         <button class="search-icon">
-            <i class="fas fa-search"></i> <!-- 망원경 모양 검색 아이콘 -->
+            <i class="fas fa-search"></i>
         </button>
     </div>
 
-    <!-- 햄버거 메뉴 버튼 -->
-    <button class="hamburger-menu" aria-label="Toggle Menu">
-        <i class="fas fa-bars"></i> <!-- 파란색 햄버거 메뉴 아이콘 -->
-    </button>
-
     <!-- 네비게이션 메뉴 -->
     <ul class="nav-menu">
-        <li><a th:href="@{/categories}">카테고리</a></li>
-        <li><a th:href="@{/creators/popular}">인기 크리에이터</a></li>
-
-        <li id="login-button"><a th:href="@{/login}">로그인</a></li>
+        <li>
+            <a th:href="@{/categories}" data-icon="📂">카테고리</a>
+        </li>
+        <li>
+            <a th:href="@{/creators/popular}" data-icon="⭐">인기 크리에이터</a>
+        </li>
+        <li id="login-button">
+            <a th:href="@{/login}" data-icon="🔑">로그인</a>
+        </li>
         <li id="user-info" style="display: none; position: relative;">
-            <img id="profile-picture" src="" alt="프로필 사진" style="width: 30px; height: 30px; border-radius: 50%;">
+            <img id="profile-picture" src="" alt="프로필 사진">
             <span id="user-name"></span>
-            <ul class="user-submenu" style="display: none; position: absolute; top: 40px; right: 0; background: white; box-shadow: 0px 2px 5px rgba(0,0,0,0.2); border-radius: 4px; padding: 10px;">
+            <ul class="user-submenu">
                 <li><a th:href="@{/subscriptions}">내 구독</a></li>
                 <li><a th:href="@{/notifications}">알림</a></li>
                 <li><a th:href="@{/payment-methods}">결제방법 관리</a></li>

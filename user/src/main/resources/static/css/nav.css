@@ -7,34 +7,26 @@
     padding: 15px 20px;
     border-bottom: 1px solid #ddd;
     position: relative;
-    gap: 20px; /* 그리드 간격 */
+    gap: 20px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     z-index: 10;
 }
 
-/* 타이틀 스타일 */
-.nav-container .nav-title {
-    justify-self: start;
-}
-
+/* 타이틀 */
 .nav-container .nav-title a {
     font-size: 2.4em;
     font-weight: 700;
     color: #007BFF;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    white-space: nowrap;
     text-decoration: none;
-    transition: color 0.3s ease;
 }
 
 .nav-container .nav-title a:hover {
     color: #0056b3;
 }
 
-/* 검색창 스타일 */
+/* 검색창 */
 .nav-container .search-bar {
-    justify-self: center;
     display: flex;
     align-items: center;
 }
@@ -61,59 +53,27 @@
     color: white;
     border-radius: 0 4px 4px 0;
     cursor: pointer;
-    font-size: 1.2em;
-    transition: background-color 0.3s ease;
-}
-
-.nav-container .search-bar button.search-icon:hover {
-    background-color: #0056b3;
 }
 
 .nav-container .search-bar button.search-icon i {
     font-size: 1.2em;
 }
 
-/* 햄버거 메뉴 스타일 */
-.nav-container .hamburger-menu {
-    display: none; /* 기본적으로 숨김 */
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 2em;
-    color: #007BFF;
-    justify-self: end;
-    transition: color 0.3s ease;
-}
-
-.nav-container .hamburger-menu:hover {
-    color: #0056b3;
-}
-
-.nav-container .hamburger-menu i {
-    font-size: 2em;
-}
-
-/* 네비게이션 메뉴 스타일 */
+/* 네비게이션 메뉴 */
 .nav-container .nav-menu {
     display: flex;
-    justify-content: flex-end;
     gap: 20px;
-    justify-self: end;
     align-items: center;
-}
-
-.nav-container .nav-menu li {
-    list-style: none;
 }
 
 .nav-container .nav-menu li a {
     font-size: 1.2em;
-    font-weight: 500;
-    color: #333;
-    padding: 10px 15px;
-    border-radius: 4px;
-    transition: background-color 0.3s ease, color 0.3s ease;
     text-decoration: none;
+}
+
+/* 네비게이션 메뉴: 호버 효과 */
+.nav-container .nav-menu li a {
+    transition: color 0.3s ease, background-color 0.3s ease;
 }
 
 .nav-container .nav-menu li a:hover {
@@ -121,9 +81,9 @@
     color: #007BFF;
 }
 
-/* 사용자 정보 스타일 */
+/* 사용자 정보 (드롭다운) */
 .nav-container #user-info {
-    display: none;
+    display: flex;
     align-items: center;
     gap: 10px;
     position: relative;
@@ -144,32 +104,31 @@
     color: #333;
 }
 
+/* 드롭다운 메뉴 */
 .nav-container #user-info .user-submenu {
     display: none;
     position: absolute;
-    top: 50px;
+    top: 100%;
     right: 0;
     background: #fff;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    padding: 10px;
-    min-width: 150px;
-    z-index: 10;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    z-index: 1000;
 }
 
 .nav-container #user-info .user-submenu li {
     list-style: none;
-    padding: 10px;
+    margin: 0;
 }
 
 .nav-container #user-info .user-submenu li a {
     text-decoration: none;
     color: #333;
     font-size: 1em;
-    transition: color 0.3s ease, background-color 0.3s ease;
     display: block;
-    padding: 5px 10px;
-    border-radius: 4px;
+    padding: 10px 15px;
+    transition: color 0.3s ease, background-color 0.3s ease;
 }
 
 .nav-container #user-info .user-submenu li a:hover {
@@ -181,121 +140,46 @@
     display: block;
 }
 
-/* 햄버거 메뉴 모달 상태 스타일 */
-.nav-container .nav-menu.active {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%; /* 100% 너비 */
-    height: 100%; /* 화면 전체를 덮음 */
-    background-color: rgba(0, 0, 0, 0.8); /* 반투명 배경 */
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-    z-index: 1000;
-    padding: 0;
-}
-
-.nav-container .nav-menu.active li {
-    width: 100%; /* 메뉴 항목이 100% 너비 */
-    text-align: center;
-}
-
-.nav-container .nav-menu.active li a {
-    font-size: 1.5em;
-    padding: 15px 0;
-    background-color: #ffffff;
-    color: #333;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    display: block;
-}
-
-.nav-container .nav-menu.active li a:hover {
-    background-color: #007BFF;
-    color: white;
-}
-
 /* 반응형 디자인 */
-/* 480px 이하 */
-@media (max-width: 480px) {
+@media (max-width: 768px) {
     .nav-container {
         grid-template-columns: auto auto auto;
-    }
-
-    .nav-container .nav-title {
-        display: none;
-    }
-
-    .nav-container .search-bar {
-        display: none;
-    }
-
-    .nav-container .nav-menu {
-        justify-content: space-between;
-        gap: 0;
-    }
-
-    .nav-container .nav-menu li a {
-        font-size: 0;
-        padding: 10px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .nav-container .nav-menu li a:before {
-        content: attr(data-icon);
-        font-family: "FontAwesome";
-        font-size: 1.5em;
-        color: #333;
-    }
-
-    .nav-container #user-info {
-        display: flex;
-    }
-
-    .nav-container #user-info span {
-        display: none;
-    }
-}
-
-/* 481px ~ 768px */
-@media (min-width: 481px) and (max-width: 768px) {
-    .nav-container .nav-title a {
-        font-size: 2em;
     }
 
     .nav-container .search-bar input[type="text"] {
         display: none;
     }
 
-    .nav-container .hamburger-menu {
-        display: block;
+    .nav-container .search-bar button.search-icon {
+        font-size: 1.5em;
     }
 
     .nav-container .nav-menu {
-        display: none;
+        flex-direction: row;
+        justify-content: flex-end;
+        gap: 10px;
     }
 
-    .nav-container #user-info .user-submenu {
-        top: 40px;
-        right: 10px;
-        min-width: 100%;
-    }
-}
-
-/* 769px 이상 */
-@media (min-width: 769px) {
-    .nav-container .nav-title a {
-        font-size: 2.4em;
-    }
-
-    .nav-container .hamburger-menu {
-        display: none;
-    }
-
-    .nav-container .nav-menu {
+    .nav-container .nav-menu li a {
+        font-size: 0;
         display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        background: #f9f9f9;
+        border-radius: 50%;
+        transition: background-color 0.3s ease;
+    }
+
+    .nav-container .nav-menu li a:hover {
+        background-color: #007BFF;
+        color: white;
+    }
+
+    .nav-container .nav-menu li a:before {
+        content: attr(data-icon);
+        font-size: 1.5em;
+        color: #333;
     }
 }
