@@ -1,9 +1,9 @@
 package com.damso.user.api.auth;
 
+import com.damso.auth.service.CustomAuthenticationManager;
+import com.damso.auth.service.JwtTokenProvider;
 import com.damso.core.response.success.SuccessCode;
 import com.damso.core.response.success.SuccessResponse;
-import com.damso.user.security.CustomAuthenticationManager;
-import com.damso.user.security.token.JwtTokenProvider;
 import com.damso.user.service.auth.command.EmailLoginCommand;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

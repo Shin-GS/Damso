@@ -1,7 +1,7 @@
-package com.damso.user.security.token;
+package com.damso.auth.service;
 
+import com.damso.auth.service.model.MemberAuthModel;
 import com.damso.core.constant.AuthTokenStatus;
-import com.damso.user.service.auth.model.MemberAuthModel;
 import org.springframework.security.core.Authentication;
 
 public interface JwtTokenProvider {

@@ -1,5 +1,7 @@
-package com.damso.user.security.token;
+package com.damso.auth.service;
 
+import com.damso.auth.service.model.MemberAuthModel;
+import com.damso.auth.session.SessionMember;
 import com.damso.core.constant.AuthTokenStatus;
 import com.damso.core.response.error.ErrorCode;
 import com.damso.core.response.exception.BusinessException;
@@ -7,8 +9,6 @@ import com.damso.domain.cache.entity.auth.CacheAuthToken;
 import com.damso.domain.cache.repository.auth.CacheAuthTokenRepository;
 import com.damso.domain.db.entity.member.Member;
 import com.damso.domain.db.repository.member.MemberRepository;
-import com.damso.user.security.model.SessionMember;
-import com.damso.user.service.auth.model.MemberAuthModel;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;

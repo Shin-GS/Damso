@@ -1,4 +1,4 @@
-package com.damso.user.security.model;
+package com.damso.auth.session;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 

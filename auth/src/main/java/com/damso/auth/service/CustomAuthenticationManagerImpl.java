@@ -1,4 +1,4 @@
-package com.damso.user.security;
+package com.damso.auth.service;
 
 import com.damso.core.response.error.ErrorCode;
 import com.damso.core.response.exception.BusinessException;

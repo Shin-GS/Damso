@@ -1,8 +1,8 @@
-package com.damso.user.security.filter;
+package com.damso.auth.filter;
 
+import com.damso.auth.service.JwtTokenProvider;
 import com.damso.core.constant.AuthTokenStatus;
 import com.damso.domain.cache.repository.auth.CacheAuthTokenRepository;
-import com.damso.user.security.token.JwtTokenProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -96,9 +96,10 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
         Map<String, Object> result = new HashMap<>();
         result.put("message", message);
 
-        switch (status) {
-            case EXPIRED -> response.addHeader("refresh-Token", "true");
-            case TAMPERED, EMPTY -> response.addHeader("Clear-Token", "true");
+        if (status.equals(AuthTokenStatus.EXPIRED)) {
+            response.addHeader("refresh-Token", "true");
+        } else if (status.equals(AuthTokenStatus.TAMPERED) || status.equals(AuthTokenStatus.EMPTY)) {
+            response.addHeader("Clear-Token", "true");
         }
 
         try (PrintWriter writer = response.getWriter()) {

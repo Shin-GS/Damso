@@ -8,6 +8,7 @@ spring:
   config:
     import:
       - 'application-core.yml'
+      - 'application-auth.yml'
       - 'application-domain.yml'
   thymeleaf:
     cache: false

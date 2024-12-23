@@ -7,8 +7,8 @@ spring:
     name: admin
   config:
     import:
-      - application-core.yml
-      - application-domain.yml
-      - optional:application-local.yml
+      - 'application-core.yml'
+      - 'application-auth.yml'
+      - 'application-domain.yml'
   thymeleaf:
     cache: false

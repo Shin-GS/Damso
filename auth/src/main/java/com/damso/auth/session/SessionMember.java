@@ -1,4 +1,4 @@
-package com.damso.user.security.model;
+package com.damso.auth.session;
 
 import com.damso.domain.db.entity.member.Member;
 import lombok.Getter;
@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 public class SessionMember extends User {
@@ -25,11 +26,32 @@ public class SessionMember extends User {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!super.equals(o) || (getClass() != o.getClass())) {
+            return false;
+        }
+
+        SessionMember sessionMember = (SessionMember) o;
+        return Objects.equals(this.memberId, sessionMember.memberId) &&
+                Objects.equals(this.name, sessionMember.name) &&
+                Objects.equals(this.email, sessionMember.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), this.memberId, this.name, this.email);
+    }
+
+    @Override
     public String toString() {
         return "SessionMember{" +
-                "memberId=" + memberId +
-                ", name=" + name +
-                ", email=" + email +
+                "memberId=" + this.memberId +
+                ", name='" + this.name +
+                ", email='" + this.email +
                 '}';
     }
 }
