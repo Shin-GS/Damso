@@ -23,6 +23,7 @@ public enum ErrorCode {
     MEMBER_SNS_DUPLICATED(400, "B002", "중복된 SNS 계정입니다."),
     OAUTH_INFO_NOT_VALID(400, "B003", "OAuth 정보가 유효하지 않습니다."),
     PASSWORD_NOT_MATCHED(400, "B004", "비밀번호가 일치하지 않습니다."),
+    MEMBER_NOT_ACTIVE(400, "B005", "탈퇴 혹은 차단된 회원입니다."),
 
     //S : 서버에러
     INTERNAL_SERVER_ERROR(500, "S001", "internal server error");

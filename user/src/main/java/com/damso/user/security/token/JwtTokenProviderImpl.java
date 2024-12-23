@@ -106,6 +106,10 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
     public MemberAuthModel generateAccessToken(Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
+        if (!member.isActive()) {
+            throw new BusinessException(ErrorCode.MEMBER_NOT_ACTIVE);
+        }
+
         CacheAuthToken cacheAuthToken = cacheAuthTokenRepository.findById(memberId)
                 .orElse(CacheAuthToken.of(
                         member.getId(),
