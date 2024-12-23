@@ -22,11 +22,11 @@ public class MemberEditorImpl implements MemberEditor {
             throw new BusinessException(ErrorCode.MEMBER_EMAIL_DUPLICATED);
         }
 
-        memberRepository.save(new Member(
-                command.email(),
-                command.name(),
-                command.role())
-        );
+//        memberRepository.save(new Member(
+//                command.email(),
+//                command.name(),
+//                command.role())
+//        );
     }
 
     @Override
@@ -38,9 +38,9 @@ public class MemberEditorImpl implements MemberEditor {
             throw new BusinessException(ErrorCode.MEMBER_EMAIL_DUPLICATED);
         }
 
-        member.update(command.email(),
-                command.name(),
-                command.role(),
-                command.status());
+//        member.update(command.email(),
+//                command.name(),
+//                command.role(),
+//                command.status());
     }
 }

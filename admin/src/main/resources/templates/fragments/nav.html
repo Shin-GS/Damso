@@ -1,22 +1,22 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<div th:fragment="fragment-nav">
-    <nav>
-        <ul>
-            <li>
-                <a href="#">회원</a>
-                <ul>
-                    <li><a th:href="@{/members}" th:text="'회원 리스트'">회원 리스트 검색</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">알림</a>
-                <ul>
-                    <li><a th:href="@{/notifications}" th:text="'알림 리스트'">알림 리스트 검색</a></li>
-                    <li><a th:href="@{/notifications/logs}" th:text="'알림 로그 리스트'">알림 로그 검색</a></li>
-                </ul>
-            </li>
-        </ul>
-    </nav>
-</div>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<nav th:fragment="nav" class="admin-nav-container">
+    <div class="admin-nav-title">
+        <a th:href="@{/}">담소 관리자</a>
+    </div>
+
+    <ul class="admin-nav-menu">
+        <li>
+            <a th:href="@{/members}" data-icon="👥">회원 관리</a>
+        </li>
+        <li>
+            <a th:href="@{/admins}" data-icon="🔐">관리자 권한 관리</a>
+        </li>
+        <li>
+            <a th:href="@{/logout}" data-icon="🚪">로그아웃</a>
+        </li>
+    </ul>
+</nav>
+</body>
 </html>

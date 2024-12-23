@@ -86,4 +86,8 @@ public class Member extends CommonTime {
     public boolean isActive() {
         return this.status.equals(MemberStatusType.ACTIVE);
     }
+
+    public boolean isAdmin() {
+        return this.role.equals(MemberRoleType.ADMIN);
+    }
 }

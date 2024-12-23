@@ -13,6 +13,7 @@ public enum ErrorCode {
     TOKEN_EXPIRED(400, "T001", "인증번호 유효기간이 만료되었습니다."),
     REFRESH_TOKEN_NOT_FOUND(401, "T002", "Refresh Token Not Found"),
     REFRESH_TOKEN_INVALID(401, "T003", "Refresh Token is invalid"),
+    ACCESS_DENIED(403, "T004", "잘못된 접근입니다."),
 
     //D : DB 관련
     ENTITY_NOT_FOUND(400, "D001", "entity not found"),

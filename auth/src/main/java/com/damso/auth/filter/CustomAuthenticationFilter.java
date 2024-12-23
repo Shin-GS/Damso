@@ -10,14 +10,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -38,7 +36,7 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
         try {
-            String accessToken = extractAccessToken(request);
+            String accessToken = jwtTokenProvider.extractToken(request);
             if (accessToken == null) {
                 filterChain.doFilter(request, response);
                 return;
@@ -58,14 +56,6 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
         } catch (RuntimeException exception) {
             setErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, response, exception.getMessage(), AuthTokenStatus.EMPTY);
         }
-    }
-
-    private String extractAccessToken(HttpServletRequest request) {
-        String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (StringUtils.hasText(authorizationHeader) && authorizationHeader.startsWith("Bearer ")) {
-            return authorizationHeader.substring(7);
-        }
-        return null;
     }
 
     private void authenticateToken(String accessToken, HttpServletResponse response) {

@@ -14,7 +14,9 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -44,6 +46,14 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
         this.validityRefreshInMilliseconds = 2419200000L;
         this.memberRepository = memberRepository;
         this.cacheAuthTokenRepository = cacheAuthTokenRepository;
+    }
+
+    @Override
+    public String extractToken(HttpServletRequest request) {
+        String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        return (StringUtils.hasText(authorizationHeader) && authorizationHeader.startsWith("Bearer ")) ?
+                authorizationHeader.substring(7) :
+                null;
     }
 
     @Override

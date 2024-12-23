@@ -1,15 +1,17 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <div th:replace="/fragments/header.html :: fragment-header"></div>
-    </head>
-<body>
-    <div th:replace="/fragments/nav.html :: fragment-nav"></div>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: head">
+    <title>담소 - 어드민</title>
+</head>
+<body class="index-page">
+<!-- Header -->
+<header th:replace="fragments/header :: header"></header>
 
-    <div class="jumbotron jumbotron-fluid">
-        Home
-    </div>
+<!-- Main Content -->
+<main>
+</main>
 
-    <footer th:replace="/fragments/footer.html :: fragment-footer"></footer>
+<!-- Footer -->
+<footer th:replace="fragments/footer :: footer"></footer>
 </body>
 </html>
