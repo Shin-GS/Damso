@@ -1,10 +1,4 @@
 HELP.md
-.gradle
-build/
-!gradle/wrapper/gradle-wrapper.jar
-!**/src/main/**
-!**/src/test/**
-**/generated/**
 bin/
 files/
 *.pb
@@ -20,11 +14,28 @@ files/
 .sts4-cache
 
 ### IntelliJ IDEA ###
-.idea
-*.iws
+.idea/
 *.iml
-*.ipr
+*.iws
 out/
+
+## Gradle ##
+.gradle/
+build/
+!gradle-wrapper.jar
+!**/src/main/**
+!**/src/test/**
+**/generated/**
+.gradle/cache/
+.gradle/daemon/
+.gradle/workspace/
+.gradle/buildOutputCleanup/
+!gradlew
+!gradlew.bat
+
+## Spring Boot ##
+logs/
+*.log
 
 ### NetBeans ###
 /nbproject/private/
@@ -35,9 +46,6 @@ out/
 
 ### VS Code ###
 .vscode/
-
-###로그
-*.log
 
 ## 로컬 설정
 *-local.yml
