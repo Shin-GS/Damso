@@ -7,6 +7,8 @@ build/
 **/generated/**
 bin/
 files/
+*.pb
+*.xml
 
 ### STS ###
 .apt_generated
