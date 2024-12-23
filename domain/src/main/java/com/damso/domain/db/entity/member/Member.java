@@ -14,48 +14,36 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "Member")
+@Table(name = "MEMBER")
 @Getter
 @Setter
 @NoArgsConstructor
 public class Member extends CommonTime {
     @Id
-    @Column(name = "member_id")
+    @Column(name = "MEMBER_NO")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "member_email", unique = true, nullable = false)
+    @Column(name = "EMAIL", unique = true, nullable = false)
     @Convert(converter = EmailConverter.class)
     private String email;
 
-    @Column(name = "member_name", nullable = false)
+    @Column(name = "NAME", nullable = false)
     private String name;
 
-    @Column(name = "member_password")
+    @Column(name = "PASSWORD")
     private String password;
 
-    @Column(name = "member_role", nullable = false)
+    @Column(name = "ROLE", nullable = false)
     @Enumerated(EnumType.STRING)
     private MemberRoleType role;
 
-    @Column(name = "member_status", nullable = false)
+    @Column(name = "STATUS", nullable = false)
     @Enumerated(EnumType.STRING)
     private MemberStatusType status;
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<MemberSocialAccount> socialAccounts = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<MemberNotificationSetting> notificationSettings = new LinkedHashSet<>();
-
-    public Member(String email,
-                  String name,
-                  MemberRoleType role) {
-        this.email = email;
-        this.name = name;
-        this.role = role;
-        this.status = MemberStatusType.ACTIVE;
-    }
 
     public static Member ofEmailUser(String email,
                                      String name,
@@ -82,16 +70,6 @@ public class Member extends CommonTime {
         return member;
     }
 
-    public void update(String email,
-                       String name,
-                       MemberRoleType role,
-                       MemberStatusType status) {
-        this.email = email;
-        this.name = name;
-        this.role = role;
-        this.status = status;
-    }
-
     private void linkSns(MemberSocialAccountType provider,
                          String providerAccountId) {
         if (this.socialAccounts.stream()
@@ -103,9 +81,5 @@ public class Member extends CommonTime {
         this.socialAccounts.add(MemberSocialAccount.of(this,
                 provider,
                 providerAccountId));
-    }
-
-    public boolean isActive() {
-        return this.status == MemberStatusType.ACTIVE;
     }
 }

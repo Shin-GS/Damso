@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "MemberSocialAccount",
+@Table(name = "MEMBER_SOCIAL_ACCOUNT",
         uniqueConstraints = @UniqueConstraint(
-                columnNames = {"social_provider", "social_account"}
+                columnNames = {"SOCIAL_TYPE", "SOCIAL_ID"}
         )
 )
 @Getter
@@ -19,19 +19,19 @@ import lombok.Setter;
 @NoArgsConstructor
 public class MemberSocialAccount extends CommonTime {
     @Id
-    @Column(name = "member_social_account_id")
+    @Column(name = "MEMBER_SOCIAL_ACCOUNT_NO")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "member_id", nullable = false)
+    @JoinColumn(name = "MEMBER_NO", nullable = false)
     private Member member;
 
-    @Column(name = "social_provider", nullable = false)
+    @Column(name = "SOCIAL_TYPE", nullable = false)
     @Enumerated(value = EnumType.STRING)
     private MemberSocialAccountType provider;
 
-    @Column(name = "social_account", nullable = false)
+    @Column(name = "SOCIAL_ID", nullable = false)
     @Convert(converter = PrivacyConverter.class)
     private String providerAccountId;
 
