@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <div th:replace="/fragments/header.html :: fragment-header"></div>
+    <div th:replace="/fragments/header.html :: head"></div>
     <script type="text/javascript" src="/script/member/list.js"></script>
     <script type="text/javascript" src="/script/member/add.js"></script>
     <script type="text/javascript" src="/script/member/edit.js"></script>
 </head>
 <body>
-<div th:replace="/fragments/nav.html :: fragment-nav"></div>
+<div th:replace="/fragments/nav.html :: nav"></div>
 
 <div class="jumbotron jumbotron-fluid">
     <h1>Member List</h1>
@@ -115,6 +115,6 @@
     </div>
 </div>
 
-<footer th:replace="/fragments/footer.html :: fragment-footer"></footer>
+<footer th:replace="/fragments/footer.html :: footer"></footer>
 </body>
 </html>

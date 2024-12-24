@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/header :: head(additionalCss='/css/index.css')">
+<head th:replace="fragments/common :: head(additionalCss='/css/index.css')">
     <title>담소 - 홈</title>
 </head>
 <body class="index-page">
 <!-- Header -->
-<header th:replace="fragments/header :: header"></header>
+<header th:replace="fragments/common :: header"></header>
 
 <!-- Main Content -->
 <main>
@@ -62,6 +62,6 @@
 </main>
 
 <!-- Footer -->
-<footer th:replace="fragments/footer :: footer"></footer>
+<footer th:replace="fragments/common :: footer"></footer>
 </body>
 </html>
