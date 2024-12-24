@@ -1,9 +1,9 @@
-package com.damso.user.api.auth;
+package com.damso.admin.api.auth;
 
 import com.damso.auth.service.JwtTokenProvider;
+import com.damso.auth.service.command.RefreshTokenCommand;
 import com.damso.core.response.success.SuccessCode;
 import com.damso.core.response.success.SuccessResponse;
-import com.damso.auth.service.command.RefreshTokenCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;

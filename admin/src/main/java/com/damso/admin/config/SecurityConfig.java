@@ -65,12 +65,10 @@ public class SecurityConfig {
 
     private static void getRequestMatchers(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry request) {
         Set<String> permitAllPattern = Set.of(
-                "/login",
                 "/api/auth/**"
         );
 
         Set<String> adminPattern = Set.of(
-                "/",
                 "/api/**"
         );
 
