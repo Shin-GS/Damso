@@ -113,7 +113,7 @@
         }
         clearErrorMessage("email");
 
-        fetchWithCredentials("/api/signup/email/check-email", {
+        fetchWithCredentials("/api/auth/signup/email/check-email", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: {email: emailInput.value}
@@ -173,7 +173,7 @@
         const formData = new FormData(this);
         const data = Object.fromEntries(formData);
 
-        fetchWithCredentials("/api/signup/email", {
+        fetchWithCredentials("/api/auth/signup/email", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: data

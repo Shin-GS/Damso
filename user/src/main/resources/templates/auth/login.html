@@ -50,7 +50,7 @@
         const formData = new FormData(this);
         const data = Object.fromEntries(formData);
 
-        fetchWithCredentials("/api/login/email", {
+        fetchWithCredentials("/api/auth/login/email", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: data

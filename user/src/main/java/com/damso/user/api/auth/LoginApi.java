@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/login")
+@RequestMapping("/api/auth/login")
 @RequiredArgsConstructor
 public class LoginApi {
     private final JwtTokenProvider jwtTokenProvider;

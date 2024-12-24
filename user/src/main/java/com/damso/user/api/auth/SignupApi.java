@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/signup")
+@RequestMapping("/api/auth/signup")
 @RequiredArgsConstructor
 public class SignupApi {
     private final JwtTokenProvider jwtTokenProvider;

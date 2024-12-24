@@ -26,7 +26,7 @@ export function fetchWithCredentials(url, options = {}) {
 
     // Function to refresh token
     const refreshToken = () => {
-        return fetch('/api/auth/refresh', {
+        return fetch('/api/auth/refresh-token', {
             credentials: 'include',
             method: 'PUT',
             headers: {'Content-Type': 'application/json'},

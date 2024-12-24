@@ -1,4 +1,4 @@
-package com.damso.user.api.auth;
+package com.damso.admin.api.auth;
 
 import com.damso.core.response.success.SuccessCode;
 import com.damso.core.response.success.SuccessResponse;
