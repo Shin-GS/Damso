@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // URL에서 auth 및 refresh 토큰 가져오기 및 저장
-    function fetchToken() {
+    function fetchTokens() {
         const urlParams = new URLSearchParams(window.location.search);
 
         // auth 토큰 저장
@@ -34,13 +34,13 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // API 호출로 사용자 정보 가져오기
-    function fetchMemberInfo() {
+    function fetchRefreshInfo() {
         const authToken = localStorage.getItem("auth");
         if (!authToken) {
             return;
         }
 
-        fetchWithCredentials('/api/member/refresh-info')
+        fetchWithCredentials('/api/auth/refresh-info')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Failed to fetch member info');
@@ -108,6 +108,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // 초기화 함수 호출
-    fetchToken();
-    fetchMemberInfo();
+    fetchTokens();
+    fetchRefreshInfo();
 });

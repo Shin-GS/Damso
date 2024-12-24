@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/members")
 @RequiredArgsConstructor
-public class MemberApi {
+public class MemberListApi {
     private final MemberFinder memberFinder;
     private final MemberEditor memberEditor;
 
