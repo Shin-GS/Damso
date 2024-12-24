@@ -1,4 +1,4 @@
-package com.damso.admin.service.auth;
+package com.damso.admin.service.auth.model;
 
 import com.damso.domain.db.entity.member.Member;
 
