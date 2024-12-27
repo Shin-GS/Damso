@@ -4,6 +4,7 @@
     <title>회원가입</title>
 </head>
 <body class="signup-page">
+
 <!-- Header -->
 <header th:replace="fragments/layout :: header"></header>
 
@@ -11,11 +12,14 @@
 <main>
     <section class="signup-container">
         <h2>회원가입</h2>
+
+        <!-- 회원가입 폼 -->
         <form id="signup-form"
               hx-post="/api/auth/signup/email"
               hx-target="body"
               hx-swap="innerHTML"
               hx-on::after-request="handleSignup(event)">
+
             <!-- 이름 입력 -->
             <div class="form-group">
                 <label for="name">이름</label>
@@ -24,17 +28,10 @@
             </div>
 
             <!-- 이메일 입력 및 중복 확인 -->
-            <div class="form-group">
+            <div class="form-group email-group">
                 <label for="email">이메일</label>
                 <input type="email" id="email" name="email" placeholder="이메일을 입력하세요" required>
-                <button type="button" class="btn-verify"
-                        hx-post="/api/auth/signup/email/check-email"
-                        hx-trigger="click"
-                        hx-target="#email-error"
-                        hx-ext="json-enc"
-                        hx-include="#email">
-                    중복확인
-                </button>
+                <button type="button" class="btn-verify" onclick="checkEmail()">중복확인</button>
                 <div id="email-error" class="error-message"></div>
             </div>
 
@@ -48,8 +45,8 @@
             <!-- 비밀번호 확인 -->
             <div class="form-group">
                 <label for="confirm-password">비밀번호 확인</label>
-                <input type="password" id="confirm-password" name="confirmPassword" placeholder="비밀번호를 다시 입력하세요"
-                       required>
+                <input type="password" id="confirm-password" name="confirmPassword"
+                       placeholder="비밀번호를 다시 입력하세요" required>
                 <div id="confirm-password-error" class="error-message"></div>
             </div>
 
@@ -61,7 +58,7 @@
             </div>
 
             <!-- 회원가입 버튼 -->
-            <button type="submit" class="btn-signup">회원가입</button>
+            <button type="submit" class="btn-signup" disabled>회원가입</button>
         </form>
 
         <!-- SNS 회원가입 -->
@@ -83,28 +80,87 @@
 <!-- Footer -->
 <footer th:replace="fragments/layout :: footer"></footer>
 
-<script type="module">
-    document.body.addEventListener('htmx:configRequest', function (event) {
-        if (event.detail.path === "/api/auth/signup/email/check-email") {
-            const emailInput = document.getElementById('email').value;
-            event.detail.headers['Content-Type'] = 'application/json';
-            event.detail.body = JSON.stringify({email: emailInput});
-            delete event.detail.parameters;
+<!-- JavaScript -->
+<script>
+    const signupButton = document.querySelector(".btn-signup");
+    const passwordInput = document.getElementById("password");
+    const confirmPasswordInput = document.getElementById("confirm-password");
+    const nameInput = document.getElementById("name");
+    const emailInput = document.getElementById("email");
+
+    let emailVerified = false;
+
+    // 정규식 패턴
+    const patterns = {
+        name: /^[a-zA-Z가-힣]{2,50}(-[a-zA-Z가-힣]{2,50})?$/,
+        email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+        password: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,64}$/
+    };
+
+    // 에러 메시지 출력
+    function showErrorMessage(inputId, message) {
+        const errorElement = document.getElementById(`${inputId}-error`);
+        errorElement.textContent = message;
+    }
+
+    function clearErrorMessage(inputId) {
+        const errorElement = document.getElementById(`${inputId}-error`);
+        errorElement.textContent = "";
+    }
+
+    // 회원가입 버튼 활성화 조건
+    function enableSignup() {
+        const validName = patterns.name.test(nameInput.value);
+        const validEmail = patterns.email.test(emailInput.value);
+        const validPassword = patterns.password.test(passwordInput.value);
+        const passwordsMatch = passwordInput.value === confirmPasswordInput.value;
+
+        signupButton.disabled = !(validName && validEmail && validPassword && passwordsMatch && emailVerified);
+    }
+
+    // 필드 변경 시 유효성 검사 실행 (이벤트 리스너 추가)
+    [nameInput, emailInput, passwordInput, confirmPasswordInput].forEach(input => {
+        input.addEventListener("input", enableSignup);
+    });
+
+    // 비밀번호 확인 일치 여부 확인
+    confirmPasswordInput.addEventListener("input", () => {
+        if (passwordInput.value !== confirmPasswordInput.value) {
+            showErrorMessage("confirm-password", "비밀번호가 일치하지 않습니다.");
+        } else {
+            clearErrorMessage("confirm-password");
         }
+        enableSignup();
     });
 
-    document.body.addEventListener('htmx:responseError', function (evt) {
-        alert(evt.detail.error || '오류가 발생했습니다.');
-    });
+    // 이메일 중복 체크
+    function checkEmail() {
+        fetch("/api/auth/signup/email/check-email", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({email: emailInput.value})
+        })
+            .then(response => response.ok ? response.json() : Promise.reject(response.json()))
+            .then(() => {
+                emailVerified = true;
+                clearErrorMessage("email");
+                alert("사용 가능한 이메일입니다!");
+                enableSignup();
+            })
+            .catch(error => {
+                emailVerified = false;
+                error.then(data => showErrorMessage("email", data.message || "중복된 이메일입니다."));
+            });
+    }
 
+    // 폼 제출 후 처리
     function handleSignup(event) {
+        console.log("dfasdfa");
+
         const response = JSON.parse(event.detail.xhr.responseText);
         if (!event.detail.successful) {
             response.error.forEach(err => {
-                const errorField = document.getElementById(`${err.field}-error`);
-                if (errorField) {
-                    errorField.innerText = err.reason;
-                }
+                showErrorMessage(err.field, err.reason);
             });
             return;
         }
@@ -115,5 +171,6 @@
         }
     }
 </script>
+
 </body>
 </html>
