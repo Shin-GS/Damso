@@ -16,16 +16,14 @@ import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor
-@Transactional
 public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+    private static final String REDIRECT_HOME = "/";
     private static final String REDIRECT_LOGIN_ERROR = "/login?error";
-
     private final OAuth2AuthorizedClientService oAuth2AuthorizedClientService;
     private final MemberSocialAccountRepository memberSocialAccountRepository;
     private final JwtTokenProvider jwtTokenProvider;
@@ -36,14 +34,11 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
     public void onAuthenticationSuccess(HttpServletRequest request,
                                         HttpServletResponse response,
                                         Authentication authentication) throws IOException {
-        if (authentication instanceof OAuth2AuthenticationToken oauth2Auth) {
-            handleOAuth2Authentication(response, oauth2Auth);
-        } else {
+        if (!(authentication instanceof OAuth2AuthenticationToken oauth2Auth)) {
             response.sendRedirect(REDIRECT_LOGIN_ERROR);
+            return;
         }
-    }
 
-    private void handleOAuth2Authentication(HttpServletResponse response, OAuth2AuthenticationToken oauth2Auth) {
         String accessToken = fetchAuthorizedClient(oauth2Auth)
                 .getAccessToken()
                 .getTokenValue();

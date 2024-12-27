@@ -50,6 +50,8 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
                 jwtTokenProvider.refreshJwtCookie(response, refreshToken);
             }
 
+            filterChain.doFilter(request, response);
+
         } catch (RuntimeException exception) {
             jwtTokenProvider.deleteJwtCookie(response);
         }

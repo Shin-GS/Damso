@@ -25,7 +25,7 @@ public class AuthApi {
     private final RefreshInfoFetcher refreshInfoFetcher;
 
     @PostMapping("/login/email")
-    public SuccessResponse loginWithEmail(@Valid @RequestBody EmailLoginCommand command,
+    public SuccessResponse loginWithEmail(@Valid @ModelAttribute EmailLoginCommand command,
                                           HttpServletResponse response) {
         Long memberId = customAuthenticationManager.authenticateNotAdmin(command.email(), command.password());
         jwtTokenProvider.generateJwtCookie(response, memberId);

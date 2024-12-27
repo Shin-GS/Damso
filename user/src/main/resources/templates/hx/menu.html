@@ -1,0 +1,39 @@
+<ul th:fragment="guest-menu" class="nav-menu" xmlns:hx-on="http://www.w3.org/1999/xhtml">
+    <li>
+        <a th:href="@{/categories}" data-icon="📂">카테고리</a>
+    </li>
+    <li>
+        <a th:href="@{/creators/popular}" data-icon="⭐">인기 크리에이터</a>
+    </li>
+
+    <li>
+        <a th:href="@{/login}" data-icon="🔑">로그인</a>
+    </li>
+</ul>
+
+<ul th:fragment="user-menu" class="nav-menu">
+    <li>
+        <a th:href="@{/categories}" data-icon="📂">카테고리</a>
+    </li>
+    <li>
+        <a th:href="@{/creators/popular}" data-icon="⭐">인기 크리에이터</a>
+    </li>
+
+    <li class="user-info">
+        <img src="/favicon.ico" alt="프로필 사진">
+        <span th:text="${username}"></span>
+
+        <ul class="user-submenu" style="display: none;">
+            <li><a th:href="@{/subscriptions}">내 구독</a></li>
+            <li><a th:href="@{/notifications}">알림</a></li>
+            <li><a th:href="@{/settings}">설정</a></li>
+            <li><a href="#"
+                   hx-post="/api/auth/logout"
+                   hx-trigger="click"
+                   hx-swap="none"
+                   hx-on::after-request="window.location.reload()">
+                로그아웃
+            </a></li>
+        </ul>
+    </li>
+</ul>

@@ -22,6 +22,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.crypto.SecretKey;
@@ -30,6 +31,7 @@ import java.util.*;
 
 @Slf4j
 @Component
+@Transactional
 public class JwtTokenProviderImpl implements JwtTokenProvider {
     private final SecretKey jwtSigningKey;
     private final long validityInMilliseconds;
@@ -135,7 +137,7 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
 
         // cookie setting
         response.addCookie(createCookie(AuthTokenType.AUTH, savedCacheAuthToken.getAccessToken(), 2419200));
-        response.addCookie(createCookie(AuthTokenType.REFRESH, savedCacheAuthToken.getAccessToken(), 2419200));
+        response.addCookie(createCookie(AuthTokenType.REFRESH, savedCacheAuthToken.getRefreshToken(), 2419200));
     }
 
     @Override
@@ -150,7 +152,7 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
 
         // cookie setting
         response.addCookie(createCookie(AuthTokenType.AUTH, savedCacheAuthToken.getAccessToken(), 2419200));
-        response.addCookie(createCookie(AuthTokenType.REFRESH, savedCacheAuthToken.getAccessToken(), 2419200));
+        response.addCookie(createCookie(AuthTokenType.REFRESH, savedCacheAuthToken.getRefreshToken(), 2419200));
     }
 
     private String generateToken(Member member, long validityInMilliseconds) {
@@ -179,6 +181,7 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
         cookie.setSecure(true);
         cookie.setPath("/");
         cookie.setMaxAge(maxAge);
+        cookie.setAttribute("SameSite", "None");
         return cookie;
     }
 

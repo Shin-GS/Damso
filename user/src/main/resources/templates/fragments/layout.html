@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head th:fragment="head">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="${pageTitle}">담소</title>
     <link rel="stylesheet" href="/css/layout.css">
     <link rel="stylesheet" href="/css/nav.css">
+
+    <script src="https://unpkg.com/htmx.org@2.0.4"></script>
     <script type="module" src="/script/nav.js"></script>
 
     <th:block th:if="${additionalCss}">
@@ -23,36 +25,17 @@
 
         <!-- 검색창 -->
         <div class="search-bar">
-            <input type="text" placeholder="크리에이터 검색">
+            <label>
+                <input type="text" placeholder="크리에이터 검색">
+            </label>
             <button class="search-icon">
                 <i class="fas fa-search"></i>
             </button>
         </div>
 
         <!-- 네비게이션 메뉴 -->
-        <ul class="nav-menu">
-            <li>
-                <a th:href="@{/categories}" data-icon="📂">카테고리</a>
-            </li>
-            <li>
-                <a th:href="@{/creators/popular}" data-icon="⭐">인기 크리에이터</a>
-            </li>
-            <li id="login-button">
-                <a th:href="@{/login}" data-icon="🔑">로그인</a>
-            </li>
-            <li id="user-info" style="display: none; position: relative;">
-                <img id="profile-picture" src="" alt="프로필 사진">
-                <span id="user-name"></span>
-                <ul class="user-submenu">
-                    <li><a th:href="@{/subscriptions}">내 구독</a></li>
-                    <li><a th:href="@{/notifications}">알림</a></li>
-                    <li><a th:href="@{/payment-methods}">결제방법 관리</a></li>
-                    <li><a th:href="@{/messages}">메시지</a></li>
-                    <li><a th:href="@{/settings}">설정</a></li>
-                    <li><a id="logout">로그아웃</a></li>
-                </ul>
-            </li>
-        </ul>
+        <ul id="nav-menu" class="nav-menu"></ul>
+        <div hidden="hidden" hx-get="/hx/menu" hx-trigger="load" hx-target="#nav-menu" hx-swap="outerHTML"></div>
     </nav>
 </header>
 
