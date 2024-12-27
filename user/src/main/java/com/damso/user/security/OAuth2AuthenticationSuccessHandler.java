@@ -1,7 +1,6 @@
 package com.damso.user.security;
 
 import com.damso.auth.service.JwtTokenProvider;
-import com.damso.auth.service.model.MemberAuthModel;
 import com.damso.core.constant.MemberSocialAccountType;
 import com.damso.domain.db.entity.member.MemberSocialAccount;
 import com.damso.domain.db.repository.member.MemberSocialAccountRepository;
@@ -25,9 +24,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @Transactional
 public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccessHandler {
-    private static final String REDIRECT_HOME = "/?auth=";
     private static final String REDIRECT_LOGIN_ERROR = "/login?error";
-    private static final String REDIRECT_ROOT = "/";
 
     private final OAuth2AuthorizedClientService oAuth2AuthorizedClientService;
     private final MemberSocialAccountRepository memberSocialAccountRepository;
@@ -46,18 +43,18 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
         }
     }
 
-    private void handleOAuth2Authentication(HttpServletResponse response, OAuth2AuthenticationToken oauth2Auth) throws IOException {
+    private void handleOAuth2Authentication(HttpServletResponse response, OAuth2AuthenticationToken oauth2Auth) {
         String accessToken = fetchAuthorizedClient(oauth2Auth)
                 .getAccessToken()
                 .getTokenValue();
 
         MemberSocialAccountType provider = extractProvider(oauth2Auth);
         OAuth2Model snsUser = oAuth2Client.getUser(provider, accessToken);
-        MemberAuthModel authModel = memberSocialAccountRepository.findByProviderAndProviderAccountId(provider, snsUser.getProviderAccountId())
-                .map(this::login)
-                .orElseGet(() -> register(provider, snsUser));
-
-        response.sendRedirect(authModel != null ? REDIRECT_HOME + authModel.auth() + "&refresh=" + authModel.refresh() : REDIRECT_ROOT);
+        memberSocialAccountRepository.findByProviderAndProviderAccountId(provider, snsUser.getProviderAccountId())
+                .ifPresentOrElse(
+                        memberSocial -> this.login(response, memberSocial),
+                        () -> this.register(response, provider, snsUser)
+                );
     }
 
     private MemberSocialAccountType extractProvider(OAuth2AuthenticationToken oauth2Auth) {
@@ -71,12 +68,15 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
         );
     }
 
-    private MemberAuthModel login(MemberSocialAccount socialAccount) {
-        return jwtTokenProvider.generateAccessToken(socialAccount.getMember().getId());
+    private void login(HttpServletResponse response,
+                       MemberSocialAccount socialAccount) {
+        jwtTokenProvider.generateJwtCookie(response, socialAccount.getMember().getId());
     }
 
-    private MemberAuthModel register(MemberSocialAccountType provider, OAuth2Model snsUser) {
+    private void register(HttpServletResponse response,
+                          MemberSocialAccountType provider,
+                          OAuth2Model snsUser) {
         Long memberId = memberRegister.signup(provider, snsUser.getProviderAccountId(), snsUser.getEmail(), snsUser.getName());
-        return jwtTokenProvider.generateAccessToken(memberId);
+        jwtTokenProvider.generateJwtCookie(response, memberId);
     }
 }

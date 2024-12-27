@@ -6,6 +6,7 @@ import com.damso.core.response.success.SuccessResponse;
 import com.damso.user.service.auth.MemberRegister;
 import com.damso.user.service.auth.command.EmailDuplicationCommand;
 import com.damso.user.service.auth.command.EmailSignupCommand;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,8 +28,10 @@ public class SignupApi {
     }
 
     @PostMapping("/email")
-    public SuccessResponse signup(@Valid @RequestBody EmailSignupCommand command) {
+    public SuccessResponse signup(@Valid @RequestBody EmailSignupCommand command,
+                                  HttpServletResponse response) {
         Long memberId = memberRegister.signup(command);
-        return SuccessResponse.of(SuccessCode.SUCCESS, jwtTokenProvider.generateAccessToken(memberId));
+        jwtTokenProvider.generateJwtCookie(response, memberId);
+        return SuccessResponse.of(SuccessCode.SUCCESS);
     }
 }

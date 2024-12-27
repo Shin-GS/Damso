@@ -1,8 +1,8 @@
 package com.damso.auth.service;
 
-import com.damso.auth.service.model.MemberAuthModel;
 import com.damso.auth.session.SessionMember;
 import com.damso.core.constant.AuthTokenStatus;
+import com.damso.core.constant.AuthTokenType;
 import com.damso.core.response.error.ErrorCode;
 import com.damso.core.response.exception.BusinessException;
 import com.damso.domain.cache.entity.auth.CacheAuthToken;
@@ -14,9 +14,10 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -25,10 +26,7 @@ import org.springframework.util.StringUtils;
 
 import javax.crypto.SecretKey;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @Component
@@ -49,11 +47,17 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
     }
 
     @Override
-    public String extractToken(HttpServletRequest request) {
-        String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-        return (StringUtils.hasText(authorizationHeader) && authorizationHeader.startsWith("Bearer ")) ?
-                authorizationHeader.substring(7) :
-                null;
+    public String extractCookie(HttpServletRequest request,
+                                AuthTokenType type) {
+        if (request.getCookies() == null) {
+            return null;
+        }
+
+        return Arrays.stream(request.getCookies())
+                .filter(cookie -> cookie.getName().equals(type.name()))
+                .map(Cookie::getValue)
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
@@ -113,7 +117,8 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
     }
 
     @Override
-    public MemberAuthModel generateAccessToken(Long memberId) {
+    public void generateJwtCookie(HttpServletResponse response,
+                                  Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
         if (!member.isActive()) {
@@ -126,19 +131,26 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
                         generateToken(member, validityInMilliseconds),
                         generateToken(member, validityRefreshInMilliseconds),
                         LocalDateTime.now().plusWeeks(2)));
-        cacheAuthTokenRepository.save(cacheAuthToken);
-        return MemberAuthModel.of(cacheAuthToken);
+        CacheAuthToken savedCacheAuthToken = cacheAuthTokenRepository.save(cacheAuthToken);
+
+        // cookie setting
+        response.addCookie(createCookie(AuthTokenType.AUTH, savedCacheAuthToken.getAccessToken(), 2419200));
+        response.addCookie(createCookie(AuthTokenType.REFRESH, savedCacheAuthToken.getAccessToken(), 2419200));
     }
 
     @Override
-    public MemberAuthModel refreshToken(String refreshToken) {
+    public void refreshJwtCookie(HttpServletResponse response,
+                                 String refreshToken) {
         CacheAuthToken cacheAuthToken = cacheAuthTokenRepository.findByRefreshToken(refreshToken)
                 .orElseThrow(() -> new BusinessException(ErrorCode.REFRESH_TOKEN_NOT_FOUND));
         Member member = memberRepository.findById(cacheAuthToken.getMemberId())
                 .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
         cacheAuthToken.refresh(generateToken(member, validityInMilliseconds));
-        cacheAuthTokenRepository.save(cacheAuthToken);
-        return MemberAuthModel.of(cacheAuthToken);
+        CacheAuthToken savedCacheAuthToken = cacheAuthTokenRepository.save(cacheAuthToken);
+
+        // cookie setting
+        response.addCookie(createCookie(AuthTokenType.AUTH, savedCacheAuthToken.getAccessToken(), 2419200));
+        response.addCookie(createCookie(AuthTokenType.REFRESH, savedCacheAuthToken.getAccessToken(), 2419200));
     }
 
     private String generateToken(Member member, long validityInMilliseconds) {
@@ -158,5 +170,21 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
         claims.put("memberName", member.getName());
         claims.put("memberRole", member.getRole());
         return claims;
+    }
+
+    private Cookie createCookie(AuthTokenType type, String token, int maxAge) {
+        Cookie cookie = new Cookie(type.name(), token);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(maxAge);
+        return cookie;
+    }
+
+    @Override
+    public void deleteJwtCookie(HttpServletResponse response) {
+        response.addCookie(createCookie(AuthTokenType.AUTH, "", 0));
+        response.addCookie(createCookie(AuthTokenType.REFRESH, "", 0));
     }
 }

@@ -1,18 +1,21 @@
 package com.damso.auth.service;
 
-import com.damso.auth.service.model.MemberAuthModel;
 import com.damso.core.constant.AuthTokenStatus;
+import com.damso.core.constant.AuthTokenType;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
 
 public interface JwtTokenProvider {
-    String extractToken(HttpServletRequest request);
+    String extractCookie(HttpServletRequest request, AuthTokenType type);
 
     AuthTokenStatus validate(String token);
 
     Authentication getAuthentication(String token);
 
-    MemberAuthModel generateAccessToken(Long memberId);
+    void generateJwtCookie(HttpServletResponse response, Long memberId);
 
-    MemberAuthModel refreshToken(String refreshToken);
+    void refreshJwtCookie(HttpServletResponse response, String refreshToken);
+
+    void deleteJwtCookie(HttpServletResponse response);
 }
