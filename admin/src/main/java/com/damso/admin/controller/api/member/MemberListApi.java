@@ -1,4 +1,4 @@
-package com.damso.admin.api.member;
+package com.damso.admin.controller.api.member;
 
 import com.damso.admin.service.member.MemberEditor;
 import com.damso.admin.service.member.MemberFinder;

@@ -1,4 +1,4 @@
-package com.damso.admin.controller.member;
+package com.damso.admin.controller.view;
 
 import com.damso.admin.service.member.command.MemberSearchCommand;
 import org.springframework.stereotype.Controller;
