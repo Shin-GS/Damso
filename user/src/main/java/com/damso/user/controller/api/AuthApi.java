@@ -39,7 +39,7 @@ public class AuthApi {
     }
 
     @PostMapping("/signup/email")
-    public SuccessResponse signup(@Valid @RequestBody EmailSignupCommand command,
+    public SuccessResponse signup(@Valid @ModelAttribute EmailSignupCommand command,
                                   HttpServletResponse response) {
         Long memberId = memberRegister.signup(command);
         jwtTokenProvider.generateJwtCookie(response, memberId);

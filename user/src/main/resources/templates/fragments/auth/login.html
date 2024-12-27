@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head th:replace="fragments/layout :: head(additionalCss='/css/auth/login.css')">
-    <title>담소 - 홈</title>
+    <title>로그인</title>
 </head>
 <body class="login-page">
 <!-- Header -->
@@ -11,29 +11,28 @@
 <main>
     <section class="login-container">
         <h2>로그인</h2>
-        <main>
-            <form id="login-form"
-                  hx-post="/api/auth/login/email"
-                  hx-target="#error-message"
-                  hx-swap="innerHTML"
-                  hx-on::after-request="handleLogin(event)">
-                <!-- 이메일 -->
-                <div class="form-group">
-                    <label for="email">이메일</label>
-                    <input type="email" id="email" name="email" placeholder="이메일을 입력하세요" required>
-                </div>
-                <!-- 비밀번호 -->
-                <div class="form-group">
-                    <label for="password">비밀번호</label>
-                    <input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요" required>
-                </div>
-                <!-- 로그인 버튼 -->
-                <button type="submit" class="btn-login">로그인</button>
-            </form>
+        <form id="login-form"
+              hx-post="/api/auth/login/email"
+              hx-target="#error-message"
+              hx-swap="innerHTML"
+              hx-on::after-request="handleLogin(event)">
+            <!-- 이메일 -->
+            <div class="form-group">
+                <label for="email">이메일</label>
+                <input type="email" id="email" name="email" placeholder="이메일을 입력하세요" required>
+            </div>
+            <!-- 비밀번호 -->
+            <div class="form-group">
+                <label for="password">비밀번호</label>
+                <input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요" required>
+            </div>
+            <!-- 로그인 버튼 -->
+            <button type="submit" class="btn-login">로그인</button>
+        </form>
 
-            <div id="error-message" class="error-message"></div>
-        </main>
+        <div id="error-message" class="error-message"></div>
 
+        <!-- SNS 로그인 -->
         <div class="social-login">
             <p>소셜 계정으로 로그인</p>
             <a th:href="@{/oauth2/authorization/google}" class="btn-social google">Google 로그인</a>
