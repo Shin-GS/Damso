@@ -178,10 +178,16 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
         Cookie cookie = new Cookie(type.name(), token);
         cookie.setPath("/");
         cookie.setHttpOnly(true);
-        cookie.setSecure(true);
-        cookie.setPath("/");
         cookie.setMaxAge(maxAge);
-        cookie.setAttribute("SameSite", "None");
+
+        // product 환경
+        // cookie.setSecure(true);
+        // cookie.setAttribute("SameSite", "None");
+
+        // 개발 환경
+        cookie.setSecure(false);
+        cookie.setAttribute("SameSite", "Lax");
+
         return cookie;
     }
 

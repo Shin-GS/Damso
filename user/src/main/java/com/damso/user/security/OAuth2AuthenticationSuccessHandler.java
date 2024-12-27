@@ -50,6 +50,8 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
                         memberSocial -> this.login(response, memberSocial),
                         () -> this.register(response, provider, snsUser)
                 );
+
+        response.sendRedirect(REDIRECT_HOME);
     }
 
     private MemberSocialAccountType extractProvider(OAuth2AuthenticationToken oauth2Auth) {
