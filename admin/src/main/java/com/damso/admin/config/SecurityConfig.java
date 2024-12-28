@@ -65,17 +65,16 @@ public class SecurityConfig {
 
     private static void getRequestMatchers(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry request) {
         Set<String> permitAllPattern = Set.of(
-                "/api/auth/**"
-        );
-
-        Set<String> adminPattern = Set.of(
-                "/api/**"
+                "/login",
+                "/api/auth/**",
+                "/css/**",
+                "/script/**",
+                "/hx/**"
         );
 
         request
                 .requestMatchers(permitAllPattern.toArray(String[]::new)).permitAll()
-                .requestMatchers(adminPattern.toArray(String[]::new)).hasAnyRole(MemberRoleType.ADMIN.name())
-                .anyRequest().permitAll();
+                .anyRequest().hasAnyRole(MemberRoleType.ADMIN.name());
     }
 
     @Bean

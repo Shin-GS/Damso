@@ -1,0 +1,24 @@
+<ul th:fragment="guest-menu" class="nav-menu">
+    <li>
+        <a th:href="@{/login}" data-icon="🔑">로그인</a>
+    </li>
+</ul>
+
+<ul th:fragment="admin-menu" class="nav-menu">
+    <li>
+        <span th:text="${username}"></span>
+    </li>
+    <li>
+        <a th:href="@{/members}">회원 관리</a>
+    </li>
+    <li>
+        <a th:href="@{/admins}">관리자 권한 관리</a>
+    </li>
+    <li><a href="#"
+           hx-post="/api/auth/logout"
+           hx-trigger="click"
+           hx-swap="none"
+           hx-on::after-request="window.location.reload()">
+        로그아웃
+    </a></li>
+</ul>

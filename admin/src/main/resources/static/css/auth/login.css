@@ -1,49 +1,61 @@
-body {
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #111;
-    font-family: 'Noto Sans', sans-serif;
-}
-
+/* login-container 스타일 */
 .login-container {
     background-color: #fff;
     padding: 40px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 360px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-.login-header h1 {
+/* 헤더 스타일 */
+.login-container .login-header h1 {
     text-align: center;
     margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
 }
 
-.input-group {
+/* 입력 그룹 스타일 */
+.login-container .input-group {
+    width: 100%;
     margin-bottom: 20px;
 }
 
-.input-group label {
+.login-container .input-group label {
     display: block;
     margin-bottom: 8px;
     font-weight: 600;
+    font-size: 14px;
+    color: #555;
 }
 
-.input-group input {
+.login-container .input-group input {
     width: 100%;
     padding: 12px;
     border: 1px solid #ddd;
     border-radius: 5px;
+    font-size: 14px;
+    color: #333;
+    outline: none;
 }
 
-.button-group {
+.login-container .input-group input:focus {
+    border-color: #3b4cca;
+    box-shadow: 0 0 5px rgba(59, 76, 202, 0.2);
+}
+
+/* 버튼 그룹 스타일 */
+.login-container .button-group {
+    width: 100%;
     text-align: center;
 }
 
-.button-group button {
+.login-container .button-group button {
     width: 100%;
     padding: 14px;
     background-color: #3b4cca;
@@ -51,9 +63,36 @@ body {
     border: none;
     border-radius: 5px;
     font-size: 16px;
+    font-weight: 600;
     cursor: pointer;
+    transition: background-color 0.3s;
 }
 
-.button-group button:hover {
+.login-container .button-group button:hover {
     background-color: #2b3ba0;
+}
+
+/* 에러 메시지 스타일 */
+.login-container #error-message {
+    color: #ff4d4f;
+    font-size: 14px;
+    margin-top: 10px;
+    text-align: center;
+    height: 18px; /* 최소 높이 설정 */
+}
+
+/* 반응형 디자인 */
+@media (max-width: 480px) {
+    .login-container {
+        width: 90%;
+        padding: 20px;
+    }
+
+    .login-container .login-header h1 {
+        font-size: 20px;
+    }
+
+    .login-container .button-group button {
+        font-size: 14px;
+    }
 }

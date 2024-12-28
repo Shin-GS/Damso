@@ -5,7 +5,7 @@ body {
     background-color: #f4f4f9;
 }
 
-.admin-nav-container {
+.nav-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -14,19 +14,19 @@ body {
     color: white;
 }
 
-.admin-nav-title a {
+.nav-title a {
     color: white;
     font-size: 1.5rem;
     text-decoration: none;
 }
 
-.admin-nav-menu {
+.nav-menu {
     list-style: none;
     display: flex;
     gap: 1.5rem;
 }
 
-.admin-nav-menu li a {
+.nav-menu li a {
     color: white;
     text-decoration: none;
     font-size: 1rem;

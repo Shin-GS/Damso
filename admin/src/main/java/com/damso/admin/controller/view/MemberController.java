@@ -13,6 +13,6 @@ public class MemberController {
     public String memberList(Model model) {
         model.addAttribute("searchCommand", MemberSearchCommand.ofEmpty());
         model.addAttribute("members", new ArrayList<>());
-        return "member/memberList";
+        return "fragments/member/memberList";
     }
 }

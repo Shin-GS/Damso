@@ -21,7 +21,7 @@ public class AuthApi {
     private final RefreshInfoFetcher refreshInfoFetcher;
 
     @PostMapping("/login")
-    public SuccessResponse login(@Valid @RequestBody LoginCommand command,
+    public SuccessResponse login(@Valid @ModelAttribute LoginCommand command,
                                  HttpServletResponse response) {
         Long memberId = customAuthenticationManager.authenticateAdmin(command.email(), command.password());
         jwtTokenProvider.generateJwtCookie(response, memberId);
