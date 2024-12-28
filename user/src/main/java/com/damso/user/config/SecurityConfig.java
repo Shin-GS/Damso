@@ -78,7 +78,8 @@ public class SecurityConfig {
     private static void getRequestMatchers(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry request) {
         Set<String> memberRolePatterns = Set.of(
                 "/member/**",
-                "/api/member/**"
+                "/api/member/**",
+                "/api/contents/**"
         );
 
         Set<String> userRolePatterns = Set.of(

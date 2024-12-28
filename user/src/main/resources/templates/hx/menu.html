@@ -18,6 +18,17 @@
     <li>
         <a th:href="@{/creators/popular}" data-icon="⭐">인기 크리에이터</a>
     </li>
+    <li>
+        <a href="#"
+           data-icon="✒"
+           id="create-content-btn"
+           hx-post="/api/contents"
+           hx-trigger="click"
+           hx-confirm="콘텐츠를 작성하시겠습니까?"
+           hx-on::after-request="handleCreateContentsResponse(event)">
+            콘텐츠 작성
+        </a>
+    </li>
 
     <li class="user-info">
         <img src="/favicon.ico" alt="프로필 사진">
