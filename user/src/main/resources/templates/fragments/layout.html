@@ -11,8 +11,18 @@
     <script src="https://unpkg.com/htmx-ext-json-enc@2.0.0/json-enc.js"></script>
     <script type="module" src="/script/nav.js"></script>
 
+    <!-- Additional CSS -->
     <th:block th:if="${additionalCss}">
-        <link th:href="${additionalCss}" rel="stylesheet">
+        <th:block th:each="css : ${additionalCss.split(',')}">
+            <link th:href="${css}" rel="stylesheet">
+        </th:block>
+    </th:block>
+
+    <!-- Additional Script -->
+    <th:block th:if="${additionalScript}">
+        <th:block th:each="script : ${additionalScript.split(',')}">
+            <script th:src="${script}"></script>
+        </th:block>
     </th:block>
 </head>
 <body>

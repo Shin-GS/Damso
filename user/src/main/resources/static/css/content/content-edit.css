@@ -1,0 +1,100 @@
+/* 공통 스타일: content-edit-page 하위에만 적용 */
+.content-edit-page #page-list {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.content-edit-page .page-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+}
+
+.content-edit-page .page-item.selected {
+    border: 2px solid blue;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.content-edit-page .page-controls {
+    margin-top: 10px;
+}
+
+.content-edit-page .quill-editor {
+    border: 1px solid #ccc;
+    margin-top: 10px;
+    min-height: 200px;
+}
+
+.content-edit-page .upload-section,
+.content-edit-page .publish-section {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.content-edit-page .publish-button,
+.content-edit-page .upload-button {
+    padding: 10px 20px;
+    background-color: green;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 480px) {
+    /* 모바일 세로 */
+    .content-edit-page #page-list {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .content-edit-page .page-item {
+        font-size: 12px;
+    }
+
+    .content-edit-page .publish-button,
+    .content-edit-page .upload-button {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+    /* 모바일 가로, 타블렛 세로 */
+    .content-edit-page #page-list {
+        flex-wrap: wrap;
+    }
+
+    .content-edit-page .quill-editor {
+        min-height: 150px;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1280px) {
+    /* 타블렛 가로, 노트북 */
+    .content-edit-page .publish-button,
+    .content-edit-page .upload-button {
+        font-size: 15px;
+    }
+}
+
+@media (min-width: 1281px) {
+    /* 데스크탑 */
+    .content-edit-page #page-list {
+        gap: 15px;
+    }
+
+    .content-edit-page .quill-editor {
+        min-height: 300px;
+    }
+
+    .content-edit-page .publish-button,
+    .content-edit-page .upload-button {
+        font-size: 18px;
+        padding: 12px 24px;
+    }
+}

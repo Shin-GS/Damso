@@ -1,0 +1,36 @@
+<!-- Text Editor Fragment -->
+<div th:fragment="text-editor">
+    <h2>Editing Text</h2>
+    <div class="quill-editor" contenteditable="true">
+        <p th:utext="${content}"></p>
+    </div>
+    <button id="save-content" class="btn">Save Content</button>
+</div>
+
+<!-- Image Editor Fragment -->
+<div th:fragment="image-editor">
+    <h2>Editing Image</h2>
+    <h3>Uploaded Images</h3>
+    <ul>
+        <li th:each="file : ${files}" th:text="${file.filePath}"></li>
+    </ul>
+    <form id="image-file-upload-form" enctype="multipart/form-data">
+        <input type="file" name="file" id="imageFileInput" required multiple>
+        <input type="hidden" name="type" value="image">
+        <button type="submit" class="btn">Upload</button>
+    </form>
+</div>
+
+<!-- Video Editor Fragment -->
+<div th:fragment="video-editor">
+    <h2>Editing Video</h2>
+    <h3>Uploaded Video</h3>
+    <ul>
+        <li th:each="file : ${files}" th:text="${file.filePath}"></li>
+    </ul>
+    <form id="video-file-upload-form" enctype="multipart/form-data">
+        <input type="file" name="file" id="videoFileInput" required>
+        <input type="hidden" name="type" value="video">
+        <button type="submit" class="btn">Upload</button>
+    </form>
+</div>

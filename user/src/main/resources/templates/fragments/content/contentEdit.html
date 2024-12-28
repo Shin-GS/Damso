@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head th:replace="fragments/layout :: head(additionalCss='/css/content/content-edit.css,https://cdn.quilljs.com/1.3.7/quill.snow.css', additionalScript='https://cdn.quilljs.com/1.3.7/quill.min.js')">
+    <title>콘텐츠 편집</title>
+</head>
+<body class="content-edit-page">
+<!-- Header -->
+<header th:replace="fragments/layout :: header"></header>
+
+<!-- Main Content -->
+<main>
+    <section class="content-edit-container">
+        <!-- Page Navigation -->
+        <div id="page-list">
+            <div th:each="page, stat : ${pages.content}"
+                 th:classappend="${page.id == currentPageId} ? 'selected' : ''"
+                 th:data-id="${page.id}"
+                 class="page-item"
+                 th:hx-get="@{'/hx/contents/' + ${contentId} + '/' + ${page.id}}"
+                 hx-trigger="click"
+                 hx-target="#editor">
+                <div class="page-item-icon" th:if="${page.type == 'text'}" th:text="'✏️'"></div>
+                <div class="page-item-icon" th:if="${page.type == 'image'}" th:text="'🖼️'"></div>
+                <div class="page-item-icon" th:if="${page.type == 'video'}" th:text="'🎥'"></div>
+                <div th:text="'Page ' + (${pages.number * pages.size + stat.index + 1})"></div>
+            </div>
+        </div>
+
+        <!-- Page Controls -->
+        <div class="page-controls">
+            <button th:hx-post="@{'/hx/contents/' + ${contentId}}" hx-target="#editor">
+                Add Page
+            </button>
+        </div>
+
+        <!-- Editor Section -->
+        <section id="editor" hx-swap="outerHTML">
+            <!-- Server will dynamically replace this content based on the selected page -->
+        </section>
+
+        <!-- Publish Section -->
+        <div class="publish-section">
+            <button class="publish-button"
+                    hx-post="@{'/editor/publish-content/' + ${contentId}}"
+                    hx-include="[name=content-id]"
+                    hx-target="#app">
+                Publish Content
+            </button>
+            <p th:if="${isPublished}" style="color: green;">This content is published and visible to users.</p>
+            <p th:if="${!isPublished}" style="color: red;">This content is not yet published.</p>
+        </div>
+    </section>
+</main>
+
+<!-- Footer -->
+<footer th:replace="fragments/layout :: footer"></footer>
+
+<script>
+    // Quill 초기화 함수
+    function initializeQuillEditor() {
+        const editorContainer = document.querySelector('.quill-editor');
+        if (editorContainer) {
+            const quill = new Quill(editorContainer, {
+                theme: 'snow',
+                modules: {
+                    toolbar: [
+                        ['bold', 'italic', 'underline'],        // Toggling bold, italic, underline
+                        [{'header': [1, 2, 3, false]}],         // Header levels
+                        [{'list': 'ordered'}, {'list': 'bullet'}], // Lists
+                        [{'align': []}],                        // Alignment
+                        ['clean']                               // Remove formatting
+                    ]
+                }
+            });
+
+            // Prevent file uploads in Quill toolbar
+            quill.getModule('toolbar').addHandler('image', () => {
+                alert('File uploads are disabled in the editor. Use the file upload form below.');
+            });
+        }
+    }
+
+    // DOMContentLoaded 시 초기화
+    document.addEventListener('DOMContentLoaded', () => {
+        initializeQuillEditor();
+    });
+
+    // htmx 요청 완료 후 초기화
+    document.body.addEventListener('htmx:afterSwap', (event) => {
+        // 특정 ID의 콘텐츠가 교체될 때만 초기화 (선택적으로 조건 추가 가능)
+        if (event.detail.target.id === 'editor') {
+            initializeQuillEditor();
+        }
+    });
+</script>
+</body>
+</html>
