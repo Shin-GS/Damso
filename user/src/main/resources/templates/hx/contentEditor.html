@@ -15,44 +15,14 @@
 <!-- Image Editor Fragment -->
 <div th:fragment="image-editor" class="editor-container bg-white shadow-md rounded-lg p-6 max-w-3xl mx-auto">
     <h2 class="text-2xl font-semibold mb-4">Editing Image</h2>
-    <h3 class="text-lg font-medium mb-2">Uploaded Images</h3>
-    <ul class="list-disc list-inside">
-        <li th:each="file : ${files}" th:text="${file.filePath}" class="text-gray-700"></li>
-    </ul>
-    <form id="image-file-upload-form" enctype="multipart/form-data" class="mt-4">
-        <input type="file" name="file" id="imageFileInput" required multiple
-               class="block w-full text-sm text-gray-500
-               file:mr-4 file:py-2 file:px-4
-               file:rounded-full file:border-0
-               file:text-sm file:font-semibold
-               file:bg-blue-50 file:text-blue-700
-               hover:file:bg-blue-100">
-        <input type="hidden" name="type" value="image">
-        <button type="submit" class="btn bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-6 rounded mt-4">
-            Upload
-        </button>
-    </form>
+    <div id="image-upload-area" class="w-full max-w-4xl mx-auto">
+        <input type="file" class="filepond" name="filepond" multiple/>
+    </div>
 </div>
 
-<!-- Video Editor Fragment -->
+<!-- Video Editor -->
 <div th:fragment="video-editor" class="editor-container bg-white shadow-md rounded-lg p-6 max-w-3xl mx-auto">
     <h2 class="text-2xl font-semibold mb-4">Editing Video</h2>
-    <h3 class="text-lg font-medium mb-2">Uploaded Video</h3>
-    <ul class="list-disc list-inside">
-        <li th:each="file : ${files}" th:text="${file.filePath}" class="text-gray-700"></li>
-    </ul>
-    <form id="video-file-upload-form" enctype="multipart/form-data" class="mt-4">
-        <input type="file" name="file" id="videoFileInput" required
-               class="block w-full text-sm text-gray-500
-               file:mr-4 file:py-2 file:px-4
-               file:rounded-full file:border-0
-               file:text-sm file:font-semibold
-               file:bg-blue-50 file:text-blue-700
-               hover:file:bg-blue-100">
-        <input type="hidden" name="type" value="video">
-        <button type="submit" class="btn bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-6 rounded mt-4">
-            Upload
-        </button>
-    </form>
+    <div id="video-upload-area" class="w-full max-w-4xl mx-auto"></div>
 </div>
 </html>

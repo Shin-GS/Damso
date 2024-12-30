@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       lang="ko">
-<head th:replace="fragments/layout :: head(additionalCss='/css/quill.snow.css', additionalScript='/script/quill.min.js')">
+<head th:replace="fragments/layout :: head(additionalCss='/css/quill.snow.css,/css/filepond.min.css,/css/uppy.min.css,/css/filepond-plugin-image-preview.min.css', additionalScript='/script/quill.min.js,/script/filepond.min.js,/script/uppy.min.js,/script/filepond-plugin-image-preview.min.js')">
     <title>콘텐츠 편집</title>
 </head>
 <body class="content-edit-page flex flex-col min-h-screen bg-gray-100">
@@ -12,17 +12,16 @@
 <main class="flex-grow flex justify-center items-center py-12">
     <section class="content-edit-container bg-white shadow-lg rounded-lg p-8 max-w-4xl w-full">
         <!-- Page Navigation -->
-        <div id="page-list" class="flex gap-4 overflow-x-auto pb-4">
+        <div id="page-list" class="flex gap-4 overflow-x-auto pb-4 justify-center">
             <div th:each="page, stat : ${pages.content}"
                  th:classappend="${page.id == currentPageId} ? 'selected border-blue-500' : ''"
                  th:data-id="${page.id}"
-                 class="page-item flex flex-col items-center cursor-pointer p-4 border rounded-md hover:shadow-md transition-all"
                  th:hx-get="@{'/hx/contents/' + ${contentId} + '/' + ${page.id}}"
                  hx-trigger="click"
-                 hx-target="#editor">
-                <div class="page-item-icon text-2xl" th:if="${page.type == 'text'}" th:text="'✏️'"></div>
-                <div class="page-item-icon text-2xl" th:if="${page.type == 'image'}" th:text="'🖼️'"></div>
-                <div class="page-item-icon text-2xl" th:if="${page.type == 'video'}" th:text="'🎥'"></div>
+                 hx-target="#editor"
+                 class="page-item flex flex-col items-center cursor-pointer p-4 border rounded-md hover:shadow-md transition-all w-28 sm:w-32 lg:w-40">
+                <div class="page-item-icon text-3xl sm:text-4xl"
+                     th:text="${page.type == 'text' ? '✏️' : (page.type == 'image' ? '🖼️' : '🎥')}"></div>
                 <div th:text="'Page ' + (${pages.number * pages.size + stat.index + 1})"></div>
             </div>
         </div>
@@ -37,9 +36,7 @@
         </div>
 
         <!-- Editor Section -->
-        <section id="editor" hx-swap="outerHTML" class="mt-8">
-            <!-- Server will dynamically replace this content based on the selected page -->
-        </section>
+        <section id="editor" hx-swap="outerHTML" class="mt-8"></section>
 
         <!-- Publish Section -->
         <div class="publish-section mt-12 text-center">
@@ -59,40 +56,95 @@
 <footer th:replace="fragments/layout :: footer"></footer>
 
 <script>
-    // Quill 초기화 함수
-    function initializeQuillEditor() {
+    // Quill 에디터 초기화
+    async function initializeQuillEditor() {
         const editorContainer = document.querySelector('.quill-editor');
         if (editorContainer) {
             const quill = new Quill(editorContainer, {
                 theme: 'snow',
                 modules: {
                     toolbar: [
-                        ['bold', 'italic', 'underline'],        // Toggling bold, italic, underline
-                        [{'header': [1, 2, 3, false]}],         // Header levels
-                        [{'list': 'ordered'}, {'list': 'bullet'}], // Lists
-                        [{'align': []}],                        // Alignment
-                        ['clean']                               // Remove formatting
+                        ['bold', 'italic', 'underline'],
+                        [{'header': [1, 2, 3, false]}],
+                        [{'list': 'ordered'}, {'list': 'bullet'}],
+                        [{'align': []}],
+                        ['clean']
                     ]
                 }
-            });
-
-            // Prevent file uploads in Quill toolbar
-            quill.getModule('toolbar').addHandler('image', () => {
-                alert('File uploads are disabled in the editor. Use the file upload form below.');
             });
         }
     }
 
-    // DOMContentLoaded 시 초기화
-    document.addEventListener('DOMContentLoaded', () => {
-        initializeQuillEditor();
+    // FilePond 초기화 (비동기)
+    async function initializeFilePond() {
+        const filepondElements = document.querySelectorAll('.filepond');
+        if (filepondElements.length > 0) {
+            FilePond.registerPlugin(FilePondPluginImagePreview);
+            filepondElements.forEach((el) => {
+                FilePond.create(el, {
+                    allowMultiple: true,
+                    maxFileSize: '10MB',
+                    server: {
+                        process: '/upload/image',
+                        revert: '/upload/revert',
+                        headers: {
+                            'X-CSRF-TOKEN': 'your-csrf-token'
+                        }
+                    },
+                    acceptedFileTypes: ['image/png', 'image/jpeg']
+                });
+            });
+        }
+    }
+
+    // Uppy 초기화 (비동기)
+    async function initializeUppy() {
+        const videoUploadArea = document.querySelector('#video-upload-area');
+        if (videoUploadArea) {
+            const uppy = new window.Uppy.Uppy({  // window.Uppy로 변경
+                restrictions: {
+                    maxNumberOfFiles: 1,
+                    maxFileSize: 500 * 1024 * 1024,  // 500MB 제한
+                    allowedFileTypes: ['video/*']
+                }
+            })
+                .use(Uppy.Dashboard, {
+                    inline: true,
+                    target: '#video-upload-area',
+                    proudlyDisplayPoweredByUppy: false,
+                    height: 300
+                })
+                .use(Uppy.XHRUpload, {
+                    endpoint: '/upload/video',
+                    fieldName: 'file',
+                    headers: {
+                        'X-CSRF-TOKEN': 'your-csrf-token'
+                    }
+                });
+
+            // 업로드 제한 실패 시 경고
+            uppy.on('restriction-failed', (file, error) => {
+                alert('동영상은 하나만 업로드할 수 있습니다.');
+            });
+        }
+    }
+
+    // DOMContentLoaded 및 HTMX 요청 완료 후 비동기 초기화
+    async function initializeEditors() {
+        await initializeQuillEditor();
+        await initializeFilePond();
+        await initializeUppy();
+    }
+
+    // DOM이 완전히 로드된 후 초기화
+    document.addEventListener('DOMContentLoaded', async () => {
+        await initializeEditors();
     });
 
-    // htmx 요청 완료 후 초기화
-    document.body.addEventListener('htmx:afterSwap', (event) => {
-        // 특정 ID의 콘텐츠가 교체될 때만 초기화 (선택적으로 조건 추가 가능)
+    // HTMX 요청 완료 후 비동기 초기화
+    document.body.addEventListener('htmx:afterSwap', async (event) => {
         if (event.detail.target.id === 'editor') {
-            initializeQuillEditor();
+            await initializeEditors();
         }
     });
 </script>
