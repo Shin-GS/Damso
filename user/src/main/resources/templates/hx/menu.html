@@ -38,6 +38,7 @@
            hx-post="/api/contents"
            hx-trigger="click"
            hx-confirm="콘텐츠를 작성하시겠습니까?"
+           hx-swap="none"
            hx-on::after-request="handleCreateContentsResponse(event)"
            class="flex items-center gap-2 text-lg hover:text-blue-500">
             콘텐츠 작성
