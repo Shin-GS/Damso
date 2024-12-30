@@ -1,3 +1,6 @@
+import org.springframework.boot.gradle.tasks.bundling.BootJar
+import org.springframework.boot.gradle.tasks.run.BootRun
+
 springBoot {
     mainClass = 'com.damso.user.UserApplication'
 }
@@ -61,11 +64,11 @@ tasks.register('tailwindBuild') {
 }
 
 // 모든 bootRun 및 bootJar Task에 Tailwind 빌드 의존성 추가
-tasks.withType(org.springframework.boot.gradle.tasks.run.BootRun).configureEach {
+tasks.withType(BootRun).configureEach {
     dependsOn tailwindBuild
 }
 
-tasks.withType(org.springframework.boot.gradle.tasks.bundling.BootJar).configureEach {
+tasks.withType(BootJar).configureEach {
     dependsOn tailwindBuild
 }
 
@@ -84,4 +87,47 @@ tasks.register('ensureTailwindOutput') {
 // bootRun 전에 output.css 존재 여부 확인
 tasks.named('bootRun') {
     dependsOn ensureTailwindOutput
+}
+
+// CDN 파일 다운로드 Task
+def cdnFiles = [
+        [url: "https://cdn.quilljs.com/1.3.7/quill.snow.css", dest: "src/main/resources/static/css/quill.snow.css"],
+        [url: "https://cdn.quilljs.com/1.3.7/quill.min.js", dest: "src/main/resources/static/script/quill.min.js"],
+        [url: "https://unpkg.com/htmx.org@2.0.4/dist/htmx.min.js", dest: "src/main/resources/static/script/htmx.min.js"],
+        [url: "https://unpkg.com/htmx-ext-json-enc@2.0.0/json-enc.js", dest: "src/main/resources/static/script/json-enc.js"]
+]
+
+tasks.register('downloadCdnFiles') {
+    group = 'build'
+    description = 'CDN 파일 다운로드 및 저장'
+    doLast {
+        cdnFiles.each { file ->
+            def destFile = new File(file.dest)
+
+            if (!destFile.parentFile.exists()) {
+                destFile.parentFile.mkdirs()
+            }
+
+            if (!destFile.exists()) {
+                println "Downloading ${file.url} to ${destFile}"
+                new URL(file.url).withInputStream { input ->
+                    destFile.withOutputStream { output ->
+                        output << input
+                    }
+                }
+                println "Download complete: ${destFile}"
+            } else {
+                println "${destFile.name} already exists, skipping download."
+            }
+        }
+    }
+}
+
+// bootRun 및 bootJar Task에 CDN 파일 다운로드 의존성 추가
+tasks.withType(BootRun).configureEach {
+    dependsOn downloadCdnFiles
+}
+
+tasks.withType(BootJar).configureEach {
+    dependsOn downloadCdnFiles
 }
