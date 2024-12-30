@@ -139,5 +139,9 @@ def cdnFiles = [
 
 ---
 
-더 자세한 설정이나 문의는 [Notion 문서](https://www.notion.so/150d484dae8180f882a5e2f25d5d0c6d)를 참고하세요!
+## 💡 개발 팁
 
+### IntelliJ IDEA에서 Run/Debug 시마다 output.css를 생성하고 외부 CDN(js, css) 파일을 자동 다운로드 처리
+1. **Run/Debug Configurations** 창에서 상단의 **Modify options** 클릭
+2. **"Build, Execution, Deployment"** → **Before launch** 섹션 확인
+3. **Add** 버튼 클릭 → **"Run Gradle task"** 선택 후, `tailwindBuild` 및 `downloadCdnFiles` 추가
