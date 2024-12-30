@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="ko">
 <head th:fragment="head">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="${pageTitle}">담소</title>
-    <link rel="stylesheet" href="/css/layout.css">
-    <link rel="stylesheet" href="/css/nav.css">
+    <link href="/css/output.css" rel="stylesheet">
 
     <script src="https://unpkg.com/htmx.org@2.0.4"></script>
     <script src="https://unpkg.com/htmx-ext-json-enc@2.0.0/json-enc.js"></script>
@@ -25,37 +25,46 @@
         </th:block>
     </th:block>
 </head>
-<body>
+<body class="bg-gray-100 font-sans leading-relaxed">
 
 <header th:fragment="header">
-    <nav class="nav-container">
-        <!-- 타이틀 -->
-        <div class="nav-title">
+    <nav class="bg-white shadow-md border-b border-gray-200 px-6 py-4 flex justify-between items-center">
+        <div class="text-3xl font-bold text-blue-500">
             <a th:href="@{/}">담소</a>
         </div>
 
-        <!-- 검색창 -->
-        <div class="search-bar">
-            <label>
-                <input type="text" placeholder="크리에이터 검색">
-            </label>
-            <button class="search-icon">
+        <div class="hidden md:flex items-center space-x-4">
+            <input type="text" placeholder="크리에이터 검색"
+                   class="border rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none">
+            <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">
                 <i class="fas fa-search"></i>
             </button>
         </div>
 
-        <!-- 네비게이션 메뉴 -->
-        <ul id="nav-menu" class="nav-menu"></ul>
+        <ul id="nav-menu" class="flex space-x-4 text-lg"></ul>
         <div hidden="hidden" hx-get="/hx/menu" hx-trigger="load" hx-target="#nav-menu" hx-swap="outerHTML"></div>
+
+        <!-- 모바일 검색 및 메뉴 -->
+        <div class="flex md:hidden">
+            <button class="text-2xl text-blue-500">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
     </nav>
 </header>
 
-<footer th:fragment="footer">
+<main class="container mx-auto p-6">
+    <div th:replace="~{::content}"></div>
+</main>
+
+<footer th:fragment="footer" class="bg-gray-800 text-white text-center p-6">
     <p>© 2024 담소. All rights reserved.</p>
-    <nav>
-        <a th:href="@{/terms}">이용 약관</a> |
-        <a th:href="@{/privacy}">개인정보 처리방침</a>
+    <nav class="space-x-4">
+        <a th:href="@{/terms}" class="hover:underline">이용 약관</a>
+        <span>|</span>
+        <a th:href="@{/privacy}" class="hover:underline">개인정보 처리방침</a>
     </nav>
 </footer>
+
 </body>
 </html>

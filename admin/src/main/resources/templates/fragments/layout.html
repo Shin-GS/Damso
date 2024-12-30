@@ -4,31 +4,63 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="${pageTitle}">담소 관리자</title>
-    <link rel="stylesheet" href="/css/layout.css">
+    <link rel="stylesheet" href="/css/output.css">
 
     <script src="https://unpkg.com/htmx.org@2.0.4"></script>
     <script src="https://unpkg.com/htmx-ext-json-enc@2.0.0/json-enc.js"></script>
+    <script type="module" src="/script/nav.js"></script>
 
+    <!-- Additional CSS -->
     <th:block th:if="${additionalCss}">
-        <link th:href="${additionalCss}" rel="stylesheet">
+        <th:block th:each="css : ${additionalCss.split(',')}">
+            <link th:href="${css}" rel="stylesheet">
+        </th:block>
+    </th:block>
+
+    <!-- Additional Script -->
+    <th:block th:if="${additionalScript}">
+        <th:block th:each="script : ${additionalScript.split(',')}">
+            <script th:src="${script}"></script>
+        </th:block>
     </th:block>
 </head>
-<body>
-<header th:fragment="header">
-    <nav class="nav-container">
-        <!-- 타이틀 -->
-        <div class="nav-title">
-            <a th:href="@{/}">담소 관리자</a>
-        </div>
+<body class="bg-gray-900 font-sans leading-normal tracking-normal flex flex-col min-h-screen">
+<!-- Header -->
+<header th:fragment="header" class="container mx-auto flex justify-between items-center p-6">
+    <div class="w-full bg-gray-800 shadow-lg">
+        <nav>
+            <div class="text-white text-2xl font-extrabold tracking-wide">
+                <a th:href="@{/}" class="hover:text-gray-400">담소 관리자</a>
+            </div>
 
-        <!-- 네비게이션 메뉴 -->
-        <ul id="nav-menu" class="nav-menu"></ul>
-        <div hidden="hidden" hx-get="/hx/menu" hx-trigger="load" hx-target="#nav-menu" hx-swap="outerHTML"></div>
-    </nav>
+            <!-- 네비게이션 메뉴 -->
+            <ul id="nav-menu" class="nav-menu"></ul>
+            <div hidden="hidden" hx-get="/hx/menu" hx-trigger="load" hx-target="#nav-menu" hx-swap="outerHTML"></div>
+        </nav>
+    </div>
 </header>
 
+<!-- Main Content -->
+<main>
+    <div class="bg-gray-800 p-8 rounded-lg shadow-xl">
+        <h1 class="text-4xl font-bold mb-6 text-white">담소 관리자 페이지</h1>
+    </div>
+</main>
+
+<!-- Footer -->
 <footer th:fragment="footer">
-    <p>© 2024 담소 관리자. All rights reserved.</p>
+    <div class="w-full bg-gray-800">
+        <p>© 2024 담소 관리자. All rights reserved.</p>
+    </div>
 </footer>
+
+<script>
+    // 햄버거 메뉴 토글
+    document.getElementById('menu-toggle').addEventListener('click', function () {
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenu.classList.toggle('hidden');
+    });
+</script>
+
 </body>
 </html>

@@ -1,43 +1,51 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="ko">
-<head th:replace="fragments/layout :: head(additionalCss='/css/auth/login.css')">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:hx-on="http://www.w3.org/1999/xhtml"
+      lang="ko">
+<head th:replace="fragments/layout :: head">
     <title>로그인</title>
 </head>
-<body class="login-page">
+<body class="bg-gray-900 text-gray-100 flex flex-col items-center justify-center min-h-screen">
 <!-- Header -->
 <header th:replace="fragments/layout :: header"></header>
 
 <!-- Main Content -->
-<main>
-    <section class="login-container">
-        <div class="login-box">
-            <div class="login-header">
-                <h1>담소 Admin</h1>
-            </div>
-            <form id="login-form"
-                  hx-post="/api/auth/login"
-                  hx-target="#error-message"
-                  hx-swap="innerHTML"
-                  hx-on::after-request="handleAdminLogin(event)">
-                <div class="input-group">
-                    <label for="email">이메일</label>
-                    <input type="email" id="email" name="email" placeholder="이메일을 입력하세요" required>
-                </div>
-                <div class="input-group">
-                    <label for="password">비밀번호</label>
-                    <input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요" required>
-                </div>
-                <div class="button-group">
-                    <button type="submit">로그인</button>
-                </div>
-            </form>
-            <div id="error-message" class="error-message"></div>
+<main class="flex-grow flex items-center justify-center w-full">
+    <section class="w-full max-w-md bg-gray-800 p-10 rounded-lg shadow-2xl">
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-extrabold">담소 Admin</h1>
         </div>
+        <form id="login-form"
+              hx-post="/api/auth/login"
+              hx-target="#error-message"
+              hx-swap="innerHTML"
+              hx-on::after-request="handleAdminLogin(event)">
+
+            <div class="mb-6">
+                <label for="email" class="block text-sm font-medium text-gray-300">이메일</label>
+                <input type="email" id="email" name="email"
+                       class="mt-2 block w-full px-4 py-3 border border-gray-600 bg-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                       placeholder="이메일을 입력하세요" required>
+            </div>
+            <div class="mb-8">
+                <label for="password" class="block text-sm font-medium text-gray-300">비밀번호</label>
+                <input type="password" id="password" name="password"
+                       class="mt-2 block w-full px-4 py-3 border border-gray-600 bg-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                       placeholder="비밀번호를 입력하세요" required>
+            </div>
+            <div class="mb-6 text-center">
+                <button type="submit"
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300">
+                    로그인
+                </button>
+            </div>
+        </form>
+        <div id="error-message" class="text-red-400 text-sm mt-6 text-center h-6"></div>
     </section>
 </main>
 
 <!-- Footer -->
-<footer th:replace="fragments/layout :: footer"></footer>
+<footer th:replace="fragments/layout :: footer" class="w-full"></footer>
 
 <script>
     function handleAdminLogin(event) {
