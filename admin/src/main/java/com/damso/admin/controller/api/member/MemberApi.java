@@ -4,27 +4,17 @@ import com.damso.admin.service.member.MemberEditor;
 import com.damso.admin.service.member.MemberFinder;
 import com.damso.admin.service.member.command.MemberModifyCommand;
 import com.damso.admin.service.member.command.MemberRegisterCommand;
-import com.damso.admin.service.member.command.MemberSearchCommand;
 import com.damso.core.response.success.SuccessCode;
 import com.damso.core.response.success.SuccessResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/members")
 @RequiredArgsConstructor
-public class MemberListApi {
+public class MemberApi {
     private final MemberFinder memberFinder;
     private final MemberEditor memberEditor;
-
-    @GetMapping
-    public SuccessResponse search(MemberSearchCommand command,
-                                  @PageableDefault(size = 1) Pageable pageable) {
-        return SuccessResponse.of(SuccessCode.SUCCESS,
-                memberFinder.findMembers(command, pageable));
-    }
 
     @PostMapping
     public SuccessResponse register(@RequestBody MemberRegisterCommand command) {

@@ -20,16 +20,16 @@ public class MemberExpression {
         return !StringUtils.hasText(email) ? null : QMember.member.email.eq(email);
     }
 
-    public static BooleanExpression emailLike(String email) {
-        return !StringUtils.hasText(email) ? null : QMember.member.email.like(email);
+    public static BooleanExpression emailContains(String email) {
+        return !StringUtils.hasText(email) ? null : QMember.member.email.contains(email);
     }
 
     public static BooleanExpression nameEq(String name) {
         return !StringUtils.hasText(name) ? null : QMember.member.name.eq(name);
     }
 
-    public static BooleanExpression nameLike(String name) {
-        return !StringUtils.hasText(name) ? null : QMember.member.name.like(name);
+    public static BooleanExpression nameContains(String name) {
+        return !StringUtils.hasText(name) ? null : QMember.member.name.contains(name);
     }
 
     public static BooleanExpression roleEq(MemberRoleType role) {

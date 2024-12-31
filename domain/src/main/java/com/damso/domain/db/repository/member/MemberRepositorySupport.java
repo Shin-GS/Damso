@@ -32,8 +32,8 @@ public class MemberRepositorySupport {
                 .from(QMember.member)
                 .where(
                         MemberExpression.memberIdEq(memberId),
-                        MemberExpression.emailLike(email),
-                        MemberExpression.nameLike(name),
+                        MemberExpression.emailContains(email),
+                        MemberExpression.nameContains(name),
                         MemberExpression.roleEq(role),
                         MemberExpression.statusEq(status),
                         MemberExpression.joinedAtGoe(startDate),
@@ -48,8 +48,8 @@ public class MemberRepositorySupport {
                 .from(QMember.member)
                 .where(
                         MemberExpression.memberIdEq(memberId),
-                        MemberExpression.emailLike(email),
-                        MemberExpression.nameLike(name),
+                        MemberExpression.emailContains(email),
+                        MemberExpression.nameContains(name),
                         MemberExpression.roleEq(role),
                         MemberExpression.statusEq(status),
                         MemberExpression.joinedAtGoe(startDate),

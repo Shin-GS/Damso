@@ -1,6 +1,6 @@
 package com.damso.admin.service.member;
 
-import com.damso.admin.service.member.command.MemberSearchCommand;
+import com.damso.admin.service.member.command.MemberSearchFilterCommand;
 import com.damso.admin.service.member.model.MemberInfoModel;
 import com.damso.admin.service.member.model.MemberSearchModel;
 import com.damso.core.response.error.ErrorCode;
@@ -22,7 +22,7 @@ public class MemberFinderImpl implements MemberFinder {
     private final MemberRepository memberRepository;
 
     @Override
-    public Page<MemberSearchModel> findMembers(MemberSearchCommand command,
+    public Page<MemberSearchModel> findMembers(MemberSearchFilterCommand command,
                                                Pageable pageable) {
         return memberRepositorySupport.findAllMembers(
                         command.memberId(),
