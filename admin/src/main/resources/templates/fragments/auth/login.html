@@ -5,15 +5,15 @@
 <head th:replace="fragments/layout :: head">
     <title>로그인</title>
 </head>
-<body class="bg-gray-900 text-gray-100 flex flex-col items-center justify-center min-h-screen">
+<body class="bg-gray-900 text-gray-100 flex flex-col items-center justify-center min-h-screen w-full">
 <!-- Header -->
 <header th:replace="fragments/layout :: header"></header>
 
 <!-- Main Content -->
 <main class="flex-grow flex items-center justify-center w-full">
-    <section class="w-full max-w-md bg-gray-800 p-10 rounded-lg shadow-2xl">
+    <section class="w-full max-w-lg bg-gray-800 p-12 rounded-lg shadow-2xl border border-gray-700">
         <div class="text-center mb-8">
-            <h1 class="text-4xl font-extrabold">담소 Admin</h1>
+            <h1 class="text-5xl font-extrabold text-blue-500">담소 Admin</h1>
         </div>
         <form id="login-form"
               hx-post="/api/auth/login"
@@ -21,26 +21,26 @@
               hx-swap="innerHTML"
               hx-on::after-request="handleAdminLogin(event)">
 
-            <div class="mb-6">
+            <div class="mb-8">
                 <label for="email" class="block text-sm font-medium text-gray-300">이메일</label>
                 <input type="email" id="email" name="email"
-                       class="mt-2 block w-full px-4 py-3 border border-gray-600 bg-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                       class="mt-2 block w-full px-5 py-4 border border-gray-700 bg-gray-900 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-600"
                        placeholder="이메일을 입력하세요" required>
             </div>
-            <div class="mb-8">
+            <div class="mb-10">
                 <label for="password" class="block text-sm font-medium text-gray-300">비밀번호</label>
                 <input type="password" id="password" name="password"
-                       class="mt-2 block w-full px-4 py-3 border border-gray-600 bg-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                       class="mt-2 block w-full px-5 py-4 border border-gray-700 bg-gray-900 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-600"
                        placeholder="비밀번호를 입력하세요" required>
             </div>
-            <div class="mb-6 text-center">
+            <div class="mb-8 text-center">
                 <button type="submit"
-                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300">
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 px-8 rounded-lg transition duration-300">
                     로그인
                 </button>
             </div>
         </form>
-        <div id="error-message" class="text-red-400 text-sm mt-6 text-center h-6"></div>
+        <div id="error-message" class="text-red-500 text-sm mt-8 text-center h-6"></div>
     </section>
 </main>
 
