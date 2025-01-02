@@ -15,6 +15,7 @@ spring:
       ddl-auto: update
     show-sql: true
     database: mysql
+    open-in-view: false
 
 logging:
   level:
