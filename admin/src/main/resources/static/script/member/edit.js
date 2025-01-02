@@ -60,14 +60,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 .then(response => {
                     if (!response.ok) {
                         return response.json().then(errorData => {
-                            const errorMessage = errorData.message || "회원 추가 실패";
+                            const errorMessage = errorData.message || "회원 정보 조회 실패";
                             throw new Error(errorMessage);
                         });
                     }
                     return response.json();
                 })
                 .then(data => {
-                    setInputs(data); // 입력 값 설정
+                    setInputs(data.result); // 입력 값 설정
                     memberEditModal.style.display = "block"; // 모달 열기
                 })
                 .catch(error => {
@@ -96,7 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
             .then(response => {
                 if (!response.ok) {
                     return response.json().then(errorData => {
-                        const errorMessage = errorData.message || "회원 추가 실패";
+                        const errorMessage = errorData.message || "회원 정보 수정 실패";
                         throw new Error(errorMessage);
                     });
                 }
@@ -107,9 +107,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 memberEditModal.style.display = "none";
 
                 // 목록 갱신
-                if (typeof loadMembers === "function") {
-                    loadMembers(1); // 첫 페이지 갱신
-                }
+                window.location.reload();
             })
             .catch(error => {
                 alert(`${error.message}`);

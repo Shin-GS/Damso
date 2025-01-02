@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:hx-on="http://www.w3.org/1999/xhtml"
+      lang="ko">
+<ul th:fragment="guest-menu" class="nav-menu flex space-x-6">
+    <li>
+        <a th:href="@{/login}" data-icon="🔑" class="flex items-center text-white hover:text-gray-300">
+            <span class="pr-2">🔑</span> 로그인
+        </a>
+    </li>
+</ul>
+
+<ul th:fragment="admin-menu" class="nav-menu flex space-x-6 items-center w-full justify-end px-6">
+    <li>
+        <span th:text="${username}" class="text-white font-semibold"></span>
+    </li>
+    <li>
+        <a th:href="@{/members}" class="text-white hover:text-gray-300">
+            회원 관리
+        </a>
+    </li>
+    <li>
+        <a th:href="@{/admins}" class="text-white hover:text-gray-300">
+            관리자 권한 관리
+        </a>
+    </li>
+    <li>
+        <a href="#" hx-post="/api/auth/logout"
+           hx-trigger="click"
+           hx-swap="none"
+           hx-on::after-request="window.location.reload()"
+           class="text-white hover:text-red-400">
+            로그아웃
+        </a>
+    </li>
+</ul>
+</html>

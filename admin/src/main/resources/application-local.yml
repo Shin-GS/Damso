@@ -1,0 +1,15 @@
+server.port: 8080
+
+spring:
+  application:
+    name: admin
+  config:
+    activate:
+      on-profile: local
+    import:
+      - application-core.yml
+      - application-auth.yml
+      - application-domain.yml
+      - optional:application-local.yml
+  thymeleaf:
+    cache: false

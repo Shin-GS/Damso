@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head th:fragment="head">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${pageTitle}">담소 관리자</title>
+    <link href="/css/output.css" rel="stylesheet">
+
+    <script src="/script/htmx.min.js"></script>
+    <script src="/script/json-enc.js"></script>
+
+    <!-- Additional CSS -->
+    <th:block th:if="${additionalCss}">
+        <th:block th:each="css : ${additionalCss.split(',')}">
+            <link th:href="${css}" rel="stylesheet">
+        </th:block>
+    </th:block>
+
+    <!-- Additional Script -->
+    <th:block th:if="${additionalScript}">
+        <th:block th:each="script : ${additionalScript.split(',')}">
+            <script th:src="${script}"></script>
+        </th:block>
+    </th:block>
+</head>
+<body class="bg-gray-900 font-sans leading-normal tracking-normal flex flex-col min-h-screen w-full">
+<!-- Header -->
+<header th:fragment="header" class="w-full bg-gray-800 shadow-lg p-6 flex justify-between items-center">
+    <nav class="w-full max-w-screen-2xl mx-auto flex justify-between">
+        <div class="text-white text-2xl font-extrabold tracking-wide">
+            <a th:href="@{/}" class="hover:text-gray-400">담소 관리자</a>
+        </div>
+
+        <!-- 네비게이션 메뉴 -->
+        <ul id="nav-menu" class="nav-menu flex space-x-6 text-white"></ul>
+        <div hidden="hidden" hx-get="/hx/menu" hx-trigger="load" hx-target="#nav-menu" hx-swap="outerHTML"></div>
+    </nav>
+</header>
+
+<!-- Main Content -->
+<main class="w-full flex-grow flex items-center justify-center px-8 py-12">
+    <div class="bg-gray-800 w-full max-w-screen-2xl p-12 rounded-lg shadow-xl">
+        <h1 class="text-5xl font-bold mb-8 text-white">담소 관리자 페이지</h1>
+    </div>
+</main>
+
+<!-- Footer -->
+<footer th:fragment="footer" class="w-full bg-gray-800 text-center text-white py-6">
+    <p>2024 담소 관리자. All rights reserved.</p>
+</footer>
+</body>
+</html>

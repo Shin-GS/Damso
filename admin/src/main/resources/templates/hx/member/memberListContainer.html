@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="ko">
+<div id="tableContainer" th:fragment="memberListContainer">
+    <table class="w-full text-sm text-left text-gray-400">
+        <thead class="text-xs uppercase bg-gray-700 text-gray-400">
+        <tr>
+            <th scope="col" class="px-6 py-3">Member ID</th>
+            <th scope="col" class="px-6 py-3">Email</th>
+            <th scope="col" class="px-6 py-3">Name</th>
+            <th scope="col" class="px-6 py-3">Role</th>
+            <th scope="col" class="px-6 py-3">Status</th>
+            <th scope="col" class="px-6 py-3">Join Date</th>
+            <th scope="col" class="px-6 py-3">Actions</th>
+        </tr>
+        </thead>
+        <tbody class="bg-gray-800">
+        <tr th:each="member : ${members}" class="border-b border-gray-700">
+            <td class="px-6 py-4" th:text="${member.memberId}"></td>
+            <td class="px-6 py-4" th:text="${member.email}"></td>
+            <td class="px-6 py-4" th:text="${member.name}"></td>
+            <td class="px-6 py-4" th:text="${member.role}"></td>
+            <td class="px-6 py-4" th:text="${member.status}"></td>
+            <td class="px-6 py-4" th:text="${member.joinDate}"></td>
+            <td class="px-6 py-4 flex space-x-2">
+                <button class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded">Edit</button>
+                <button class="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded">Delete</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div id="pagination" class="flex justify-center mt-6">
+        <!-- Previous 버튼 -->
+        <button th:if="${page.number > 0}"
+                hx-get="/hx/members"
+                hx-target="#tableContainer"
+                th:attr="data-page=${page.number - 1}"
+                class="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-l">
+            Previous
+        </button>
+
+        <!-- 페이지 번호 버튼 -->
+        <span th:each="i : ${#numbers.sequence(1, page.totalPages)}">
+            <button th:text="${i}"
+                    th:classappend="${page.number == (i - 1)} ? 'bg-blue-600' : 'bg-gray-700'"
+                    hx-get="/hx/members"
+                    hx-target="#tableContainer"
+                    th:attr="data-page=${i - 1}"
+                    class="px-4 py-2 hover:bg-blue-500 text-white">
+            </button>
+        </span>
+
+        <!-- Next 버튼 -->
+        <button th:if="${page.number + 1 < page.totalPages}"
+                hx-get="/hx/members"
+                hx-target="#tableContainer"
+                th:attr="data-page=${page.number + 1}"
+                class="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-r">
+            Next
+        </button>
+    </div>
+</div>
+</html>
