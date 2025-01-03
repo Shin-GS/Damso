@@ -1,54 +1,84 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      lang="ko">
-<head th:replace="fragments/layout :: head(additionalCss='/css/quill.snow.css,/css/filepond.min.css,/css/uppy.min.css,/css/filepond-plugin-image-preview.min.css', additionalScript='/script/quill.min.js,/script/filepond.min.js,/script/uppy.min.js,/script/filepond-plugin-image-preview.min.js')">
-    <title>콘텐츠 편집</title>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head th:replace="fragments/layout :: head(additionalCss='/css/quill.snow.css,/css/filepond.min.css,/css/uppy.min.css', additionalScript='/script/quill.min.js,/script/filepond.min.js,/script/filepond-plugin-image-preview.min.js,/script/uppy.min.js')">
+    <title>이야기 편집</title>
 </head>
 <body class="content-edit-page flex flex-col min-h-screen bg-gray-100">
 <!-- Header -->
 <header th:replace="fragments/layout :: header"></header>
 
-<!-- Main Content -->
 <main class="flex-grow flex justify-center items-center py-12">
     <section class="content-edit-container bg-white shadow-lg rounded-lg p-8 max-w-4xl w-full">
-        <!-- Page Navigation -->
-        <div id="page-list" class="flex gap-4 overflow-x-auto pb-4 justify-center">
-            <div th:each="page, stat : ${pages.content}"
-                 th:classappend="${page.id == currentPageId} ? 'selected border-blue-500' : ''"
-                 th:data-id="${page.id}"
-                 th:hx-get="@{'/hx/contents/' + ${contentId} + '/' + ${page.id}}"
-                 hx-trigger="click"
-                 hx-target="#editor"
-                 class="page-item flex flex-col items-center cursor-pointer p-4 border rounded-md hover:shadow-md transition-all w-28 sm:w-32 lg:w-40">
-                <div class="page-item-icon text-3xl sm:text-4xl"
-                     th:text="${page.type == 'text' ? '✏️' : (page.type == 'image' ? '🖼️' : '🎥')}"></div>
-                <div th:text="'Page ' + (${pages.number * pages.size + stat.index + 1})"></div>
+        <h1 class="text-2xl font-bold mb-6">이야기 편집</h1>
+
+        <form th:action="@{'/story/' + ${story.id} + '/edit'}"
+              method="PUT"
+              th:object="${story}"
+              class="space-y-6">
+            <div>
+                <label class="block font-medium mb-2">이야기 제목</label>
+                <label>
+                    <input type="text"
+                           th:value="${story.title}"
+                           class="w-full border rounded-md px-4 py-2 focus:ring focus:ring-blue-400" required>
+                </label>
             </div>
-        </div>
 
-        <!-- Page Controls -->
-        <div class="page-controls flex justify-end mt-6">
-            <button th:hx-post="@{'/hx/contents/' + ${contentId}}"
-                    hx-target="#editor"
-                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                Add Page
-            </button>
-        </div>
+            <div>
+                <label class="block font-medium mb-2">이야기 유형</label>
+                <label>
+                    <select class="w-full border rounded-md px-4 py-2 focus:ring focus:ring-blue-400"
+                            name="storyType"
+                            th:value="${story.storyType}"
+                            th:hx-get="@{'/hx/stories/' + ${story.id} + '/edit'}"
+                            hx-include="[name='storyType']"
+                            hx-confirm="이야기 유형을 변경하면 기존에 작성한 내용이 삭제됩니다. 계속하시겠습니까?"
+                            hx-target="#editor">
+                        <option value="TEXT">텍스트</option>
+                        <option value="IMAGE">이미지</option>
+                        <option value="VIDEO">비디오</option>
+                    </select>
+                </label>
+            </div>
 
-        <!-- Editor Section -->
-        <section id="editor" hx-swap="outerHTML" class="mt-8"></section>
+            <div>
+                <section id="editor" class="mt-8"
+                         th:hx-get="@{'/hx/stories/' + ${story.id} + '/edit'}"
+                         hx-include="[name='storyType']"
+                         hx-trigger="load"
+                         hx-target="this">
+                </section>
+            </div>
 
-        <!-- Publish Section -->
-        <div class="publish-section mt-12 text-center">
-            <button class="publish-button bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg"
-                    hx-post="@{'/editor/publish-content/' + ${contentId}}"
-                    hx-include="[name=content-id]"
-                    hx-target="#app">
-                Publish Content
-            </button>
-            <p th:if="${isPublished}" class="text-green-600 mt-4">This content is published and visible to users.</p>
-            <p th:if="${!isPublished}" class="text-red-500 mt-4">This content is not yet published.</p>
-        </div>
+            <div>
+                <label class="block font-medium mb-2">댓글 설정</label>
+                <label>
+                    <select class="w-full border rounded-md px-4 py-2 focus:ring focus:ring-blue-400"
+                            name="commentType"
+                            th:value="${story.commentType}">
+                        <option value="NONE">댓글 없음</option>
+                        <option value="CUT">컷별 댓글</option>
+                        <option value="ALL">전체 댓글</option>
+                    </select>
+                </label>
+            </div>
+
+            <div>
+                <label class="flex items-center">
+                    <input type="checkbox" th:value="${story.published}" class="form-checkbox h-5 w-5">
+                    <span class="ml-2">이야기 발행</span>
+                </label>
+            </div>
+
+            <div class="flex justify-end space-x-4">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded">
+                    저장
+                </button>
+                <a th:href="@{/}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-6 rounded">
+                    취소
+                </a>
+            </div>
+        </form>
     </section>
 </main>
 

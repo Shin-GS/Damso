@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="ko">
+<!-- Text Editor Fragment -->
+<div th:fragment="text-editor" class="editor-container bg-white shadow-md rounded-lg p-6">
+    <div class="quill-editor w-full max-w-4xl mx-auto min-h-[200px]"
+         contenteditable="true">
+        <p th:utext="${storyText}"></p>
+    </div>
+</div>
+
+<!-- Image Editor Fragment -->
+<div th:fragment="image-editor" class="editor-container bg-white shadow-md rounded-lg p-6">
+    <div id="image-upload-area" class="w-full max-w-4xl mx-auto min-h-[200px]">
+        <input type="file" class="filepond" name="filepond" multiple/>
+    </div>
+</div>
+
+<!-- Video Editor -->
+<div th:fragment="video-editor" class="editor-container bg-white shadow-md rounded-lg p-6">
+    <div id="video-upload-area" class="w-full max-w-4xl mx-auto min-h-[200px]"></div>
+</div>
+</html>

@@ -34,14 +34,14 @@
     <li>
         <a href="#"
            data-icon="✒"
-           id="create-content-btn"
-           hx-post="/api/contents"
+           id="create-story-btn"
+           hx-post="/api/stories"
            hx-trigger="click"
-           hx-confirm="콘텐츠를 작성하시겠습니까?"
+           hx-confirm="스토리를 작성하시겠습니까?"
            hx-swap="none"
-           hx-on::after-request="handleCreateContentsResponse(event)"
+           hx-on::after-request="handleCreateStoriesResponse(event)"
            class="flex items-center gap-2 text-lg hover:text-blue-500">
-            콘텐츠 작성
+            스토리 작성
         </a>
     </li>
 
