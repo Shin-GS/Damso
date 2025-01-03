@@ -2,6 +2,7 @@ package com.damso.domain.db.entity.story;
 
 import com.damso.core.constant.story.StoryCommentType;
 import com.damso.core.constant.story.StoryType;
+import com.damso.domain.db.converter.BooleanConverter;
 import com.damso.domain.db.entity.base.CommonTime;
 import com.damso.domain.db.entity.member.Member;
 import com.damso.domain.db.entity.subscribe.SubscriptionPlanStory;
@@ -41,6 +42,10 @@ public class Story extends CommonTime {
     @Enumerated(EnumType.STRING)
     @Column(name = "STORY_COMMENT_TYPE", columnDefinition = "VARCHAR(20)")
     private StoryCommentType commentType;
+
+    @Convert(converter = BooleanConverter.class)
+    @Column(name = "STORY_PUBLISHED", columnDefinition = "CHAR(1) DEFAULT 'Y'", nullable = false)
+    private boolean published = true;
 
     @OneToOne(mappedBy = "story", cascade = CascadeType.ALL)
     private StoryText storyText;
