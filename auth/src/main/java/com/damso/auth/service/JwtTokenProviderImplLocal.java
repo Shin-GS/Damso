@@ -31,18 +31,18 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 @Slf4j
-@Profile("!local")
+@Profile("local")
 @Component
 @Transactional
-public class JwtTokenProviderImpl implements JwtTokenProvider {
+public class JwtTokenProviderImplLocal implements JwtTokenProvider {
     private final SecretKey jwtSigningKey;
     private final long validityInMilliseconds;
     private final long validityRefreshInMilliseconds;
     private final MemberRepository memberRepository;
     private final CacheAuthTokenRepository cacheAuthTokenRepository;
 
-    public JwtTokenProviderImpl(MemberRepository memberRepository,
-                                CacheAuthTokenRepository cacheAuthTokenRepository) {
+    public JwtTokenProviderImplLocal(MemberRepository memberRepository,
+                                     CacheAuthTokenRepository cacheAuthTokenRepository) {
         this.jwtSigningKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode("kIq8c8q1MRjCxFg9FUEt+71FsDLF1xkvflGSw8UOYzA="));
         this.validityInMilliseconds = 86400000L;
         this.validityRefreshInMilliseconds = 2419200000L;
@@ -181,8 +181,8 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
         cookie.setPath("/");
         cookie.setHttpOnly(true);
         cookie.setMaxAge(maxAge);
-        cookie.setSecure(true);
-        cookie.setAttribute("SameSite", "None");
+        cookie.setSecure(false);
+        cookie.setAttribute("SameSite", "Lax");
         return cookie;
     }
 
