@@ -38,8 +38,8 @@ public class MemberRegisterImpl implements MemberRegister {
     public Long signup(EmailSignupCommand command) {
         checkEmailDuplication(command.email());
         return memberRepository.save(Member.ofEmailUser(
-                command.email(),
                 command.name(),
+                command.email(),
                 cryptoUtil.hashPassword(command.password()))
         ).getId();
     }
@@ -48,10 +48,10 @@ public class MemberRegisterImpl implements MemberRegister {
     public Long signup(MemberSocialAccountType provider, String providerAccountId, String email, String name) {
         checkSNSDuplication(provider, providerAccountId);
         return memberRepository.save(Member.ofSnsUser(
-                provider,
-                providerAccountId,
+                name,
                 email,
-                name)
+                provider,
+                providerAccountId)
         ).getId();
     }
 }

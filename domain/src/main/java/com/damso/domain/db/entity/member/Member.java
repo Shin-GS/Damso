@@ -27,12 +27,12 @@ public class Member extends CommonTime {
     @Column(name = "MEMBER_NO", columnDefinition = "BIGINT", nullable = false)
     private Long id;
 
+    @Column(name = "NAME", columnDefinition = "VARCHAR(100)")
+    private String name;
+
     @Convert(converter = EmailConverter.class)
     @Column(name = "EMAIL", columnDefinition = "VARCHAR(255)", nullable = false, unique = true)
     private String email;
-
-    @Column(name = "NAME", columnDefinition = "VARCHAR(100)", nullable = false)
-    private String name;
 
     @Column(name = "PASSWORD", columnDefinition = "VARCHAR(255)")
     private String password;
@@ -54,26 +54,26 @@ public class Member extends CommonTime {
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MemberSubscription> subscriptions = new ArrayList<>();
 
-    public static Member ofEmailUser(String email,
-                                     String name,
+    public static Member ofEmailUser(String name,
+                                     String email,
                                      String password) {
         Member member = new Member();
-        member.setEmail(email);
         member.setName(name);
+        member.setEmail(email);
         member.setPassword(password);
         member.setRole(MemberRoleType.USER);
         member.setStatus(MemberStatusType.ACTIVE);
         return member;
     }
 
-    public static Member ofSnsUser(MemberSocialAccountType provider,
-                                   String providerAccountId,
+    public static Member ofSnsUser(String name,
                                    String email,
-                                   String name) {
+                                   MemberSocialAccountType provider,
+                                   String providerAccountId) {
         Member member = new Member();
-        member.linkSns(provider, providerAccountId);
-        member.setEmail(email);
         member.setName(name);
+        member.setEmail(email);
+        member.linkSns(provider, providerAccountId);
         member.setRole(MemberRoleType.USER);
         member.setStatus(MemberStatusType.ACTIVE);
         return member;
