@@ -1,5 +1,6 @@
-package com.damso.core.constant;
+package com.damso.core.constant.member;
 
+import com.damso.core.constant.EnumInfo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

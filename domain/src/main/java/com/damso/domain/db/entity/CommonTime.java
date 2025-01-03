@@ -20,10 +20,10 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public abstract class CommonTime {
     @CreatedDate
-    @Column(name = "created_at")
+    @Column(name = "CREATED_DATE", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdAt;
 
     @LastModifiedDate
-    @Column(name = "modified_at")
-    private LocalDateTime modifiedAt;
+    @Column(name = "UPDATED_DATE", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    private LocalDateTime updatedAt;
 }

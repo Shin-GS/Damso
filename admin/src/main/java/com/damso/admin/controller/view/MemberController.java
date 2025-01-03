@@ -4,7 +4,7 @@ import com.damso.admin.service.member.MemberFinder;
 import com.damso.admin.service.member.command.FilterOptionCommand;
 import com.damso.admin.service.member.command.MemberSearchFilterCommand;
 import com.damso.admin.service.member.model.MemberSearchModel;
-import com.damso.core.constant.MemberStatusType;
+import com.damso.core.constant.member.MemberStatusType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

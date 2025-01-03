@@ -1,6 +1,6 @@
 package com.damso.user.service.auth;
 
-import com.damso.core.constant.MemberSocialAccountType;
+import com.damso.core.constant.member.MemberSocialAccountType;
 import com.damso.user.service.auth.command.EmailSignupCommand;
 
 public interface MemberRegister {

@@ -1,7 +1,7 @@
 package com.damso.user.security;
 
 import com.damso.auth.service.JwtTokenProvider;
-import com.damso.core.constant.MemberSocialAccountType;
+import com.damso.core.constant.member.MemberSocialAccountType;
 import com.damso.domain.db.entity.member.MemberSocialAccount;
 import com.damso.domain.db.repository.member.MemberSocialAccountRepository;
 import com.damso.user.client.auth.OAuth2ClientImpl;

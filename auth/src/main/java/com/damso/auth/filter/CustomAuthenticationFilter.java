@@ -1,8 +1,8 @@
 package com.damso.auth.filter;
 
 import com.damso.auth.service.JwtTokenProvider;
-import com.damso.core.constant.AuthTokenStatus;
-import com.damso.core.constant.AuthTokenType;
+import com.damso.core.constant.auth.AuthTokenStatus;
+import com.damso.core.constant.auth.AuthTokenType;
 import com.damso.domain.cache.repository.auth.CacheAuthTokenRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

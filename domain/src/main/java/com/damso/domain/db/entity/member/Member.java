@@ -1,16 +1,19 @@
 package com.damso.domain.db.entity.member;
 
-import com.damso.core.constant.MemberRoleType;
-import com.damso.core.constant.MemberSocialAccountType;
-import com.damso.core.constant.MemberStatusType;
+import com.damso.core.constant.member.MemberRoleType;
+import com.damso.core.constant.member.MemberSocialAccountType;
+import com.damso.core.constant.member.MemberStatusType;
 import com.damso.domain.db.converter.EmailConverter;
 import com.damso.domain.db.entity.CommonTime;
+import com.damso.domain.db.entity.subscribe.SubscriptionPlan;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -20,30 +23,36 @@ import java.util.Set;
 @NoArgsConstructor
 public class Member extends CommonTime {
     @Id
-    @Column(name = "MEMBER_NO")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "MEMBER_NO", columnDefinition = "BIGINT", nullable = false)
     private Long id;
 
-    @Column(name = "EMAIL", unique = true, nullable = false)
     @Convert(converter = EmailConverter.class)
+    @Column(name = "EMAIL", columnDefinition = "VARCHAR(255)", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "NAME", nullable = false)
+    @Column(name = "NAME", columnDefinition = "VARCHAR(100)", nullable = false)
     private String name;
 
-    @Column(name = "PASSWORD")
+    @Column(name = "PASSWORD", columnDefinition = "VARCHAR(255)")
     private String password;
 
-    @Column(name = "ROLE", nullable = false)
     @Enumerated(EnumType.STRING)
+    @Column(name = "ROLE", columnDefinition = "VARCHAR(20)", nullable = false)
     private MemberRoleType role;
 
-    @Column(name = "STATUS", nullable = false)
     @Enumerated(EnumType.STRING)
+    @Column(name = "STATUS", columnDefinition = "VARCHAR(20)", nullable = false)
     private MemberStatusType status;
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<MemberSocialAccount> socialAccounts = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<SubscriptionPlan> managedPlans = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MemberSubscription> subscriptions = new ArrayList<>();
 
     public static Member ofEmailUser(String email,
                                      String name,

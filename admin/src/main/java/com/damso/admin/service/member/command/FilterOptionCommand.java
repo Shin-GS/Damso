@@ -1,6 +1,6 @@
 package com.damso.admin.service.member.command;
 
-import com.damso.core.constant.MemberStatusType;
+import com.damso.core.constant.member.MemberStatusType;
 
 public record FilterOptionCommand(String value,
                                   String description) {

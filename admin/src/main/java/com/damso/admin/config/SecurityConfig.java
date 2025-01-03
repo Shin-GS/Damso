@@ -1,7 +1,7 @@
 package com.damso.admin.config;
 
 import com.damso.auth.filter.CustomAuthenticationFilter;
-import com.damso.core.constant.MemberRoleType;
+import com.damso.core.constant.member.MemberRoleType;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;

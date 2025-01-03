@@ -1,6 +1,6 @@
 package com.damso.user.service.auth;
 
-import com.damso.core.constant.MemberSocialAccountType;
+import com.damso.core.constant.member.MemberSocialAccountType;
 import com.damso.core.response.error.ErrorCode;
 import com.damso.core.response.exception.BusinessException;
 import com.damso.core.utils.crypto.CryptoUtil;

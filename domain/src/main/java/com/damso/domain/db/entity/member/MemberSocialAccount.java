@@ -1,6 +1,6 @@
 package com.damso.domain.db.entity.member;
 
-import com.damso.core.constant.MemberSocialAccountType;
+import com.damso.core.constant.member.MemberSocialAccountType;
 import com.damso.domain.db.converter.PrivacyConverter;
 import com.damso.domain.db.entity.CommonTime;
 import jakarta.persistence.*;
@@ -19,20 +19,20 @@ import lombok.Setter;
 @NoArgsConstructor
 public class MemberSocialAccount extends CommonTime {
     @Id
-    @Column(name = "MEMBER_SOCIAL_ACCOUNT_NO")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "MEMBER_SOCIAL_ACCOUNT_NO", columnDefinition = "BIGINT", nullable = false)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "MEMBER_NO", nullable = false)
+    @JoinColumn(name = "MEMBER_NO", columnDefinition = "BIGINT", nullable = false)
     private Member member;
 
-    @Column(name = "SOCIAL_TYPE", nullable = false)
-    @Enumerated(value = EnumType.STRING)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "SOCIAL_TYPE", columnDefinition = "VARCHAR(50)", nullable = false)
     private MemberSocialAccountType provider;
 
-    @Column(name = "SOCIAL_ID", nullable = false)
     @Convert(converter = PrivacyConverter.class)
+    @Column(name = "SOCIAL_ID", columnDefinition = "VARCHAR(255)", nullable = false)
     private String providerAccountId;
 
     public static MemberSocialAccount of(Member member,

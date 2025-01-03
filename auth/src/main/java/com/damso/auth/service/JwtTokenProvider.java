@@ -1,7 +1,7 @@
 package com.damso.auth.service;
 
-import com.damso.core.constant.AuthTokenStatus;
-import com.damso.core.constant.AuthTokenType;
+import com.damso.core.constant.auth.AuthTokenStatus;
+import com.damso.core.constant.auth.AuthTokenType;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
