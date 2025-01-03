@@ -2,7 +2,7 @@ package com.damso.domain.db.entity.member;
 
 import com.damso.core.constant.member.MemberSocialAccountType;
 import com.damso.domain.db.converter.PrivacyConverter;
-import com.damso.domain.db.entity.CommonTime;
+import com.damso.domain.db.entity.base.CommonTime;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

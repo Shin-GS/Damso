@@ -1,8 +1,7 @@
 package com.damso.domain.db.entity.subscribe;
 
-import com.damso.domain.db.entity.CommonTime;
+import com.damso.domain.db.entity.base.CommonTime;
 import com.damso.domain.db.entity.member.Member;
-import com.damso.domain.db.entity.story.Story;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

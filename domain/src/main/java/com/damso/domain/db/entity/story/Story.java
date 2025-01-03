@@ -2,7 +2,7 @@ package com.damso.domain.db.entity.story;
 
 import com.damso.core.constant.story.StoryCommentType;
 import com.damso.core.constant.story.StoryType;
-import com.damso.domain.db.entity.CommonTime;
+import com.damso.domain.db.entity.base.CommonTime;
 import com.damso.domain.db.entity.subscribe.SubscriptionPlanStory;
 import jakarta.persistence.*;
 import lombok.Getter;

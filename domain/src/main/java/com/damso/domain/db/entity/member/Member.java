@@ -4,7 +4,7 @@ import com.damso.core.constant.member.MemberRoleType;
 import com.damso.core.constant.member.MemberSocialAccountType;
 import com.damso.core.constant.member.MemberStatusType;
 import com.damso.domain.db.converter.EmailConverter;
-import com.damso.domain.db.entity.CommonTime;
+import com.damso.domain.db.entity.base.CommonTime;
 import com.damso.domain.db.entity.subscribe.SubscriptionPlan;
 import jakarta.persistence.*;
 import lombok.Getter;

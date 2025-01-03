@@ -1,4 +1,4 @@
-package com.damso.domain.db.entity;
+package com.damso.domain.db.entity.base;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

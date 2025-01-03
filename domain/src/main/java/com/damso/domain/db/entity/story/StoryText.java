@@ -1,6 +1,6 @@
 package com.damso.domain.db.entity.story;
 
-import com.damso.domain.db.entity.CommonTime;
+import com.damso.domain.db.entity.base.CommonTime;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
