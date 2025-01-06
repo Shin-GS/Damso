@@ -2,7 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org"
       lang="ko">
 <!-- Text Editor Fragment -->
-<div th:fragment="text-editor" class="editor-container bg-white shadow-md rounded-lg p-6">
+<div th:fragment="text-editor"
+     class="editor-container bg-white shadow-md rounded-lg p-6">
     <div class="quill-editor w-full max-w-4xl mx-auto min-h-[200px]"
          contenteditable="true">
         <p th:utext="${storyText}"></p>
@@ -10,14 +11,59 @@
 </div>
 
 <!-- Image Editor Fragment -->
-<div th:fragment="image-editor" class="editor-container bg-white shadow-md rounded-lg p-6">
+<div th:fragment="image-editor"
+     class="editor-container bg-white shadow-md rounded-lg p-6 relative z-10">
     <div id="image-upload-area" class="w-full max-w-4xl mx-auto min-h-[200px]">
-        <input type="file" class="filepond" name="file" multiple/>
+        <form action="/api/upload/image"
+              class="dropzone border-2 border-dashed border-gray-300 rounded-lg p-4 bg-gray-50"
+              id="uploadDropzone">
+            <div class="dz-message text-center text-gray-400">
+                이미지를 드래그하거나 클릭하여 업로드하세요.
+            </div>
+        </form>
+    </div>
+
+    <!-- 업로드된 이미지 정렬 섹션 -->
+    <div class="mt-8">
+        <h2 class="text-lg font-bold mb-4">이미지 순서 변경</h2>
+
+        <div class="sortable-list grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+            <!-- 업로드된 이미지가 여기에 추가됩니다 -->
+        </div>
+    </div>
+
+    <!-- 모달 -->
+    <div id="image-edit-modal"
+         class="modal-overlay fixed inset-0 bg-black bg-opacity-70 hidden flex items-center justify-center z-[1050]">
+        <div class="modal bg-white p-6 rounded-lg shadow-xl max-w-lg w-full z-[1100]">
+            <h2 class="text-xl font-bold mb-4">이미지 편집</h2>
+
+            <div class="cropper-container mb-4">
+                <img id="image-edit-modal-image" src="" class="cropper-image w-full rounded-lg">
+            </div>
+
+            <div class="flex justify-center space-x-4 mt-6">
+                <button type="button"
+                        class="apply-edit-button bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded">
+                    편집 적용
+                </button>
+                <button type="button"
+                        class="skip-edit-button bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded">
+                    편집 건너뛰기
+                </button>
+                <button type="button"
+                        class="close-modal-button bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">
+                    닫기
+                </button>
+            </div>
+        </div>
     </div>
 </div>
 
 <!-- Video Editor -->
-<div th:fragment="video-editor" class="editor-container bg-white shadow-md rounded-lg p-6">
-    <div id="video-upload-area" class="w-full max-w-4xl mx-auto min-h-[200px]"></div>
+<div th:fragment="video-editor"
+     class="editor-container bg-white shadow-md rounded-lg p-6">
+    <div id="video-upload-area"
+         class="w-full max-w-4xl mx-auto min-h-[200px]"></div>
 </div>
 </html>
