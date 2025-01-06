@@ -2,12 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:hx-on="http://www.w3.org/1999/xhtml"
       lang="ko">
-<head th:replace="fragments/layout :: head">
+<head th:replace="views/layout :: head">
     <title>로그인</title>
 </head>
 <body class="bg-gray-900 text-gray-100 flex flex-col items-center justify-center min-h-screen w-full">
 <!-- Header -->
-<header th:replace="fragments/layout :: header"></header>
+<header th:replace="views/layout :: header"></header>
 
 <!-- Main Content -->
 <main class="flex-grow flex items-center justify-center w-full">
@@ -45,7 +45,7 @@
 </main>
 
 <!-- Footer -->
-<footer th:replace="fragments/layout :: footer" class="w-full"></footer>
+<footer th:replace="views/layout :: footer" class="w-full"></footer>
 
 <script>
     function handleAdminLogin(event) {

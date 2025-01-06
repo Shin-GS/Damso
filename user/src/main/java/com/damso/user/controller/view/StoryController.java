@@ -20,6 +20,6 @@ public class StoryController {
         model.addAttribute("story", new EditStoryModel(1L, "테스트", StoryType.TEXT, StoryCommentType.ALL, true));
         model.addAttribute("files", new PageImpl<>(new ArrayList<>(), Pageable.ofSize(3), 3));
         model.addAttribute("storyText", "");
-        return "fragments/story/storyEdit";
+        return "views/story/storyEdit";
     }
 }

@@ -32,13 +32,13 @@ public class StoryEditHxController {
         model.addAttribute("storyText", "");
 
         if (storyType == null) {
-            return "hx/storyEditor :: text-editor";
+            return "components/storyEditor :: text-editor";
         }
 
         return switch (storyType) {
-            case TEXT -> "hx/storyEditor :: text-editor";
-            case IMAGE -> "hx/storyEditor :: image-editor";
-            case VIDEO -> "hx/storyEditor :: video-editor";
+            case TEXT -> "components/storyEditor :: text-editor";
+            case IMAGE -> "components/storyEditor :: image-editor";
+            case VIDEO -> "components/storyEditor :: video-editor";
         };
     }
 }

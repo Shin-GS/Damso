@@ -19,11 +19,11 @@ public class MenuHxController {
     public String menu(Model model,
                        @SessionMemberId Long memberId) {
         if (memberId == null) {
-            return "hx/menu :: guest-menu";
+            return "components/menu :: guest-menu";
         }
 
         RefreshInfoModel refreshInfo = refreshInfoFetcher.refresh(memberId);
         model.addAttribute("username", refreshInfo.name());
-        return "hx/menu :: admin-menu";
+        return "components/menu :: admin-menu";
     }
 }

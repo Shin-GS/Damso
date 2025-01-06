@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
-<head th:replace="fragments/layout :: head(additionalCss='/css/quill.snow.css,/css/filepond.min.css,/css/uppy.min.css', additionalScript='/script/quill.min.js,/script/filepond.min.js,/script/filepond-plugin-image-preview.min.js,/script/uppy.min.js')">
+<head th:replace="views/layout :: head(additionalCss='/css/quill.snow.css,/css/filepond.min.css,/css/uppy.min.css', additionalScript='/script/quill.min.js,/script/filepond.min.js,/script/filepond-plugin-image-preview.min.js,/script/uppy.min.js')">
     <title>이야기 편집</title>
 </head>
 <body class="content-edit-page flex flex-col min-h-screen bg-gray-100">
 <!-- Header -->
-<header th:replace="fragments/layout :: header"></header>
+<header th:replace="views/layout :: header"></header>
 
 <main class="flex-grow flex justify-center items-center py-12">
     <section class="content-edit-container bg-white shadow-lg rounded-lg p-8 max-w-4xl w-full">
@@ -83,7 +83,7 @@
 </main>
 
 <!-- Footer -->
-<footer th:replace="fragments/layout :: footer"></footer>
+<footer th:replace="views/layout :: footer"></footer>
 
 <script>
     // Quill 에디터 초기화

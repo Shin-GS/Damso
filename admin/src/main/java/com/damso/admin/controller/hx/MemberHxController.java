@@ -25,6 +25,6 @@ public class MemberHxController {
         Page<MemberSearchModel> members = memberFinder.findMembers(command, pageable);
         model.addAttribute("members", members.getContent());
         model.addAttribute("page", members);
-        return "hx/member/memberListContainer :: memberListContainer";
+        return "components/member/memberListContainer :: memberListContainer";
     }
 }

@@ -30,7 +30,7 @@ public class MemberController {
         model.addAttribute("statusOptions", getStatusOptions());
         model.addAttribute("members", members.getContent());
         model.addAttribute("page", members);
-        return "fragments/member/memberList";
+        return "views/member/memberList";
     }
 
     private List<FilterOptionCommand> getStatusOptions() {
