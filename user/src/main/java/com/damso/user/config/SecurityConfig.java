@@ -79,7 +79,8 @@ public class SecurityConfig {
                 "/api/member/**",
                 "/api/stories/**",
                 "/hx/stories/**",
-                "/stories/edit/**"
+                "/stories/edit/**",
+                "/api/upload/**"
         );
 
         Set<String> userRolePatterns = Set.of(

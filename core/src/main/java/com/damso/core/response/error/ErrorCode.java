@@ -8,6 +8,11 @@ import lombok.Getter;
 public enum ErrorCode {
     //I : 사용자의 입력 관련
     INVALID_INPUT_VALUE(400, "I001", "Invalid Input Value"),
+    FILE_EMPTY(400, "I002", "File is Empty"),
+    FILE_SIZE_EXCEEDED(400, "I003", "File Size Exceeded"),
+    FILE_EXTENSION_NOT_ALLOWED(400, "I004", "File Extension Not Allowed"),
+    FILE_TYPE_NOT_ALLOWED(400, "I005", "File Type Not Allowed"),
+    FILE_NAME_INVALID(400, "I006", "File Name Is Invalid"),
 
     //T : 사용자 토큰 관련
     TOKEN_EXPIRED(400, "T001", "인증번호 유효기간이 만료되었습니다."),

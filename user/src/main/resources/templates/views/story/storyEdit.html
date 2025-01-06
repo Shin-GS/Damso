@@ -104,11 +104,11 @@
                 }
             });
 
-            // 파일 업로드 기능 가능
+            // 이미지 업로드
             quill.getModule('toolbar').addHandler('image', () => {
                 const input = document.createElement('input');
                 input.setAttribute('type', 'file');
-                input.setAttribute('accept', 'image/*');
+                input.setAttribute('accept', '.png,.jpg,.jpeg,.gif,.bmp,.webp');
                 input.click();
 
                 input.onchange = async () => {
@@ -117,17 +117,19 @@
                         const formData = new FormData();
                         formData.append('file', file);
 
-                        const res = await fetch('/upload/image', {
+                        const res = await fetch('/api/upload/image', {
                             method: 'POST',
-                            body: formData,
-                            headers: {
-                                'X-CSRF-TOKEN': 'your-csrf-token'
-                            }
+                            body: formData
                         });
 
                         const data = await res.json();
-                        const range = quill.getSelection();
-                        quill.insertEmbed(range.index, 'image', data.url);
+                        if (data && data.result && data.result.url) {
+                            const range = quill.getSelection();
+                            quill.insertEmbed(range.index, 'image', data.result.url);
+
+                        } else {
+                            alert('이미지 업로드 실패: 서버 응답에 URL이 없습니다.');
+                        }
                     }
                 };
             });
@@ -142,15 +144,12 @@
             filepondElements.forEach((el) => {
                 FilePond.create(el, {
                     allowMultiple: true,
-                    maxFileSize: '10MB',
+                    maxFileSize: '20MB',
+                    acceptedFileTypes: ['image/png', 'image/jpeg', 'image/gif', 'image/bmp', 'image/webp'],
                     server: {
-                        process: '/upload/image',
-                        revert: '/upload/revert',
-                        headers: {
-                            'X-CSRF-TOKEN': 'your-csrf-token'
-                        }
+                        process: '/api/upload/image'
                     },
-                    acceptedFileTypes: ['image/png', 'image/jpeg']
+                    stylePanelAspectRatio: 1
                 });
             });
         }
@@ -164,7 +163,7 @@
                 restrictions: {
                     maxNumberOfFiles: 1,
                     maxFileSize: 500 * 1024 * 1024,  // 500MB 제한
-                    allowedFileTypes: ['video/*']
+                    allowedFileTypes: ['.mp4', '.mov', '.avi', '.mkv', '.wmv', '.flv']
                 }
             })
                 .use(Uppy.Dashboard, {
@@ -174,11 +173,8 @@
                     height: 300
                 })
                 .use(Uppy.XHRUpload, {
-                    endpoint: '/upload/video',
-                    fieldName: 'file',
-                    headers: {
-                        'X-CSRF-TOKEN': 'your-csrf-token'
-                    }
+                    endpoint: '/api/upload/video',
+                    fieldName: 'file'
                 });
 
             // 업로드 제한 실패 시 경고

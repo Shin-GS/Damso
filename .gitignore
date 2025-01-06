@@ -47,6 +47,11 @@ logs/
 ### VS Code ###
 .vscode/
 
-## 로컬 설정
+## local ##
 *-local.yml
 /java_pid*
+
+## file upload ##
+/uploads/*
+!/uploads/images/
+!/uploads/videos/
