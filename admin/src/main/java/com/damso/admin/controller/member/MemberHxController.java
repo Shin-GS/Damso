@@ -1,4 +1,4 @@
-package com.damso.admin.controller.hx;
+package com.damso.admin.controller.member;
 
 import com.damso.admin.service.member.MemberFinder;
 import com.damso.admin.service.member.command.MemberSearchFilterCommand;

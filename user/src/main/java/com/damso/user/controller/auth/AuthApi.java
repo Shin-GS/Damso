@@ -1,4 +1,4 @@
-package com.damso.user.controller.api;
+package com.damso.user.controller.auth;
 
 import com.damso.auth.service.CustomAuthenticationManager;
 import com.damso.auth.service.JwtTokenProvider;

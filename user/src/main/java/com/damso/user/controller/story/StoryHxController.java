@@ -1,4 +1,4 @@
-package com.damso.user.controller.hx;
+package com.damso.user.controller.story;
 
 import com.damso.auth.session.SessionMemberId;
 import com.damso.core.constant.story.StoryType;
@@ -18,7 +18,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/hx")
 @RequiredArgsConstructor
-public class StoryEditHxController {
+public class StoryHxController {
     @GetMapping("/stories/{storyId}/edit")
     public String getStory(@PathVariable("storyId") Long storyId,
                            @RequestParam(value = "storyType", required = false) StoryType storyType,

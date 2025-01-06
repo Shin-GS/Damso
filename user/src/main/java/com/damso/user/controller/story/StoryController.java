@@ -1,4 +1,4 @@
-package com.damso.user.controller.view;
+package com.damso.user.controller.story;
 
 import com.damso.core.constant.story.StoryCommentType;
 import com.damso.core.constant.story.StoryType;

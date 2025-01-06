@@ -1,4 +1,4 @@
-package com.damso.admin.controller.view;
+package com.damso.user.controller.home;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

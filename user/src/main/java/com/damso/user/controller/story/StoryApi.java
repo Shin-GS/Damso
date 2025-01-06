@@ -1,4 +1,4 @@
-package com.damso.user.controller.api;
+package com.damso.user.controller.story;
 
 import com.damso.auth.session.SessionMemberId;
 import com.damso.core.response.success.SuccessCode;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/stories")
 @RequiredArgsConstructor
-public class StoryEditApi {
+public class StoryApi {
     private final StoryEditor storyEditor;
 
     @PostMapping

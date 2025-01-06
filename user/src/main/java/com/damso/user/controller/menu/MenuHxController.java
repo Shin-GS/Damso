@@ -1,8 +1,8 @@
-package com.damso.admin.controller.hx;
+package com.damso.user.controller.menu;
 
-import com.damso.admin.service.auth.RefreshInfoFetcher;
-import com.damso.admin.service.auth.model.RefreshInfoModel;
 import com.damso.auth.session.SessionMemberId;
+import com.damso.user.service.auth.RefreshInfoFetcher;
+import com.damso.user.service.auth.model.RefreshInfoModel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +24,6 @@ public class MenuHxController {
 
         RefreshInfoModel refreshInfo = refreshInfoFetcher.refresh(memberId);
         model.addAttribute("username", refreshInfo.name());
-        return "components/menu :: admin-menu";
+        return "components/menu :: user-menu";
     }
 }

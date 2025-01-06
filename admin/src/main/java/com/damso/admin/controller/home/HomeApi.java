@@ -1,4 +1,4 @@
-package com.damso.user.controller.api;
+package com.damso.admin.controller.home;
 
 import com.damso.core.response.success.SuccessCode;
 import com.damso.core.response.success.SuccessResponse;

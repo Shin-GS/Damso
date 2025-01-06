@@ -1,4 +1,4 @@
-package com.damso.admin.controller.api;
+package com.damso.admin.controller.auth;
 
 import com.damso.admin.service.auth.RefreshInfoFetcher;
 import com.damso.admin.service.auth.command.LoginCommand;
