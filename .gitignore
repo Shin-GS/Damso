@@ -50,8 +50,3 @@ logs/
 ## local ##
 *-local.yml
 /java_pid*
-
-## file upload ##
-/uploads/*
-!/uploads/images/
-!/uploads/videos/
