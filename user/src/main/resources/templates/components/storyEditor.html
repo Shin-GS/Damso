@@ -4,7 +4,8 @@
 <!-- Text Editor Fragment -->
 <div th:fragment="text-editor"
      class="editor-container bg-white shadow-md rounded-lg p-6">
-    <div class="quill-editor w-full max-w-4xl mx-auto min-h-[200px]"
+    <div id="text-editor-container"
+         class="quill-editor w-full max-w-4xl mx-auto min-h-[200px]"
          contenteditable="true">
         <p th:utext="${storyText}"></p>
     </div>
@@ -13,7 +14,8 @@
 <!-- Image Editor Fragment -->
 <div th:fragment="image-editor"
      class="editor-container bg-white shadow-md rounded-lg p-6 relative z-10">
-    <div id="image-upload-area" class="w-full max-w-4xl mx-auto min-h-[200px]">
+    <div id="image-editor-container"
+         class="w-full max-w-4xl mx-auto min-h-[200px]">
         <form action="/api/upload/image"
               class="dropzone border-2 border-dashed border-gray-300 rounded-lg p-4 bg-gray-50"
               id="uploadDropzone">
@@ -25,8 +27,7 @@
 
     <!-- 업로드된 이미지 정렬 섹션 -->
     <div class="mt-8">
-        <h2 class="text-lg font-bold mb-4">이미지 순서 변경</h2>
-
+        <h2 class="text-lg font-bold mb-4">업로드 완료</h2>
         <div class="sortable-list grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
             <!-- 업로드된 이미지가 여기에 추가됩니다 -->
         </div>
@@ -39,21 +40,21 @@
             <h2 class="text-xl font-bold mb-4">이미지 편집</h2>
 
             <div class="cropper-container mb-4">
-                <img id="image-edit-modal-image" src="" class="cropper-image w-full rounded-lg">
+                <img id="image-edit-modal-image" src="" class="cropper-image w-full rounded-lg" alt="">
             </div>
 
             <div class="flex justify-center space-x-4 mt-6">
                 <button type="button"
                         class="apply-edit-button bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded">
-                    편집 적용
+                    편집 후 업로드
                 </button>
                 <button type="button"
                         class="skip-edit-button bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded">
-                    편집 건너뛰기
+                    원본 업로드
                 </button>
                 <button type="button"
                         class="close-modal-button bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">
-                    닫기
+                    편집 취소
                 </button>
             </div>
         </div>
@@ -63,7 +64,7 @@
 <!-- Video Editor -->
 <div th:fragment="video-editor"
      class="editor-container bg-white shadow-md rounded-lg p-6">
-    <div id="video-upload-area"
+    <div id="video-editor-container"
          class="w-full max-w-4xl mx-auto min-h-[200px]"></div>
 </div>
 </html>
