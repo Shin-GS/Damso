@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head th:replace="views/layout :: head(additionalCss='/css/story/quill.snow.css,/css/story/cropper.min.css,/css/story/dropzone.min.css,/css/story/uppy.min.css',
-additionalScript='/script/story/quill.min.js,/script/story/cropper.min.js,/script/story/dropzone.min.js,/script/story/uppy.min.js,/script/story/editor/textEditor.js,/script/story/editor/imageEditor.js,/script/story/editor/videoEditor.js')">
+additionalScript='/script/story/quill.min.js,/script/story/cropper.min.js,/script/story/dropzone.min.js,/script/story/sortable.min.js,/script/story/uppy.min.js,/script/story/editor/textEditor.js,/script/story/editor/imageEditor.js,/script/story/editor/videoEditor.js')">
     <title>이야기 편집</title>
 </head>
 <body class="content-edit-page flex flex-col min-h-screen bg-gray-100">
@@ -11,15 +11,14 @@ additionalScript='/script/story/quill.min.js,/script/story/cropper.min.js,/scrip
 <main class="flex-grow flex justify-center items-center py-12">
     <section class="content-edit-container bg-white shadow-lg rounded-lg p-8 max-w-4xl w-full">
         <h1 class="text-2xl font-bold mb-6">이야기 편집</h1>
-
-        <form th:action="@{'/story/' + ${story.id} + '/edit'}"
-              method="PUT"
-              th:object="${story}"
+        <form id="storyEditForm"
+              th:action="@{'/api/stories/' + ${story.id} + '/edit'}"
               class="space-y-6">
             <div>
                 <label class="block font-medium mb-2">이야기 제목</label>
                 <label>
                     <input type="text"
+                           name="title"
                            th:value="${story.title}"
                            class="w-full border rounded-md px-4 py-2 focus:ring focus:ring-blue-400" required>
                 </label>
@@ -28,12 +27,11 @@ additionalScript='/script/story/quill.min.js,/script/story/cropper.min.js,/scrip
             <div>
                 <label class="block font-medium mb-2">이야기 유형</label>
                 <label>
-                    <select class="w-full border rounded-md px-4 py-2 focus:ring focus:ring-blue-400"
+                    <select id="storyTypeSelect"
                             name="storyType"
-                            th:value="${story.storyType}"
+                            class="w-full border rounded-md px-4 py-2 focus:ring focus:ring-blue-400"
                             th:hx-get="@{'/hx/stories/' + ${story.id} + '/edit'}"
                             hx-include="[name='storyType']"
-                            hx-confirm="이야기 유형을 변경하면 기존에 작성한 내용이 삭제됩니다. 계속하시겠습니까?"
                             hx-target="#editor">
                         <option value="TEXT">텍스트</option>
                         <option value="IMAGE">이미지</option>
@@ -42,21 +40,18 @@ additionalScript='/script/story/quill.min.js,/script/story/cropper.min.js,/scrip
                 </label>
             </div>
 
-            <div>
-                <section id="editor" class="mt-8"
-                         th:hx-get="@{'/hx/stories/' + ${story.id} + '/edit'}"
-                         hx-include="[name='storyType']"
-                         hx-trigger="load"
-                         hx-target="this">
-                </section>
-            </div>
+            <section id="editor"
+                     class="mt-8"
+                     th:hx-get="@{'/hx/stories/' + ${story.id} + '/edit'}"
+                     hx-include="[name='storyType']" hx-trigger="load" hx-target="this">
+            </section>
 
             <div>
                 <label class="block font-medium mb-2">댓글 설정</label>
                 <label>
-                    <select class="w-full border rounded-md px-4 py-2 focus:ring focus:ring-blue-400"
-                            name="commentType"
-                            th:value="${story.commentType}">
+                    <select name="commentType"
+                            th:value="${story.commentType}"
+                            class="w-full border rounded-md px-4 py-2 focus:ring focus:ring-blue-400">
                         <option value="NONE">댓글 없음</option>
                         <option value="CUT">컷별 댓글</option>
                         <option value="ALL">전체 댓글</option>
@@ -64,11 +59,14 @@ additionalScript='/script/story/quill.min.js,/script/story/cropper.min.js,/scrip
                 </label>
             </div>
 
-            <div>
-                <label class="flex items-center">
-                    <input type="checkbox" th:value="${story.published}" class="form-checkbox h-5 w-5">
-                    <span class="ml-2">이야기 발행</span>
+            <div class="flex items-center">
+                <label>
+                    <input type="checkbox"
+                           name="published"
+                           th:checked="${story.published}"
+                           class="form-checkbox h-5 w-5">
                 </label>
+                <span class="ml-2">이야기 발행</span>
             </div>
 
             <div class="flex justify-end space-x-4">
@@ -97,6 +95,9 @@ additionalScript='/script/story/quill.min.js,/script/story/cropper.min.js,/scrip
     // DOM이 완전히 로드된 후 초기화
     document.addEventListener('DOMContentLoaded', async () => {
         await initializeEditors();
+
+        const form = document.getElementById('storyEditForm');
+        form.addEventListener('submit', handleFormSubmit);
     });
 
     // HTMX 요청 완료 후 비동기 초기화
@@ -105,6 +106,39 @@ additionalScript='/script/story/quill.min.js,/script/story/cropper.min.js,/scrip
             await initializeEditors();
         }
     });
+
+    async function handleFormSubmit(event) {
+        event.preventDefault();
+
+        const storyType = document.getElementById('storyTypeSelect').value;
+        const formData = new FormData(event.target);
+
+        if (storyType === 'TEXT') {
+            const textContent = document.querySelector('.ql-editor').innerHTML;
+            formData.append('text', textContent);
+        }
+
+        if (storyType === 'IMAGE') {
+            const images = Array.from(document.querySelectorAll('.sortable-list img')).map(img => img.src);
+            images.forEach(url => formData.append('images', url));
+        }
+
+        if (storyType === 'VIDEO') {
+            const videoUrl = document.querySelector('.uppy-Dashboard-inner .uppy-Dashboard-Item-name')?.textContent;
+            if (videoUrl) formData.append('video', videoUrl);
+        }
+
+        const response = await fetch(form.action, {
+            method: 'PUT',
+            body: formData,
+        });
+
+        if (response.ok) {
+            alert('스토리가 저장되었습니다.');
+        } else {
+            alert('저장 실패');
+        }
+    }
 </script>
 </body>
 </html>

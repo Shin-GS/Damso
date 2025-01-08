@@ -101,6 +101,7 @@ def cdnFiles = [
         [url: "https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js", dest: "src/main/resources/static/script/story/cropper.min.js"],
         [url: "https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/min/dropzone.min.css", dest: "src/main/resources/static/css/story/dropzone.min.css"],
         [url: "https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/min/dropzone.min.js", dest: "src/main/resources/static/script/story/dropzone.min.js"],
+        [url: "https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js", dest: "src/main/resources/static/script/story/sortable.min.js"],
         [url: "https://cdnjs.cloudflare.com/ajax/libs/uppy/3.1.0/uppy.min.js", dest: "src/main/resources/static/script/story/uppy.min.js"],
         [url: "https://cdnjs.cloudflare.com/ajax/libs/uppy/3.1.0/uppy.min.css", dest: "src/main/resources/static/css/story/uppy.min.css"]
 ]
