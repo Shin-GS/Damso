@@ -32,7 +32,7 @@ async function initializeImageEditor() {
     initializeSortable();
 }
 
-// 이미지 정렬 기능
+// 이미지 순서 변경
 function initializeSortable() {
     const sortableContainer = document.querySelector('#sortable-list');
     if (!sortableContainer) {
@@ -115,11 +115,26 @@ document.addEventListener('click', (event) => {
             const newFile = new File([blob], originalFile.name, {type: 'image/jpeg'});
             newFile.upload = {file: newFile};
 
-            dropzone.addFile(newFile);
-            dropzone.processFile(newFile);
+            const formData = new FormData();
+            formData.append("file", newFile);
 
-            modal.classList.add('hidden');
-            processNextFile();
+            fetch('/api/upload/image', {
+                method: 'POST',
+                body: formData
+            }).then(response => response.json())
+                .then(data => {
+                    if (data && data.result && data.result.url) {
+                        // 업로드 성공 후 이미지 추가
+                        addImageToSortableList(data.result.url);
+                    }
+                    // 파일 큐에서 제거
+                    filesQueue.splice(currentFileIndex, 1);
+                    modal.classList.add('hidden');
+                    processNextFile();
+                }).catch(error => {
+                console.error('업로드 실패:', error);
+                alert('이미지 업로드에 실패했습니다.');
+            });
         });
     }
 
@@ -138,9 +153,8 @@ document.addEventListener('click', (event) => {
 
 // 다음 파일 처리
 function processNextFile() {
-    currentFileIndex++;
-    if (currentFileIndex < filesQueue.length) {
-        showEditModal(filesQueue[currentFileIndex]);
+    if (filesQueue.length > 0) {
+        showEditModal(filesQueue[0]);  // 항상 첫 번째 파일 처리
     } else {
         filesQueue = [];
         currentFileIndex = 0;
