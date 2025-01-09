@@ -1,4 +1,4 @@
-package com.damso.user.service.auth;
+package com.damso.user.service.member;
 
 import com.damso.core.constant.member.MemberSocialAccountType;
 import com.damso.user.service.auth.command.EmailSignupCommand;

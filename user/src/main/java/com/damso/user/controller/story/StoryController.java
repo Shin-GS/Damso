@@ -2,7 +2,7 @@ package com.damso.user.controller.story;
 
 import com.damso.core.constant.story.StoryCommentType;
 import com.damso.core.constant.story.StoryType;
-import com.damso.user.service.story.model.EditStoryModel;
+import com.damso.user.service.story.model.StoryEditInfoModel;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
@@ -17,7 +17,7 @@ public class StoryController {
     @GetMapping("/stories/{storyId}/edit")
     public String storyEdit(@PathVariable("storyId") Long storyId,
                             Model model) {
-        model.addAttribute("story", new EditStoryModel(1L, "테스트", StoryType.TEXT, StoryCommentType.ALL, true));
+        model.addAttribute("story", new StoryEditInfoModel(1L, "테스트", StoryType.TEXT, StoryCommentType.ALL, true));
         model.addAttribute("files", new PageImpl<>(new ArrayList<>(), Pageable.ofSize(3), 3));
         model.addAttribute("storyText", "");
         return "views/story/storyEdit";

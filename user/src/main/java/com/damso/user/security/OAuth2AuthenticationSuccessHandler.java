@@ -6,7 +6,7 @@ import com.damso.domain.db.entity.member.MemberSocialAccount;
 import com.damso.domain.db.repository.member.MemberSocialAccountRepository;
 import com.damso.user.client.auth.OAuth2ClientImpl;
 import com.damso.user.client.auth.model.OAuth2Model;
-import com.damso.user.service.auth.MemberRegister;
+import com.damso.user.service.member.MemberRegister;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

@@ -3,14 +3,13 @@ package com.damso.domain.db.entity.story;
 import com.damso.core.constant.story.StoryFileType;
 import com.damso.domain.db.entity.base.CommonTime;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(name = "STORY_FILE")
 @Getter
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
 public class StoryFile extends CommonTime {
     @Id
@@ -31,4 +30,14 @@ public class StoryFile extends CommonTime {
 
     @Column(name = "STORY_FILE_ORDER", columnDefinition = "INT DEFAULT 1")
     private Integer order;
+
+    public StoryFile(Story story,
+                     StoryFileType fileType,
+                     String filePath,
+                     Integer order) {
+        this.story = story;
+        this.fileType = fileType;
+        this.filePath = filePath;
+        this.order = order;
+    }
 }

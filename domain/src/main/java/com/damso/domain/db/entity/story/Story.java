@@ -1,23 +1,28 @@
 package com.damso.domain.db.entity.story;
 
 import com.damso.core.constant.story.StoryCommentType;
+import com.damso.core.constant.story.StoryFileType;
 import com.damso.core.constant.story.StoryType;
 import com.damso.domain.db.converter.BooleanConverter;
 import com.damso.domain.db.entity.base.CommonTime;
 import com.damso.domain.db.entity.member.Member;
 import com.damso.domain.db.entity.subscribe.SubscriptionPlanStory;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Entity
 @Table(name = "STORY")
 @Getter
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
 public class Story extends CommonTime {
     @Id
@@ -40,12 +45,16 @@ public class Story extends CommonTime {
     private StoryType storyType;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "STORY_COMMENT_TYPE", columnDefinition = "VARCHAR(20)")
+    @Column(name = "STORY_COMMENT_TYPE", columnDefinition = "VARCHAR(20)", nullable = false)
     private StoryCommentType commentType;
 
     @Convert(converter = BooleanConverter.class)
     @Column(name = "STORY_PUBLISHED", columnDefinition = "CHAR(1) DEFAULT 'Y'", nullable = false)
     private boolean published = true;
+
+    @Convert(converter = BooleanConverter.class)
+    @Column(name = "STORY_DELETED", columnDefinition = "CHAR(1) DEFAULT 'N'", nullable = false)
+    private boolean deleted = false;
 
     @OneToOne(mappedBy = "story", cascade = CascadeType.ALL)
     private StoryText storyText;
@@ -55,6 +64,69 @@ public class Story extends CommonTime {
 
     @OneToMany(mappedBy = "story", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SubscriptionPlanStory> subscriptionPlanStories = new ArrayList<>();
+
+    public Story(Member member) {
+        this.member = member;
+        this.title = "NEW STORY";
+        this.storyType = StoryType.TEXT;
+        this.commentType = StoryCommentType.ALL;
+        this.published = Boolean.FALSE;
+    }
+
+    public void update(String title,
+                       StoryType storyType,
+                       String text,
+                       String planText,
+                       List<String> files,
+                       StoryCommentType commentType,
+                       boolean published) {
+        this.title = title;
+        this.storyType = storyType;
+        this.commentType = commentType;
+        this.published = published;
+
+        switch (storyType) {
+            case TEXT -> updateStoryText(text, planText);
+            case IMAGE -> updateStoryImages(files);
+            case VIDEO -> updateStoryVideo(files);
+        }
+    }
+
+    private void updateStoryText(String text,
+                                 String planText) {
+        if (ObjectUtils.isEmpty(this.storyText)) {
+            this.storyText.update(text, planText);
+            return;
+        }
+
+        this.storyText = new StoryText(this, text, planText);
+    }
+
+    private void updateStoryImages(List<String> files) {
+        this.storyFiles.clear();
+        if (ObjectUtils.isEmpty(files)) {
+            return;
+        }
+
+        AtomicInteger orderCounter = new AtomicInteger(0);
+        files.stream()
+                .map(file -> new StoryFile(this, StoryFileType.IMAGE, file, orderCounter.getAndIncrement()))
+                .forEach(storyFile -> this.storyFiles.add(storyFile));
+    }
+
+    private void updateStoryVideo(List<String> files) {
+        this.storyFiles.clear();
+        if (ObjectUtils.isEmpty(files)) {
+            return;
+        }
+
+        this.storyFiles.add(new StoryFile(this, StoryFileType.VIDEO, files.get(0), 0));
+    }
+
+    public boolean isUpdateable(Member member) {
+        return this.member.equals(member)
+                && !this.deleted;
+    }
 
     // todo 카테고리
 

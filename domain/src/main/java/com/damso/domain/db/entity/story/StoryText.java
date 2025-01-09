@@ -1,15 +1,15 @@
 package com.damso.domain.db.entity.story;
 
+import com.damso.core.utils.common.StringUtil;
 import com.damso.domain.db.entity.base.CommonTime;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(name = "STORY_TEXT")
 @Getter
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
 public class StoryText extends CommonTime {
     @Id
@@ -26,4 +26,18 @@ public class StoryText extends CommonTime {
 
     @Column(name = "STORY_PLAN_TEXT", columnDefinition = "TEXT", nullable = false)
     private String planText;
+
+    public StoryText(Story story,
+                     String text,
+                     String planText) {
+        this.story = story;
+        this.text = StringUtil.defaultIfEmpty(text, "");
+        this.planText = StringUtil.defaultIfEmpty(planText, "");
+    }
+
+    public void update(String text,
+                       String planText) {
+        this.text = StringUtil.defaultIfEmpty(text, "");
+        this.planText = StringUtil.defaultIfEmpty(planText, "");
+    }
 }

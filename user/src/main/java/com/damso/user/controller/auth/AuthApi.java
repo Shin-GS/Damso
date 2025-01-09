@@ -5,7 +5,7 @@ import com.damso.auth.service.JwtTokenProvider;
 import com.damso.auth.session.SessionMemberId;
 import com.damso.core.response.success.SuccessCode;
 import com.damso.core.response.success.SuccessResponse;
-import com.damso.user.service.auth.MemberRegister;
+import com.damso.user.service.member.MemberRegister;
 import com.damso.user.service.auth.RefreshInfoFetcher;
 import com.damso.user.service.auth.command.EmailDuplicationCommand;
 import com.damso.user.service.auth.command.EmailLoginCommand;
