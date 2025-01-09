@@ -1,5 +1,6 @@
-package com.damso.user.service.story;
+package com.damso.user.service.story.impl;
 
+import com.damso.user.service.story.StoryEditor;
 import com.damso.user.service.story.model.CreateStoryModel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

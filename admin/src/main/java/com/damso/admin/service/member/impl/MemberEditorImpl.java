@@ -1,5 +1,6 @@
-package com.damso.admin.service.member;
+package com.damso.admin.service.member.impl;
 
+import com.damso.admin.service.member.MemberEditor;
 import com.damso.admin.service.member.command.MemberModifyCommand;
 import com.damso.admin.service.member.command.MemberRegisterCommand;
 import com.damso.core.response.error.ErrorCode;

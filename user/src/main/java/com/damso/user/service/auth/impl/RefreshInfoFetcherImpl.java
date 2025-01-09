@@ -1,8 +1,9 @@
-package com.damso.user.service.auth;
+package com.damso.user.service.auth.impl;
 
 import com.damso.core.response.error.ErrorCode;
 import com.damso.core.response.exception.BusinessException;
 import com.damso.domain.db.repository.member.MemberRepository;
+import com.damso.user.service.auth.RefreshInfoFetcher;
 import com.damso.user.service.auth.model.RefreshInfoModel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

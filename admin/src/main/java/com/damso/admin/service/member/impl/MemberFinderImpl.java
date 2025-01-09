@@ -1,5 +1,6 @@
-package com.damso.admin.service.member;
+package com.damso.admin.service.member.impl;
 
+import com.damso.admin.service.member.MemberFinder;
 import com.damso.admin.service.member.command.MemberSearchFilterCommand;
 import com.damso.admin.service.member.model.MemberInfoModel;
 import com.damso.admin.service.member.model.MemberSearchModel;
