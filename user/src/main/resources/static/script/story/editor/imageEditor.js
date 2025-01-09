@@ -1,162 +1,192 @@
 let filesQueue = [];
 let currentFileIndex = 0;
 
+// 초기화
 async function initializeImageEditor() {
-    const imageEditorContainer = document.querySelector('#image-editor-container');
-    if (!imageEditorContainer) return;
+    if (!getElement('#image-editor-container')) return;
 
+    resetQueue();
+    initializeDropzone();
+    initializeSortable();
+}
+
+// DOM 요소 가져오기
+function getElement(selector) {
+    return document.querySelector(selector);
+}
+
+// 큐 초기화
+function resetQueue() {
     filesQueue = [];
     currentFileIndex = 0;
+}
+
+// Dropzone 초기화
+function initializeDropzone() {
     new Dropzone("#upload-dropzone", {
         url: '/api/upload/image',
         autoProcessQueue: false,
         acceptedFiles: 'image/*',
         init: function () {
-            this.on("addedfile", (file) => {
-                filesQueue.push(file);
-                if (filesQueue.length === 1) {
-                    showEditModal(file);
-                }
-            });
-
-            // 업로드 성공 시 정렬 섹션에 이미지 추가
-            this.on("success", function (file, response) {
-                if (response && response.result.url) {
-                    addImageToSortableList(response.result.url);
-                    this.removeFile(file);
-                }
-            });
+            this.on("addedfile", handleFileAdded);
+            this.on("success", handleUploadSuccess);
         }
     });
-
-    initializeSortable();
 }
 
-// 이미지 순서 변경
-function initializeSortable() {
-    const sortableContainer = document.querySelector('#sortable-list');
-    if (!sortableContainer) {
-        return;
+// 파일 추가 처리
+function handleFileAdded(file) {
+    filesQueue.push(file);
+    if (filesQueue.length === 1) {
+        showEditModal(file);
     }
-
-    new Sortable(sortableContainer, {
-        animation: 150,
-        ghostClass: 'bg-gray-100',
-        onEnd: () => {
-            console.log('이미지 순서 변경 완료');
-        }
-    });
 }
 
-// 이미지 편집 모달 표시 및 Cropper 초기화
+// 편집 모달 열기
 function showEditModal(file) {
     const reader = new FileReader();
     reader.onload = (e) => {
-        const modal = document.querySelector('#image-edit-modal');
+        const modal = getElement('#image-edit-modal');
         const image = modal.querySelector('#image-edit-modal-image');
         image.src = e.target.result;
 
         modal.classList.remove('hidden');
-
-        if (image.cropper) {
-            image.cropper.destroy();
-        }
-        new Cropper(image, {
-            aspectRatio: 1,
-            autoCropArea: 0.8,
-            viewMode: 1
-        });
+        initializeCropper(image);
     };
     reader.readAsDataURL(file);
 }
 
-// 업로드된 이미지 리스트에 추가
+// 업로드 성공 처리
+function handleUploadSuccess(file, response) {
+    if (response?.result?.url) {
+        addImageToSortableList(response.result.url);
+        removeFileFromDropzone(file);
+    }
+}
+
+// Cropper 초기화
+function initializeCropper(image) {
+    if (image.cropper) {
+        image.cropper.destroy();
+    }
+    new Cropper(image, {
+        aspectRatio: 1,
+        autoCropArea: 0.8,
+        viewMode: 1
+    });
+}
+
+// 이미지 목록에 추가
 function addImageToSortableList(imageUrl) {
-    const sortableContainer = document.querySelector('#sortable-list');
-    if (!sortableContainer) return;
+    const container = getElement('#sortable-list');
+    if (!container) return;
 
     const imageDiv = document.createElement('div');
     imageDiv.classList.add('p-2', 'bg-white', 'shadow', 'rounded', 'relative');
-
-    imageDiv.innerHTML = `<img src="${imageUrl}" class="w-full rounded" alt="">
+    imageDiv.innerHTML = `
+        <img src="${imageUrl}" class="w-full rounded" alt="">
         <button type="button" 
-            id="remove-image-button" 
-            class="absolute top-2 right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center">
+            class="remove-image-button absolute top-2 right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center">
             ×
         </button>
     `;
-    sortableContainer.appendChild(imageDiv);
+    container.appendChild(imageDiv);
 }
 
-// 이미지 제거 이벤트 핸들러
-document.addEventListener('click', (event) => {
-    if (event.target.matches('.remove-image-button')) {
-        const imageDiv = event.target.closest('div');
-        if (imageDiv) {
-            imageDiv.remove();
-        }
-    }
-});
+// Dropzone에서 파일 제거
+function removeFileFromDropzone(file) {
+    Dropzone.forElement("#upload-dropzone").removeFile(file);
+}
 
-// 편집 적용 및 건너뛰기
-document.addEventListener('click', (event) => {
-    const modal = document.querySelector('#image-edit-modal');
-    if (!modal) return;
+// 정렬 초기화
+function initializeSortable() {
+    const container = getElement('#sortable-list');
+    if (!container) return;
 
-    const cropperImage = modal.querySelector('#image-edit-modal-image');
-    const dropzone = Dropzone.forElement("#upload-dropzone");
-
-    if (event.target.matches('#apply-edit-button')) {
-        const canvas = cropperImage.cropper.getCroppedCanvas();
-        canvas.toBlob(blob => {
-            const originalFile = filesQueue[currentFileIndex];
-            dropzone.removeFile(originalFile);
-
-            const newFile = new File([blob], originalFile.name, {type: 'image/jpeg'});
-            newFile.upload = {file: newFile};
-
-            const formData = new FormData();
-            formData.append("file", newFile);
-
-            fetch('/api/upload/image', {
-                method: 'POST',
-                body: formData
-            }).then(response => response.json())
-                .then(data => {
-                    if (data && data.result && data.result.url) {
-                        // 업로드 성공 후 이미지 추가
-                        addImageToSortableList(data.result.url);
-                    }
-                    // 파일 큐에서 제거
-                    filesQueue.splice(currentFileIndex, 1);
-                    modal.classList.add('hidden');
-                    processNextFile();
-                }).catch(error => {
-                console.error('업로드 실패:', error);
-                alert('이미지 업로드에 실패했습니다.');
-            });
-        });
-    }
-
-    if (event.target.matches('#skip-edit-button')) {
-        dropzone.processFile(filesQueue[currentFileIndex]);
-        modal.classList.add('hidden');
-        processNextFile();
-    }
-
-    if (event.target.matches('#close-modal-button')) {
-        filesQueue.forEach(file => dropzone.removeFile(file));
-        filesQueue = [];
-        modal.classList.add('hidden');
-    }
-});
+    new Sortable(container, {
+        animation: 150,
+        ghostClass: 'bg-gray-100',
+        onEnd: () => console.log('이미지 순서 변경 완료')
+    });
+}
 
 // 다음 파일 처리
 function processNextFile() {
     if (filesQueue.length > 0) {
-        showEditModal(filesQueue[0]);  // 항상 첫 번째 파일 처리
+        showEditModal(filesQueue[0]);
     } else {
-        filesQueue = [];
-        currentFileIndex = 0;
+        resetQueue();
+    }
+}
+
+
+// 파일 제거 이벤트 핸들러
+document.addEventListener('click', (event) => {
+    if (event.target.matches('.remove-image-button')) {
+        event.target.closest('div')?.remove();
+    }
+});
+
+// 편집 및 업로드 이벤트 핸들러
+document.addEventListener('click', handleEditorActions);
+
+function handleEditorActions(event) {
+    const modal = getElement('#image-edit-modal');
+    if (!modal) return;
+
+    const cropperImage = modal.querySelector('#image-edit-modal-image');
+    if (event.target.matches('#apply-edit-button')) {
+        const canvas = cropperImage.cropper.getCroppedCanvas();
+        canvas.toBlob(blob => {
+            const originalFile = filesQueue[currentFileIndex];
+            removeFileFromDropzone(originalFile);
+
+            const newFile = new File([blob], originalFile.name, {type: 'image/jpeg'});
+            handleFileUpload(newFile, modal);
+        });
+    }
+
+    if (event.target.matches('#skip-edit-button')) {
+        handleFileUpload(filesQueue[currentFileIndex], modal);
+    }
+
+    if (event.target.matches('#close-modal-button')) {
+        filesQueue.forEach(removeFileFromDropzone);
+        resetQueue();
+        modal.classList.add('hidden');
+    }
+}
+
+// 파일 업로드 (편집 파일 또는 원본 파일)
+async function handleFileUpload(file, modal) {
+    removeFileFromDropzone(file);
+
+    const url = await uploadFile(file);
+    if (url) {
+        addImageToSortableList(url);
+    }
+
+    modal.classList.add('hidden');
+    filesQueue.splice(currentFileIndex, 1);
+    processNextFile();
+}
+
+// 파일 업로드
+async function uploadFile(file) {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+        const response = await fetch('/api/upload/image', {
+            method: 'POST',
+            body: formData
+        });
+
+        const data = await response.json();
+        return data?.result?.url || null;
+    } catch (error) {
+        console.error('업로드 실패:', error);
+        alert('이미지 업로드에 실패했습니다.');
+        return null;
     }
 }
