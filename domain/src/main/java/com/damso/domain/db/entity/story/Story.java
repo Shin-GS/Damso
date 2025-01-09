@@ -94,15 +94,17 @@ public class Story extends CommonTime {
 
     private void updateStoryText(String text,
                                  String planText) {
+        this.storyFiles.clear();
         if (ObjectUtils.isEmpty(this.storyText)) {
-            this.storyText.update(text, planText);
+            this.storyText = new StoryText(this, text, planText);
             return;
         }
 
-        this.storyText = new StoryText(this, text, planText);
+        this.storyText.update(text, planText);
     }
 
     private void updateStoryImages(List<String> files) {
+        this.storyText = null;
         this.storyFiles.clear();
         if (ObjectUtils.isEmpty(files)) {
             return;
@@ -115,6 +117,7 @@ public class Story extends CommonTime {
     }
 
     private void updateStoryVideo(List<String> files) {
+        this.storyText = null;
         this.storyFiles.clear();
         if (ObjectUtils.isEmpty(files)) {
             return;
@@ -124,8 +127,7 @@ public class Story extends CommonTime {
     }
 
     public boolean isUpdateable(Member member) {
-        return this.member.equals(member)
-                && !this.deleted;
+        return this.member.equals(member) && !this.deleted;
     }
 
     // todo 카테고리

@@ -2,9 +2,9 @@ package com.damso.user.controller.story;
 
 import com.damso.auth.session.SessionMemberId;
 import com.damso.core.constant.story.StoryType;
+import com.damso.user.service.story.StoryFinder;
+import com.damso.user.service.story.model.StoryEditInfoModel;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,24 +12,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Controller
 @RequestMapping("/hx")
 @RequiredArgsConstructor
 public class StoryHxController {
+    private final StoryFinder storyFinder;
+
     @GetMapping("/stories/{storyId}/edit")
     public String getStory(@PathVariable("storyId") Long storyId,
-                           @RequestParam(value = "storyType", required = false) StoryType storyType,
                            @SessionMemberId Long memberId,
+                           @RequestParam(value = "storyType", required = false) StoryType storyType,
                            Model model) {
-        // 스토리 권한 체크
-
-        // 스토리 데이터 조회
-        List<String> files = new ArrayList<>();
-        model.addAttribute("files", new PageImpl<>(files, Pageable.ofSize(3), 3));
-        model.addAttribute("storyText", "");
+        StoryEditInfoModel editInfoModel = storyFinder.getEditInfo(storyId, memberId);
+        model.addAttribute("story", editInfoModel);
 
         if (storyType == null) {
             return "components/storyEditor :: text-editor";

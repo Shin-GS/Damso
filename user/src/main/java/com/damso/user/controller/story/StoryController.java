@@ -1,25 +1,25 @@
 package com.damso.user.controller.story;
 
-import com.damso.core.constant.story.StoryCommentType;
-import com.damso.core.constant.story.StoryType;
+import com.damso.auth.session.SessionMemberId;
+import com.damso.user.service.story.StoryFinder;
 import com.damso.user.service.story.model.StoryEditInfoModel;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import java.util.ArrayList;
-
 @Controller
+@RequiredArgsConstructor
 public class StoryController {
+    private final StoryFinder storyFinder;
+
     @GetMapping("/stories/{storyId}/edit")
     public String storyEdit(@PathVariable("storyId") Long storyId,
+                            @SessionMemberId Long memberId,
                             Model model) {
-        model.addAttribute("story", new StoryEditInfoModel(1L, "테스트", StoryType.TEXT, StoryCommentType.ALL, true));
-        model.addAttribute("files", new PageImpl<>(new ArrayList<>(), Pageable.ofSize(3), 3));
-        model.addAttribute("storyText", "");
+        StoryEditInfoModel editInfoModel = storyFinder.getEditInfo(storyId, memberId);
+        model.addAttribute("story", editInfoModel);
         return "views/story/storyEdit";
     }
 }
