@@ -56,7 +56,7 @@ public class Story extends CommonTime {
     @Column(name = "STORY_DELETED", columnDefinition = "CHAR(1) DEFAULT 'N'", nullable = false)
     private boolean deleted = false;
 
-    @OneToOne(mappedBy = "story", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "story", cascade = CascadeType.ALL, orphanRemoval = true)
     private StoryText storyText;
 
     @OneToMany(mappedBy = "story", cascade = CascadeType.ALL, orphanRemoval = true)
