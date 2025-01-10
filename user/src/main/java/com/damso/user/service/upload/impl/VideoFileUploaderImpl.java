@@ -2,7 +2,7 @@ package com.damso.user.service.upload.impl;
 
 import com.damso.core.response.error.ErrorCode;
 import com.damso.core.response.exception.BusinessException;
-import com.damso.core.utils.file.FileUplaodUtil;
+import com.damso.core.utils.file.FileUploadUtil;
 import com.damso.core.utils.file.FileUtil;
 import com.damso.user.service.upload.VideoFileUploader;
 import com.damso.user.service.upload.model.FileUploadModel;
@@ -35,18 +35,18 @@ public class VideoFileUploaderImpl implements VideoFileUploader {
 
     @Override
     public FileUploadModel upload(MultipartFile video, Long memberId) {
-        FileUplaodUtil.validateFile(video, maxFileSize, allowedExtensions);
+        FileUploadUtil.validateFile(video, maxFileSize, allowedExtensions);
 
-        String uploadDir = FileUplaodUtil.resolveUploadDir(uploadPath, memberId);
+        String uploadDir = FileUploadUtil.resolveUploadDir(uploadPath, memberId);
         if (!StringUtils.hasText(uploadDir)) {
             throw new BusinessException(ErrorCode.FILE_PATH_NOT_VALID);
         }
 
         String extension = FileUtil.getExtension(video.getOriginalFilename());
-        String uniqueFileName = FileUplaodUtil.createUniqueFileName() + "." + extension;
+        String uniqueFileName = FileUploadUtil.createUniqueFileName() + "." + extension;
         Path targetPath = Paths.get(uploadDir, uniqueFileName);
-        if (FileUplaodUtil.copyFile(video, targetPath)) {
-            return FileUploadModel.of(FileUplaodUtil.getAccessURL(serverDomain, accessPath, memberId, uniqueFileName));
+        if (FileUploadUtil.copyFile(video, targetPath)) {
+            return FileUploadModel.of(FileUploadUtil.getAccessURL(serverDomain, accessPath, memberId, uniqueFileName));
         }
 
         throw new BusinessException(ErrorCode.FILE_UPLOAD_FAIL);

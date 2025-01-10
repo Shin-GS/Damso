@@ -20,8 +20,8 @@ import java.util.List;
 import java.util.UUID;
 
 @Slf4j
-public class FileUplaodUtil {
-    private FileUplaodUtil() {
+public class FileUploadUtil {
+    private FileUploadUtil() {
     }
 
     public static String createUniqueFileName() {
