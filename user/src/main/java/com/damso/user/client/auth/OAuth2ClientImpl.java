@@ -1,6 +1,6 @@
 package com.damso.user.client.auth;
 
-import com.damso.core.constant.member.MemberSocialAccountType;
+import com.damso.core.enums.member.MemberSocialAccountType;
 import com.damso.user.client.auth.model.OAuth2Model;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

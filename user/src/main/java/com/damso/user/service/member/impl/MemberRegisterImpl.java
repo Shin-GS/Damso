@@ -1,6 +1,6 @@
 package com.damso.user.service.member.impl;
 
-import com.damso.core.constant.member.MemberSocialAccountType;
+import com.damso.core.enums.member.MemberSocialAccountType;
 import com.damso.core.response.error.ErrorCode;
 import com.damso.core.response.exception.BusinessException;
 import com.damso.core.utils.crypto.CryptoUtil;
@@ -29,7 +29,8 @@ public class MemberRegisterImpl implements MemberRegister {
     }
 
     @Override
-    public void checkSNSDuplication(MemberSocialAccountType provider, String providerAccountId) {
+    public void checkSNSDuplication(MemberSocialAccountType provider,
+                                    String providerAccountId) {
         if (memberSocialAccountRepository.existsByProviderAndProviderAccountId(provider, providerAccountId)) {
             throw new BusinessException(ErrorCode.MEMBER_SNS_DUPLICATED);
         }
@@ -46,7 +47,10 @@ public class MemberRegisterImpl implements MemberRegister {
     }
 
     @Override
-    public Long signup(MemberSocialAccountType provider, String providerAccountId, String email, String name) {
+    public Long signup(MemberSocialAccountType provider,
+                       String providerAccountId,
+                       String email,
+                       String name) {
         checkSNSDuplication(provider, providerAccountId);
         return memberRepository.save(Member.ofSnsUser(
                 name,

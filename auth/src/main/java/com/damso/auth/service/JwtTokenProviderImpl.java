@@ -1,8 +1,8 @@
 package com.damso.auth.service;
 
 import com.damso.auth.session.SessionMember;
-import com.damso.core.constant.auth.AuthTokenStatus;
-import com.damso.core.constant.auth.AuthTokenType;
+import com.damso.core.enums.auth.AuthTokenStatus;
+import com.damso.core.enums.auth.AuthTokenType;
 import com.damso.core.response.error.ErrorCode;
 import com.damso.core.response.exception.BusinessException;
 import com.damso.domain.cache.entity.auth.CacheAuthToken;

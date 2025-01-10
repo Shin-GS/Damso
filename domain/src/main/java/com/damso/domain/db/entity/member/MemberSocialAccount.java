@@ -1,6 +1,6 @@
 package com.damso.domain.db.entity.member;
 
-import com.damso.core.constant.member.MemberSocialAccountType;
+import com.damso.core.enums.member.MemberSocialAccountType;
 import com.damso.domain.db.converter.PrivacyConverter;
 import com.damso.domain.db.entity.base.CommonTime;
 import jakarta.persistence.*;

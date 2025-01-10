@@ -1,7 +1,7 @@
 package com.damso.admin.service.member.model;
 
-import com.damso.core.constant.member.MemberRoleType;
-import com.damso.core.constant.member.MemberStatusType;
+import com.damso.core.enums.member.MemberRoleType;
+import com.damso.core.enums.member.MemberStatusType;
 import com.damso.domain.db.entity.member.Member;
 
 import java.time.LocalDate;

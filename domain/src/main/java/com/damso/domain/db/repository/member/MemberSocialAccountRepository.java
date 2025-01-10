@@ -1,6 +1,6 @@
 package com.damso.domain.db.repository.member;
 
-import com.damso.core.constant.member.MemberSocialAccountType;
+import com.damso.core.enums.member.MemberSocialAccountType;
 import com.damso.domain.db.entity.member.MemberSocialAccount;
 import org.springframework.data.jpa.repository.JpaRepository;
 

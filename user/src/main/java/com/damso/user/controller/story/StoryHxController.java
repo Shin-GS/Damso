@@ -1,7 +1,7 @@
 package com.damso.user.controller.story;
 
 import com.damso.auth.session.SessionMemberId;
-import com.damso.core.constant.story.StoryType;
+import com.damso.core.enums.story.StoryType;
 import com.damso.user.service.story.StoryFinder;
 import com.damso.user.service.story.model.StoryEditInfoModel;
 import lombok.RequiredArgsConstructor;

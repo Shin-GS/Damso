@@ -1,6 +1,6 @@
 package com.damso.domain.db.entity.member;
 
-import com.damso.core.constant.subscribe.SubscriptionStatusType;
+import com.damso.core.enums.subscribe.SubscriptionStatusType;
 import com.damso.domain.db.entity.base.CommonTime;
 import com.damso.domain.db.entity.subscribe.SubscriptionPlan;
 import jakarta.persistence.*;

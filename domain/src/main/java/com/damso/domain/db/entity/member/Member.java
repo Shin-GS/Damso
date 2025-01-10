@@ -1,8 +1,8 @@
 package com.damso.domain.db.entity.member;
 
-import com.damso.core.constant.member.MemberRoleType;
-import com.damso.core.constant.member.MemberSocialAccountType;
-import com.damso.core.constant.member.MemberStatusType;
+import com.damso.core.enums.member.MemberRoleType;
+import com.damso.core.enums.member.MemberSocialAccountType;
+import com.damso.core.enums.member.MemberStatusType;
 import com.damso.domain.db.converter.EmailConverter;
 import com.damso.domain.db.entity.base.CommonTime;
 import com.damso.domain.db.entity.subscribe.SubscriptionPlan;

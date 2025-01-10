@@ -1,7 +1,7 @@
 package com.damso.user.service.story.command;
 
-import com.damso.core.constant.story.StoryCommentType;
-import com.damso.core.constant.story.StoryType;
+import com.damso.core.enums.story.StoryCommentType;
+import com.damso.core.enums.story.StoryType;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
 package com.damso.user.service.story.model;
 
-import com.damso.core.constant.story.StoryCommentType;
-import com.damso.core.constant.story.StoryType;
+import com.damso.core.enums.story.StoryCommentType;
+import com.damso.core.enums.story.StoryType;
 import com.damso.core.utils.common.StringUtil;
 import com.damso.domain.db.entity.story.Story;
 import com.damso.domain.db.entity.story.StoryFile;

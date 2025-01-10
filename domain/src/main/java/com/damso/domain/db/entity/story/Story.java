@@ -1,8 +1,8 @@
 package com.damso.domain.db.entity.story;
 
-import com.damso.core.constant.story.StoryCommentType;
-import com.damso.core.constant.story.StoryFileType;
-import com.damso.core.constant.story.StoryType;
+import com.damso.core.enums.story.StoryCommentType;
+import com.damso.core.enums.story.StoryFileType;
+import com.damso.core.enums.story.StoryType;
 import com.damso.domain.db.converter.BooleanConverter;
 import com.damso.domain.db.entity.base.CommonTime;
 import com.damso.domain.db.entity.member.Member;

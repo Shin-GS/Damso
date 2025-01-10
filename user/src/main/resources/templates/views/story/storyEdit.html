@@ -32,10 +32,13 @@ additionalScript='/script/story/quill.min.js,/script/story/cropper.min.js,/scrip
                             class="w-full border rounded-md px-4 py-2 focus:ring focus:ring-blue-400"
                             th:hx-get="@{'/hx/stories/' + ${story.id} + '/edit'}"
                             hx-include="[name='storyType']"
+                            hx-confirm="이야기 유형을 변경하면 기존에 작성한 내용이 삭제됩니다. 계속하시겠습니까?"
                             hx-target="#editor">
-                        <option value="TEXT">텍스트</option>
-                        <option value="IMAGE">이미지</option>
-                        <option value="VIDEO">비디오</option>
+                        <option th:each="option : ${storyTypes}"
+                                th:value="${option.code}"
+                                th:text="${option.value}"
+                                th:selected="${option.code == story.storyType.code}">
+                        </option>
                     </select>
                 </label>
             </div>
@@ -50,11 +53,12 @@ additionalScript='/script/story/quill.min.js,/script/story/cropper.min.js,/scrip
                 <label class="block font-medium mb-2">댓글 설정</label>
                 <label>
                     <select name="commentType"
-                            th:value="${story.commentType}"
                             class="w-full border rounded-md px-4 py-2 focus:ring focus:ring-blue-400">
-                        <option value="NONE">댓글 없음</option>
-                        <option value="CUT">컷별 댓글</option>
-                        <option value="ALL">전체 댓글</option>
+                        <option th:each="option : ${commentTypes}"
+                                th:value="${option.code}"
+                                th:text="${option.value}"
+                                th:selected="${option.code == story.commentType.code}">
+                        </option>
                     </select>
                 </label>
             </div>

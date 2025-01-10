@@ -1,7 +1,7 @@
 package com.damso.user.config;
 
 import com.damso.auth.filter.CustomAuthenticationFilter;
-import com.damso.core.constant.member.MemberRoleType;
+import com.damso.core.enums.member.MemberRoleType;
 import com.damso.user.security.OAuth2AuthenticationSuccessHandler;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
