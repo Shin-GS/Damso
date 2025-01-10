@@ -5,6 +5,7 @@ import com.damso.core.enums.story.StoryType;
 import com.damso.user.service.story.StoryFinder;
 import com.damso.user.service.story.model.StoryEditInfoModel;
 import com.damso.user.service.upload.ImageFileUploader;
+import com.damso.user.service.upload.VideoFileUploader;
 import com.damso.user.service.upload.model.FileUploadModel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,7 @@ import java.util.List;
 public class StoryHxController {
     private final StoryFinder storyFinder;
     private final ImageFileUploader imageFileUploader;
+    private final VideoFileUploader videoFileUploader;
 
     @GetMapping("/{storyId}/edit")
     public String getStory(@PathVariable("storyId") Long storyId,
@@ -27,10 +29,16 @@ public class StoryHxController {
                            @RequestParam(value = "storyType", required = false, defaultValue = "TEXT") StoryType storyType,
                            Model model) {
         StoryEditInfoModel editInfoModel = storyFinder.getEditInfo(storyId, memberId);
-        model.addAttribute("storyType", storyType.getCode());
         model.addAttribute("story", editInfoModel);
-        model.addAttribute("files", editInfoModel.files());
-        return "components/story/storyEditor";
+        model.addAttribute("images", editInfoModel.images());
+        model.addAttribute("video", editInfoModel.video());
+
+        String fragment = switch (storyType) {
+            case TEXT -> " :: text-editor";
+            case IMAGE -> " :: image-editor";
+            case VIDEO -> " :: video-editor";
+        };
+        return "components/story/storyEditor" + fragment;
     }
 
     @PostMapping("/upload/image")
@@ -38,8 +46,20 @@ public class StoryHxController {
                               @SessionMemberId Long memberId,
                               Model model) {
         FileUploadModel uploadModel = imageFileUploader.upload(image, memberId);
-        model.addAttribute("storyType", StoryType.IMAGE.getCode());
-        model.addAttribute("files", List.of(uploadModel.url()));
-        return "components/story/storyUploadFile";
+        model.addAttribute("images", List.of(uploadModel.url()));
+
+        String fragment = " :: story-upload-image";
+        return "components/story/storyUploadFile" + fragment;
+    }
+
+    @PostMapping("/upload/video")
+    public String uploadVideo(@RequestPart("file") MultipartFile video,
+                              @SessionMemberId Long memberId,
+                              Model model) {
+        FileUploadModel uploadModel = videoFileUploader.upload(video, memberId);
+        model.addAttribute("video", List.of(uploadModel.url()));
+
+        String fragment = " :: story-upload-video";
+        return "components/story/storyUploadFile" + fragment;
     }
 }

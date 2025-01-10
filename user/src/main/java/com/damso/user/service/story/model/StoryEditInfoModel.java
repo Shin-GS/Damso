@@ -15,7 +15,8 @@ public record StoryEditInfoModel(Long id,
                                  String title,
                                  StoryType storyType,
                                  String text,
-                                 List<String> files,
+                                 List<String> images,
+                                 String video,
                                  StoryCommentType commentType,
                                  boolean published) {
     public static StoryEditInfoModel of(Story story) {
@@ -23,7 +24,8 @@ public record StoryEditInfoModel(Long id,
                 story.getTitle(),
                 story.getStoryType(),
                 getText(story.getStoryText()),
-                getFiles(story.getStoryFiles()),
+                getImages(story.getStoryFiles()),
+                getVideo(story.getStoryFiles()),
                 story.getCommentType(),
                 story.isPublished());
     }
@@ -36,13 +38,26 @@ public record StoryEditInfoModel(Long id,
         return StringUtil.defaultIfEmpty(storyText.getText(), "");
     }
 
-    private static List<String> getFiles(List<StoryFile> storyFiles) {
+    private static List<String> getImages(List<StoryFile> storyFiles) {
         if (ObjectUtils.isEmpty(storyFiles)) {
             return new ArrayList<>();
         }
 
         return storyFiles.stream()
+                .filter(StoryFile::isImage)
                 .map(StoryFile::getFilePath)
                 .toList();
+    }
+
+    private static String getVideo(List<StoryFile> storyFiles) {
+        if (ObjectUtils.isEmpty(storyFiles)) {
+            return null;
+        }
+
+        return storyFiles.stream()
+                .filter(StoryFile::isVideo)
+                .map(StoryFile::getFilePath)
+                .findFirst()
+                .orElse(null);
     }
 }

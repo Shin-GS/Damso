@@ -95,8 +95,7 @@ function initializeSortable() {
 
     new Sortable(container, {
         animation: 150,
-        ghostClass: 'bg-gray-100',
-        onEnd: () => console.log('이미지 순서 변경 완료')
+        ghostClass: 'bg-gray-100'
     });
 }
 
@@ -112,7 +111,8 @@ function processNextFile() {
 
 // 파일 제거 이벤트 핸들러
 document.addEventListener('click', (event) => {
-    if (event.target.matches('.remove-image-button')) {
+    if (event.target.matches('#remove-image-button')) {
+        event.preventDefault();
         event.target.closest('div')?.remove();
     }
 });

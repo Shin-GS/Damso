@@ -1,18 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       lang="ko">
-<!-- Text Editor Fragment -->
-<div th:if="${storyType} == 'TEXT'"
+<div th:fragment="text-editor"
      class="editor-container bg-white shadow-md rounded-lg p-6">
     <div id="text-editor-container"
          class="quill-editor w-full max-w-4xl mx-auto min-h-[200px]"
          contenteditable="true">
-        <p th:utext="${story.text}"></p>
+        <p th:utext="${story.text()}"></p>
     </div>
 </div>
 
-<!-- Image Editor Fragment -->
-<div th:if="${storyType} == 'IMAGE'"
+<div th:fragment="image-editor"
      class="editor-container bg-white shadow-md rounded-lg p-6 relative z-10">
     <div id="image-editor-container"
          class="w-full max-w-4xl mx-auto min-h-[200px]">
@@ -68,10 +66,22 @@
     </div>
 </div>
 
-<!-- Video Editor -->
-<div th:if="${storyType} == 'VIDEO'"
+<div th:fragment="video-editor"
      class="editor-container bg-white shadow-md rounded-lg p-6">
-    <div id="video-editor-container"
-         class="w-full max-w-4xl mx-auto min-h-[200px]"></div>
+    <div id="video-upload-button-container" class="flex justify-center mt-4">
+        <button id="upload-button" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700">
+            Upload Video
+        </button>
+        <input id="video-input" type="file" accept="video/*" class="hidden">
+    </div>
+
+    <div id="upload-progress" class="text-center mt-4 text-gray-700">
+        No file uploaded yet.
+    </div>
+
+    <div id="uploaded-videos"
+         class="video-preview mt-2">
+        <div th:replace="components/story/storyUploadFile :: story-upload-video"></div>
+    </div>
 </div>
 </html>

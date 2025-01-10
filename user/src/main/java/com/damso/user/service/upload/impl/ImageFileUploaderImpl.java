@@ -3,6 +3,7 @@ package com.damso.user.service.upload.impl;
 import com.damso.core.response.error.ErrorCode;
 import com.damso.core.response.exception.BusinessException;
 import com.damso.core.utils.file.FileUplaodUtil;
+import com.damso.core.utils.file.FileUtil;
 import com.damso.user.service.upload.ImageFileUploader;
 import com.damso.user.service.upload.model.FileUploadModel;
 import lombok.extern.slf4j.Slf4j;
@@ -41,7 +42,8 @@ public class ImageFileUploaderImpl implements ImageFileUploader {
             throw new BusinessException(ErrorCode.FILE_PATH_NOT_VALID);
         }
 
-        String uniqueFileName = FileUplaodUtil.createUniqueFileName(image.getOriginalFilename());
+        String extension = FileUtil.getExtension(image.getOriginalFilename());
+        String uniqueFileName = FileUplaodUtil.createUniqueFileName() + "." + extension;
         Path targetPath = Paths.get(uploadDir, uniqueFileName);
         if (FileUplaodUtil.copyFile(image, targetPath)) {
             return FileUploadModel.of(FileUplaodUtil.getAccessURL(serverDomain, accessPath, memberId, uniqueFileName));

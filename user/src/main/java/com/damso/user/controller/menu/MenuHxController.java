@@ -1,7 +1,6 @@
 package com.damso.user.controller.menu;
 
 import com.damso.auth.session.SessionMemberId;
-import com.damso.core.enums.member.MemberRoleType;
 import com.damso.user.service.auth.RefreshInfoFetcher;
 import com.damso.user.service.auth.model.RefreshInfoModel;
 import lombok.RequiredArgsConstructor;
@@ -21,13 +20,14 @@ public class MenuHxController {
     public String menu(@SessionMemberId Long memberId,
                        Model model) {
         if (ObjectUtils.isEmpty(memberId)) {
-            model.addAttribute("role", MemberRoleType.GUEST.getCode());
-            return "components/menu";
+            String fragment = " :: guest-menu";
+            return "components/menu" + fragment;
         }
 
         RefreshInfoModel infoModel = refreshInfoFetcher.refresh(memberId);
-        model.addAttribute("role", infoModel.role().getCode());
         model.addAttribute("info", infoModel);
-        return "components/menu";
+
+        String fragment = " :: user-menu";
+        return "components/menu" + fragment;
     }
 }

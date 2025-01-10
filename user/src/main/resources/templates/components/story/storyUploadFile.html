@@ -1,16 +1,32 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       lang="ko">
-<!-- Image Upload Fragment -->
-<div th:if="${storyType} == 'IMAGE'"
-     th:fragment="story-upload-image"
-     th:each="image : ${files}"
+<div th:fragment="story-upload-image"
+     th:if="${images != null && !images.isEmpty()}"
+     th:each="image : ${images}"
      class="p-2 bg-white shadow rounded relative">
     <img th:src="${image}"
          class="w-full rounded"
          alt="이미지 없음">
     <button type="button"
-            class="remove-image-button absolute top-2 right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center">
+            id="remove-image-button"
+            class="absolute top-2 right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center">
+        ×
+    </button>
+</div>
+
+<div th:fragment="story-upload-video"
+     th:if="${video != null && !video.isEmpty()}"
+     id="uploaded-videos"
+     class="video-preview mt-2 relative">
+    <video th:each="video : ${video}"
+           controls class="w-full max-w-xl mx-auto rounded-md">
+        <source th:src="${video}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <button type="button"
+            id="remove-video-button"
+            class="absolute top-2 right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center shadow-md hover:bg-red-600">
         ×
     </button>
 </div>

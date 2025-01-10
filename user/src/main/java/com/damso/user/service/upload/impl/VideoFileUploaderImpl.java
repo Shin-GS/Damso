@@ -3,6 +3,7 @@ package com.damso.user.service.upload.impl;
 import com.damso.core.response.error.ErrorCode;
 import com.damso.core.response.exception.BusinessException;
 import com.damso.core.utils.file.FileUplaodUtil;
+import com.damso.core.utils.file.FileUtil;
 import com.damso.user.service.upload.VideoFileUploader;
 import com.damso.user.service.upload.model.FileUploadModel;
 import lombok.extern.slf4j.Slf4j;
@@ -41,7 +42,8 @@ public class VideoFileUploaderImpl implements VideoFileUploader {
             throw new BusinessException(ErrorCode.FILE_PATH_NOT_VALID);
         }
 
-        String uniqueFileName = FileUplaodUtil.createUniqueFileName(video.getOriginalFilename());
+        String extension = FileUtil.getExtension(video.getOriginalFilename());
+        String uniqueFileName = FileUplaodUtil.createUniqueFileName() + "." + extension;
         Path targetPath = Paths.get(uploadDir, uniqueFileName);
         if (FileUplaodUtil.copyFile(video, targetPath)) {
             return FileUploadModel.of(FileUplaodUtil.getAccessURL(serverDomain, accessPath, memberId, uniqueFileName));

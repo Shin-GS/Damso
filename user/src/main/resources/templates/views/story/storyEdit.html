@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
-<head th:replace="views/layout :: head(additionalCss='/css/story/quill.snow.css,/css/story/cropper.min.css,/css/story/dropzone.min.css,/css/story/uppy.min.css',
-additionalScript='/script/story/quill.min.js,/script/story/cropper.min.js,/script/story/dropzone.min.js,/script/story/sortable.min.js,/script/story/uppy.min.js,/script/story/editor/textEditor.js,/script/story/editor/imageEditor.js,/script/story/editor/videoEditor.js')">
+<head th:replace="views/layout :: head(additionalCss='/css/story/quill.snow.css,/css/story/cropper.min.css,/css/story/dropzone.min.css',
+additionalScript='/script/story/quill.min.js,/script/story/cropper.min.js,/script/story/dropzone.min.js,/script/story/sortable.min.js,/script/story/editor/textEditor.js,/script/story/editor/imageEditor.js,/script/story/editor/videoEditor.js')">
     <title>이야기 편집</title>
 </head>
 <body class="content-edit-page flex flex-col min-h-screen bg-gray-100">
@@ -144,8 +144,8 @@ additionalScript='/script/story/quill.min.js,/script/story/cropper.min.js,/scrip
         }
 
         if (storyType === 'VIDEO') {
-            const videoUrl = document.querySelector('.uppy-Dashboard-inner .uppy-Dashboard-Item-name')?.textContent;
-            if (videoUrl) payload.files = [videoUrl];
+            const videoElement = document.querySelector('#uploaded-videos video');
+            payload.files = videoElement ? [videoElement.querySelector('source')?.src || videoElement.src] : [];
         }
 
         try {

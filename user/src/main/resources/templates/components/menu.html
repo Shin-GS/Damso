@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:hx-on="http://www.w3.org/1999/xhtml"
       lang="ko">
-<ul th:if="${role} == 'GUEST'"
+<ul th:fragment="guest-menu"
     class="nav-menu flex items-center gap-6">
     <li>
         <a th:href="@{/categories}" data-icon="📂" class="flex items-center gap-2 text-lg hover:text-blue-500">
@@ -21,7 +21,7 @@
     </li>
 </ul>
 
-<ul th:if="${role} == 'USER'"
+<ul th:fragment="user-menu"
     class="nav-menu flex items-center gap-6">
     <li>
         <a th:href="@{/categories}" data-icon="📂" class="flex items-center gap-2 text-lg hover:text-blue-500">
@@ -50,7 +50,7 @@
     <li class="relative group">
         <div class="flex items-center gap-2 cursor-pointer">
             <img src="/favicon.ico" alt="프로필 사진" class="w-9 h-9 rounded-full border">
-            <span th:text="${username}" class="text-lg font-medium"></span>
+            <span th:text="${info.name()}" class="text-lg font-medium"></span>
         </div>
         <ul class="user-submenu absolute hidden bg-white shadow-lg rounded-md overflow-hidden group-hover:block right-0 w-48">
             <li><a th:href="@{/subscriptions}" class="block px-4 py-2 hover:bg-blue-500 hover:text-white">내 구독</a>

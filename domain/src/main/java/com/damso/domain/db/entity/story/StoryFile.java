@@ -3,7 +3,10 @@ package com.damso.domain.db.entity.story;
 import com.damso.core.enums.story.StoryFileType;
 import com.damso.domain.db.entity.base.CommonTime;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "STORY_FILE")
@@ -39,5 +42,13 @@ public class StoryFile extends CommonTime {
         this.fileType = fileType;
         this.filePath = filePath;
         this.order = order;
+    }
+
+    public boolean isImage() {
+        return this.fileType.equals(StoryFileType.IMAGE);
+    }
+
+    public boolean isVideo() {
+        return this.fileType.equals(StoryFileType.VIDEO);
     }
 }

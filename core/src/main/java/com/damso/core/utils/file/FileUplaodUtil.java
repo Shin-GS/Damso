@@ -13,6 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
@@ -23,8 +24,8 @@ public class FileUplaodUtil {
     private FileUplaodUtil() {
     }
 
-    public static String createUniqueFileName(String originFileName) {
-        return UUID.randomUUID() + "_" + originFileName;
+    public static String createUniqueFileName() {
+        return UUID.randomUUID() + "_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
     }
 
     public static void validateFile(MultipartFile file, long maxFileSize, String[] allowedExtensions) {
