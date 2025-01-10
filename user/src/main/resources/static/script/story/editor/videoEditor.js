@@ -1,8 +1,7 @@
 async function initializeVideoEditor() {
     const uploadButtonContainer = document.querySelector('#video-upload-button-container');
-    const progressContainer = document.querySelector('#upload-progress');
     const uploadedVideosContainer = document.querySelector('#uploaded-videos');
-    if (!uploadButtonContainer || !progressContainer || !uploadedVideosContainer) return;
+    if (!uploadButtonContainer || !uploadedVideosContainer) return;
 
     document.body.addEventListener('click', (event) => {
         if (event.target.matches('#remove-video-button')) {
@@ -25,17 +24,15 @@ async function initializeVideoEditor() {
         if (event.target.id === 'video-input') {
             const file = event.target.files[0];
             if (!file) {
-                updateProgress('No file selected.', progressContainer);
+                alert("동영상을 선택해주세요");
                 return;
             }
 
             if (event.target.files.length > 1) {
-                updateProgress('You can upload only one video at a time.', progressContainer);
                 return;
             }
 
             // 파일 업로드 처리
-            updateProgress(`Uploading ${file.name}...`, progressContainer);
             const formData = new FormData();
             formData.append('file', file);
 
@@ -53,22 +50,13 @@ async function initializeVideoEditor() {
                     const tempDiv = document.createElement('div');
                     tempDiv.innerHTML = videoHtml.trim();
                     uploadedVideosContainer.replaceWith(tempDiv.firstChild);
-                    updateProgress('Upload completed successfully!', progressContainer);
                 })
                 .catch((error) => {
                     console.error(error);
-                    updateProgress(`Upload failed: ${error.message}`, progressContainer);
                 })
                 .finally(() => {
                     event.target.value = '';
                 });
         }
     });
-}
-
-// 진행 상태 업데이트 함수
-function updateProgress(message, container) {
-    if (container) {
-        container.innerHTML = message;
-    }
 }
