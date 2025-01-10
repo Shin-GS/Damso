@@ -140,7 +140,7 @@ additionalScript='/script/story/quill.min.js,/script/story/cropper.min.js,/scrip
         }
 
         if (storyType === 'IMAGE') {
-            payload.files = Array.from(document.querySelectorAll('.sortable-list img')).map(img => img.src);
+            payload.files = Array.from(document.querySelectorAll('#sortable-list img')).map(img => img.src);
         }
 
         if (storyType === 'VIDEO') {

@@ -6,7 +6,7 @@ import com.damso.user.service.story.model.StoryEditModel;
 public interface StoryEditor {
     StoryEditModel create(Long memberId);
 
-    StoryEditModel update(Long memberId,
-                          Long storyId,
+    StoryEditModel update(Long storyId,
+                          Long memberId,
                           StoryEditCommand command);
 }

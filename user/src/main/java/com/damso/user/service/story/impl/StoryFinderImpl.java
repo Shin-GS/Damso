@@ -27,8 +27,8 @@ public class StoryFinderImpl implements StoryFinder {
 
     @Override
     public StoryEditInfoModel getEditInfo(Long storyId, Long memberId) {
-        Story story = getEntity(storyId);
         Member member = memberFinder.getEntity(memberId);
+        Story story = getEntity(storyId);
         if (!story.isUpdateable(member)) {
             throw new BusinessException(ErrorCode.STORY_UNAUTHORIZED);
         }

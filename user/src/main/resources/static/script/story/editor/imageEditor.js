@@ -24,7 +24,7 @@ function resetQueue() {
 // Dropzone 초기화
 function initializeDropzone() {
     new Dropzone("#upload-dropzone", {
-        url: '/api/upload/image',
+        url: '/hx/stories/upload/image',
         autoProcessQueue: false,
         acceptedFiles: 'image/*',
         init: function () {
@@ -58,8 +58,8 @@ function showEditModal(file) {
 
 // 업로드 성공 처리
 function handleUploadSuccess(file, response) {
-    if (response?.result?.url) {
-        addImageToSortableList(response.result.url);
+    if (response) {
+        addImageToSortableList(response.text());
         removeFileFromDropzone(file);
     }
 }
@@ -77,20 +77,10 @@ function initializeCropper(image) {
 }
 
 // 이미지 목록에 추가
-function addImageToSortableList(imageUrl) {
+function addImageToSortableList(imageHtml) {
     const container = getElement('#sortable-list');
     if (!container) return;
-
-    const imageDiv = document.createElement('div');
-    imageDiv.classList.add('p-2', 'bg-white', 'shadow', 'rounded', 'relative');
-    imageDiv.innerHTML = `
-        <img src="${imageUrl}" class="w-full rounded" alt="">
-        <button type="button" 
-            class="remove-image-button absolute top-2 right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center">
-            ×
-        </button>
-    `;
-    container.appendChild(imageDiv);
+    container.insertAdjacentHTML('beforeend', imageHtml);
 }
 
 // Dropzone에서 파일 제거
@@ -161,32 +151,27 @@ function handleEditorActions(event) {
 async function handleFileUpload(file, modal) {
     removeFileFromDropzone(file);
 
-    const url = await uploadFile(file);
-    if (url) {
-        addImageToSortableList(url);
-    }
-
-    modal.classList.add('hidden');
-    filesQueue.splice(currentFileIndex, 1);
-    processNextFile();
-}
-
-// 파일 업로드
-async function uploadFile(file) {
     const formData = new FormData();
     formData.append("file", file);
 
     try {
-        const response = await fetch('/api/upload/image', {
+        const response = await fetch('/hx/stories/upload/image', {
             method: 'POST',
             body: formData
         });
 
-        const data = await response.json();
-        return data?.result?.url || null;
+        const imageHtml = await response.text();
+        if (imageHtml) {
+            addImageToSortableList(imageHtml);
+        }
+
     } catch (error) {
         console.error('업로드 실패:', error);
         alert('이미지 업로드에 실패했습니다.');
         return null;
     }
+
+    modal.classList.add('hidden');
+    filesQueue.splice(currentFileIndex, 1);
+    processNextFile();
 }

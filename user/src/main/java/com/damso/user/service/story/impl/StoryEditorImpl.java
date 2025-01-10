@@ -30,8 +30,8 @@ public class StoryEditorImpl implements StoryEditor {
     }
 
     @Override
-    public StoryEditModel update(Long memberId,
-                                 Long storyId,
+    public StoryEditModel update(Long storyId,
+                                 Long memberId,
                                  StoryEditCommand command) {
         Member member = memberFinder.getEntity(memberId);
         Story story = storyFinder.getEntity(storyId);

@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
       lang="ko">
 <!-- Text Editor Fragment -->
-<div th:fragment="text-editor"
+<div th:if="${storyType} == 'TEXT'"
      class="editor-container bg-white shadow-md rounded-lg p-6">
     <div id="text-editor-container"
          class="quill-editor w-full max-w-4xl mx-auto min-h-[200px]"
@@ -12,12 +12,11 @@
 </div>
 
 <!-- Image Editor Fragment -->
-<div th:fragment="image-editor"
+<div th:if="${storyType} == 'IMAGE'"
      class="editor-container bg-white shadow-md rounded-lg p-6 relative z-10">
     <div id="image-editor-container"
          class="w-full max-w-4xl mx-auto min-h-[200px]">
-        <form action="/api/upload/image"
-              id="upload-dropzone"
+        <form id="upload-dropzone"
               class="dropzone border-2 border-dashed border-gray-300 rounded-lg p-4 bg-gray-50">
             <div class="dz-message text-center text-gray-400">
                 이미지를 드래그하거나 클릭하여 업로드하세요.
@@ -31,6 +30,7 @@
         <div id="sortable-list"
              class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
             <!-- 업로드된 이미지가 여기에 추가됩니다 -->
+            <div th:replace="components/story/storyUploadFile :: story-upload-image"></div>
         </div>
     </div>
 
@@ -69,7 +69,7 @@
 </div>
 
 <!-- Video Editor -->
-<div th:fragment="video-editor"
+<div th:if="${storyType} == 'VIDEO'"
      class="editor-container bg-white shadow-md rounded-lg p-6">
     <div id="video-editor-container"
          class="w-full max-w-4xl mx-auto min-h-[200px]"></div>
