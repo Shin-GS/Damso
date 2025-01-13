@@ -7,8 +7,8 @@ import com.damso.core.utils.crypto.CryptoUtil;
 import com.damso.domain.db.entity.member.Member;
 import com.damso.domain.db.repository.member.MemberRepository;
 import com.damso.domain.db.repository.member.MemberSocialAccountRepository;
+import com.damso.user.service.auth.request.EmailSignupRequest;
 import com.damso.user.service.member.MemberRegister;
-import com.damso.user.service.auth.command.EmailSignupCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,12 +37,12 @@ public class MemberRegisterImpl implements MemberRegister {
     }
 
     @Override
-    public Long signup(EmailSignupCommand command) {
-        checkEmailDuplication(command.email());
+    public Long signup(EmailSignupRequest request) {
+        checkEmailDuplication(request.email());
         return memberRepository.save(Member.ofEmailUser(
-                command.name(),
-                command.email(),
-                cryptoUtil.hashPassword(command.password()))
+                request.name(),
+                request.email(),
+                cryptoUtil.hashPassword(request.password()))
         ).getId();
     }
 

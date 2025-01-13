@@ -1,12 +1,12 @@
 package com.damso.user.service.story;
 
-import com.damso.user.service.story.command.StoryEditCommand;
-import com.damso.user.service.story.model.StoryEditModel;
+import com.damso.user.service.story.request.StoryEditRequest;
+import com.damso.user.service.story.response.StoryEditResponse;
 
 public interface StoryEditor {
-    StoryEditModel create(Long memberId);
+    StoryEditResponse create(Long memberId);
 
-    StoryEditModel update(Long storyId,
-                          Long memberId,
-                          StoryEditCommand command);
+    StoryEditResponse update(Long storyId,
+                             Long memberId,
+                             StoryEditRequest request);
 }

@@ -2,7 +2,7 @@ package com.damso.user.controller.menu;
 
 import com.damso.auth.session.SessionMemberId;
 import com.damso.user.service.auth.RefreshInfoFetcher;
-import com.damso.user.service.auth.model.RefreshInfoModel;
+import com.damso.user.service.auth.response.RefreshInfoResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,8 +24,8 @@ public class MenuHxController {
             return "components/menu" + fragment;
         }
 
-        RefreshInfoModel infoModel = refreshInfoFetcher.refresh(memberId);
-        model.addAttribute("info", infoModel);
+        RefreshInfoResponse refreshInfoResponse = refreshInfoFetcher.refresh(memberId);
+        model.addAttribute("info", refreshInfoResponse);
 
         String fragment = " :: user-menu";
         return "components/menu" + fragment;

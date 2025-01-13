@@ -1,8 +1,8 @@
-package com.damso.admin.service.member.command;
+package com.damso.admin.service.member.request;
 
 import com.damso.core.enums.member.MemberRoleType;
 
-public record MemberRegisterCommand(String email,
+public record MemberRegisterRequest(String email,
                                     String name,
                                     MemberRoleType role) {
 }

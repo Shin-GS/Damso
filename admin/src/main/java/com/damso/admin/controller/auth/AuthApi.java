@@ -1,7 +1,7 @@
 package com.damso.admin.controller.auth;
 
 import com.damso.admin.service.auth.RefreshInfoFetcher;
-import com.damso.admin.service.auth.command.LoginCommand;
+import com.damso.admin.service.auth.request.LoginRequest;
 import com.damso.auth.service.CustomAuthenticationManager;
 import com.damso.auth.service.JwtTokenProvider;
 import com.damso.auth.session.SessionMemberId;
@@ -21,9 +21,9 @@ public class AuthApi {
     private final RefreshInfoFetcher refreshInfoFetcher;
 
     @PostMapping("/login")
-    public SuccessResponse login(@Valid @ModelAttribute LoginCommand command,
+    public SuccessResponse login(@Valid @ModelAttribute LoginRequest request,
                                  HttpServletResponse response) {
-        Long memberId = customAuthenticationManager.authenticateAdmin(command.email(), command.password());
+        Long memberId = customAuthenticationManager.authenticateAdmin(request.email(), request.password());
         jwtTokenProvider.generateJwtCookie(response, memberId);
         return SuccessResponse.of(SuccessCode.SUCCESS);
     }

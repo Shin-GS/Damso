@@ -1,7 +1,7 @@
 package com.damso.user.client.auth;
 
 import com.damso.core.enums.member.MemberSocialAccountType;
-import com.damso.user.client.auth.model.OAuth2Model;
+import com.damso.user.client.auth.response.OAuth2Response;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -11,8 +11,8 @@ import java.util.Map;
 
 @Service
 public class OAuth2Client {
-    public OAuth2Model fetchUserProfile(MemberSocialAccountType provider,
-                                        String snsToken) {
+    public OAuth2Response fetchUserProfile(MemberSocialAccountType provider,
+                                           String snsToken) {
         return switch (provider) {
             case GOOGLE -> fetchGoogleUserProfile(snsToken);
             case X -> fetchXUserProfile(snsToken);
@@ -21,11 +21,11 @@ public class OAuth2Client {
         };
     }
 
-    private OAuth2Model fetchGoogleUserProfile(String snsToken) {
+    private OAuth2Response fetchGoogleUserProfile(String snsToken) {
         String apiUrl = "https://www.googleapis.com/oauth2/v1/userinfo?access_token=" + snsToken;
         ResponseEntity<Map<String, Object>> response = makeGetRequest(apiUrl);
         Map<String, Object> body = response.getBody();
-        return new OAuth2Model(
+        return new OAuth2Response(
                 (String) body.get("id"),
                 (String) body.get("name"),
                 (String) body.get("email"),
@@ -33,11 +33,11 @@ public class OAuth2Client {
         );
     }
 
-    private OAuth2Model fetchXUserProfile(String snsToken) {
+    private OAuth2Response fetchXUserProfile(String snsToken) {
         String apiUrl = "https://api.twitter.com/2/users/me";
         ResponseEntity<Map<String, Object>> response = makeGetRequest(apiUrl, snsToken);
         Map<String, Object> body = response.getBody();
-        return new OAuth2Model(
+        return new OAuth2Response(
                 (String) body.get("id"),
                 (String) body.get("name"),
                 (String) body.getOrDefault("email", null),
@@ -45,11 +45,11 @@ public class OAuth2Client {
         );
     }
 
-    private OAuth2Model fetchInstagramUserProfile(String snsToken) {
+    private OAuth2Response fetchInstagramUserProfile(String snsToken) {
         String apiUrl = "https://graph.instagram.com/me?fields=id,username,account_type";
         ResponseEntity<Map<String, Object>> response = makeGetRequest(apiUrl, snsToken);
         Map<String, Object> body = response.getBody();
-        return new OAuth2Model(
+        return new OAuth2Response(
                 (String) body.get("id"),
                 (String) body.get("username"),
                 null,
@@ -57,11 +57,11 @@ public class OAuth2Client {
         );
     }
 
-    private OAuth2Model fetchNaverUserProfile(String snsToken) {
+    private OAuth2Response fetchNaverUserProfile(String snsToken) {
         String apiUrl = "https://openapi.naver.com/v1/nid/me";
         ResponseEntity<Map<String, Object>> response = makeGetRequest(apiUrl, snsToken);
         Map<String, Object> body = (Map<String, Object>) response.getBody().get("response");
-        return new OAuth2Model(
+        return new OAuth2Response(
                 (String) body.get("id"),
                 (String) body.get("name"),
                 (String) body.get("email"),

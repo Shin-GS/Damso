@@ -4,7 +4,7 @@ import com.damso.core.response.error.ErrorCode;
 import com.damso.core.response.exception.BusinessException;
 import com.damso.domain.db.repository.member.MemberRepository;
 import com.damso.user.service.auth.RefreshInfoFetcher;
-import com.damso.user.service.auth.model.RefreshInfoModel;
+import com.damso.user.service.auth.response.RefreshInfoResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,9 +16,9 @@ public class RefreshInfoFetcherImpl implements RefreshInfoFetcher {
     private final MemberRepository memberRepository;
 
     @Override
-    public RefreshInfoModel refresh(Long memberId) {
+    public RefreshInfoResponse refresh(Long memberId) {
         return memberRepository.findById(memberId)
-                .map(RefreshInfoModel::of)
+                .map(RefreshInfoResponse::of)
                 .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
     }
 }

@@ -5,7 +5,7 @@ import com.damso.core.response.exception.BusinessException;
 import com.damso.core.utils.file.FileUploadUtil;
 import com.damso.core.utils.file.FileUtil;
 import com.damso.user.service.upload.ImageFileUploader;
-import com.damso.user.service.upload.model.FileUploadModel;
+import com.damso.user.service.upload.response.FileUploadResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -34,7 +34,7 @@ public class ImageFileUploaderImpl implements ImageFileUploader {
     private String[] allowedExtensions;
 
     @Override
-    public FileUploadModel upload(MultipartFile image, Long memberId) {
+    public FileUploadResponse upload(MultipartFile image, Long memberId) {
         FileUploadUtil.validateFile(image, maxFileSize, allowedExtensions);
 
         String uploadDir = FileUploadUtil.resolveUploadDir(uploadPath, memberId);
@@ -46,7 +46,7 @@ public class ImageFileUploaderImpl implements ImageFileUploader {
         String uniqueFileName = FileUploadUtil.createUniqueFileName() + "." + extension;
         Path targetPath = Paths.get(uploadDir, uniqueFileName);
         if (FileUploadUtil.copyFile(image, targetPath)) {
-            return FileUploadModel.of(FileUploadUtil.getAccessURL(serverDomain, accessPath, memberId, uniqueFileName));
+            return FileUploadResponse.of(FileUploadUtil.getAccessURL(serverDomain, accessPath, memberId, uniqueFileName));
         }
 
         throw new BusinessException(ErrorCode.FILE_UPLOAD_FAIL);

@@ -1,10 +1,10 @@
 package com.damso.admin.service.member;
 
-import com.damso.admin.service.member.command.MemberModifyCommand;
-import com.damso.admin.service.member.command.MemberRegisterCommand;
+import com.damso.admin.service.member.request.MemberModifyRequest;
+import com.damso.admin.service.member.request.MemberRegisterRequest;
 
 public interface MemberEditor {
-    void register(MemberRegisterCommand command);
+    void register(MemberRegisterRequest request);
 
-    void modify(Long memberId, MemberModifyCommand command);
+    void modify(Long memberId, MemberModifyRequest request);
 }

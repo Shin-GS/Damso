@@ -3,10 +3,10 @@ package com.damso.user.controller.story;
 import com.damso.auth.session.SessionMemberId;
 import com.damso.core.enums.story.StoryType;
 import com.damso.user.service.story.StoryFinder;
-import com.damso.user.service.story.model.StoryEditInfoModel;
+import com.damso.user.service.story.response.StoryEditInfoResponse;
 import com.damso.user.service.upload.ImageFileUploader;
 import com.damso.user.service.upload.VideoFileUploader;
-import com.damso.user.service.upload.model.FileUploadModel;
+import com.damso.user.service.upload.response.FileUploadResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,10 +28,10 @@ public class StoryHxController {
                            @SessionMemberId Long memberId,
                            @RequestParam(value = "storyType", required = false, defaultValue = "TEXT") StoryType storyType,
                            Model model) {
-        StoryEditInfoModel editInfoModel = storyFinder.getEditInfo(storyId, memberId);
-        model.addAttribute("story", editInfoModel);
-        model.addAttribute("images", editInfoModel.images());
-        model.addAttribute("video", editInfoModel.video());
+        StoryEditInfoResponse editInfoResponse = storyFinder.getEditInfo(storyId, memberId);
+        model.addAttribute("story", editInfoResponse);
+        model.addAttribute("images", editInfoResponse.images());
+        model.addAttribute("video", editInfoResponse.video());
 
         String fragment = switch (storyType) {
             case TEXT -> " :: text-editor";
@@ -45,8 +45,8 @@ public class StoryHxController {
     public String uploadImage(@RequestPart("file") MultipartFile image,
                               @SessionMemberId Long memberId,
                               Model model) {
-        FileUploadModel uploadModel = imageFileUploader.upload(image, memberId);
-        model.addAttribute("images", List.of(uploadModel.url()));
+        FileUploadResponse uploadResponse = imageFileUploader.upload(image, memberId);
+        model.addAttribute("images", List.of(uploadResponse.url()));
 
         String fragment = " :: story-upload-image";
         return "components/story/storyUploadFile" + fragment;
@@ -56,8 +56,8 @@ public class StoryHxController {
     public String uploadVideo(@RequestPart("file") MultipartFile video,
                               @SessionMemberId Long memberId,
                               Model model) {
-        FileUploadModel uploadModel = videoFileUploader.upload(video, memberId);
-        model.addAttribute("video", List.of(uploadModel.url()));
+        FileUploadResponse uploadResponse = videoFileUploader.upload(video, memberId);
+        model.addAttribute("video", List.of(uploadResponse.url()));
 
         String fragment = " :: story-upload-video";
         return "components/story/storyUploadFile" + fragment;

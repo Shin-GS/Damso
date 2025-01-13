@@ -2,8 +2,8 @@ package com.damso.admin.controller.member;
 
 import com.damso.admin.service.member.MemberEditor;
 import com.damso.admin.service.member.MemberFinder;
-import com.damso.admin.service.member.command.MemberModifyCommand;
-import com.damso.admin.service.member.command.MemberRegisterCommand;
+import com.damso.admin.service.member.request.MemberModifyRequest;
+import com.damso.admin.service.member.request.MemberRegisterRequest;
 import com.damso.core.response.success.SuccessCode;
 import com.damso.core.response.success.SuccessResponse;
 import lombok.RequiredArgsConstructor;
@@ -17,8 +17,8 @@ public class MemberApi {
     private final MemberEditor memberEditor;
 
     @PostMapping
-    public SuccessResponse register(@RequestBody MemberRegisterCommand command) {
-        memberEditor.register(command);
+    public SuccessResponse register(@RequestBody MemberRegisterRequest request) {
+        memberEditor.register(request);
         return SuccessResponse.of(SuccessCode.SUCCESS);
     }
 
@@ -29,8 +29,8 @@ public class MemberApi {
 
     @PutMapping("/{memberId}")
     public SuccessResponse modify(@PathVariable("memberId") Long memberId,
-                                  @RequestBody MemberModifyCommand command) {
-        memberEditor.modify(memberId, command);
+                                  @RequestBody MemberModifyRequest request) {
+        memberEditor.modify(memberId, request);
         return SuccessResponse.of(SuccessCode.SUCCESS);
     }
 }

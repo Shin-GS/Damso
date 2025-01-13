@@ -1,7 +1,7 @@
 package com.damso.user.service.auth;
 
-import com.damso.user.service.auth.model.RefreshInfoModel;
+import com.damso.user.service.auth.response.RefreshInfoResponse;
 
 public interface RefreshInfoFetcher {
-    RefreshInfoModel refresh(Long memberId);
+    RefreshInfoResponse refresh(Long memberId);
 }

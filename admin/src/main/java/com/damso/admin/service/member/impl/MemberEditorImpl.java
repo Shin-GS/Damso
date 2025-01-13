@@ -1,8 +1,8 @@
 package com.damso.admin.service.member.impl;
 
 import com.damso.admin.service.member.MemberEditor;
-import com.damso.admin.service.member.command.MemberModifyCommand;
-import com.damso.admin.service.member.command.MemberRegisterCommand;
+import com.damso.admin.service.member.request.MemberModifyRequest;
+import com.damso.admin.service.member.request.MemberRegisterRequest;
 import com.damso.core.response.error.ErrorCode;
 import com.damso.core.response.exception.BusinessException;
 import com.damso.domain.db.entity.member.Member;
@@ -18,30 +18,30 @@ public class MemberEditorImpl implements MemberEditor {
     private final MemberRepository memberRepository;
 
     @Override
-    public void register(MemberRegisterCommand command) {
-        if (memberRepository.existsByEmail(command.email())) {
+    public void register(MemberRegisterRequest request) {
+        if (memberRepository.existsByEmail(request.email())) {
             throw new BusinessException(ErrorCode.MEMBER_EMAIL_DUPLICATED);
         }
 
 //        memberRepository.save(new Member(
-//                command.email(),
-//                command.name(),
-//                command.role())
+//                request.email(),
+//                request.name(),
+//                request.role())
 //        );
     }
 
     @Override
-    public void modify(Long memberId, MemberModifyCommand command) {
+    public void modify(Long memberId, MemberModifyRequest request) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
 
-        if (!member.getEmail().equals(command.email()) && memberRepository.existsByEmail(command.email())) {
+        if (!member.getEmail().equals(request.email()) && memberRepository.existsByEmail(request.email())) {
             throw new BusinessException(ErrorCode.MEMBER_EMAIL_DUPLICATED);
         }
 
-//        member.update(command.email(),
-//                command.name(),
-//                command.role(),
-//                command.status());
+//        member.update(request.email(),
+//                request.name(),
+//                request.role(),
+//                request.status());
     }
 }

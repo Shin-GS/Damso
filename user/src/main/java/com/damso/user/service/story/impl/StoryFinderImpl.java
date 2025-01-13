@@ -7,7 +7,7 @@ import com.damso.domain.db.entity.story.Story;
 import com.damso.domain.db.repository.story.StoryRepository;
 import com.damso.user.service.member.MemberFinder;
 import com.damso.user.service.story.StoryFinder;
-import com.damso.user.service.story.model.StoryEditInfoModel;
+import com.damso.user.service.story.response.StoryEditInfoResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,13 +26,13 @@ public class StoryFinderImpl implements StoryFinder {
     }
 
     @Override
-    public StoryEditInfoModel getEditInfo(Long storyId, Long memberId) {
+    public StoryEditInfoResponse getEditInfo(Long storyId, Long memberId) {
         Member member = memberFinder.getEntity(memberId);
         Story story = getEntity(storyId);
         if (!story.isUpdateable(member)) {
             throw new BusinessException(ErrorCode.STORY_UNAUTHORIZED);
         }
 
-        return StoryEditInfoModel.of(story);
+        return StoryEditInfoResponse.of(story);
     }
 }

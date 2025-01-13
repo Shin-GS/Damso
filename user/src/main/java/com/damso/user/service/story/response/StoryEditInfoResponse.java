@@ -1,4 +1,4 @@
-package com.damso.user.service.story.model;
+package com.damso.user.service.story.response;
 
 import com.damso.core.enums.story.StoryCommentType;
 import com.damso.core.enums.story.StoryType;
@@ -11,16 +11,16 @@ import org.springframework.util.ObjectUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public record StoryEditInfoModel(Long id,
-                                 String title,
-                                 StoryType storyType,
-                                 String text,
-                                 List<String> images,
-                                 String video,
-                                 StoryCommentType commentType,
-                                 boolean published) {
-    public static StoryEditInfoModel of(Story story) {
-        return new StoryEditInfoModel(story.getId(),
+public record StoryEditInfoResponse(Long id,
+                                    String title,
+                                    StoryType storyType,
+                                    String text,
+                                    List<String> images,
+                                    String video,
+                                    StoryCommentType commentType,
+                                    boolean published) {
+    public static StoryEditInfoResponse of(Story story) {
+        return new StoryEditInfoResponse(story.getId(),
                 story.getTitle(),
                 story.getStoryType(),
                 getText(story.getStoryText()),

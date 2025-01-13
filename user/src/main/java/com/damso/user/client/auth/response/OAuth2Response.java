@@ -1,4 +1,4 @@
-package com.damso.user.client.auth.model;
+package com.damso.user.client.auth.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class OAuth2Model {
+public class OAuth2Response {
     private String providerAccountId;
     private String name;
     private String email;

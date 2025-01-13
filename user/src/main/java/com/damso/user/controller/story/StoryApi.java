@@ -4,8 +4,8 @@ import com.damso.auth.session.SessionMemberId;
 import com.damso.core.response.success.SuccessCode;
 import com.damso.core.response.success.SuccessResponse;
 import com.damso.user.service.story.StoryEditor;
-import com.damso.user.service.story.command.StoryEditCommand;
-import com.damso.user.service.story.model.StoryEditModel;
+import com.damso.user.service.story.request.StoryEditRequest;
+import com.damso.user.service.story.response.StoryEditResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -18,15 +18,15 @@ public class StoryApi {
 
     @PostMapping
     public SuccessResponse createStory(@SessionMemberId Long memberId) {
-        StoryEditModel model = storyEditor.create(memberId);
-        return SuccessResponse.of(SuccessCode.SUCCESS, model);
+        StoryEditResponse storyEditResponse = storyEditor.create(memberId);
+        return SuccessResponse.of(SuccessCode.SUCCESS, storyEditResponse);
     }
 
     @PutMapping("{storyId}")
     public SuccessResponse updateStory(@PathVariable("storyId") Long storyId,
                                        @SessionMemberId Long memberId,
-                                       @RequestBody @Valid StoryEditCommand command) {
-        StoryEditModel model = storyEditor.update(storyId, memberId, command);
-        return SuccessResponse.of(SuccessCode.SUCCESS, model);
+                                       @RequestBody @Valid StoryEditRequest request) {
+        StoryEditResponse storyEditResponse = storyEditor.update(storyId, memberId, request);
+        return SuccessResponse.of(SuccessCode.SUCCESS, storyEditResponse);
     }
 }

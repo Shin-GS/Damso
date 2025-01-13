@@ -1,7 +1,7 @@
 package com.damso.admin.controller.menu;
 
 import com.damso.admin.service.auth.RefreshInfoFetcher;
-import com.damso.admin.service.auth.model.RefreshInfoModel;
+import com.damso.admin.service.auth.response.RefreshInfoResponse;
 import com.damso.auth.session.SessionMemberId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -20,11 +20,14 @@ public class MenuHxController {
     public String menu(Model model,
                        @SessionMemberId Long memberId) {
         if (ObjectUtils.isEmpty(memberId)) {
-            return "components/menu :: guest-menu";
+            String fragment = " :: guest-menu";
+            return "components/menu" + fragment;
         }
 
-        RefreshInfoModel refreshInfo = refreshInfoFetcher.refresh(memberId);
+        RefreshInfoResponse refreshInfo = refreshInfoFetcher.refresh(memberId);
         model.addAttribute("username", refreshInfo.name());
-        return "components/menu :: admin-menu";
+
+        String fragment = " :: admin-menu";
+        return "components/menu" + fragment;
     }
 }

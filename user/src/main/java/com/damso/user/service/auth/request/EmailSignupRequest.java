@@ -1,9 +1,9 @@
-package com.damso.user.service.auth.command;
+package com.damso.user.service.auth.request;
 
 import com.damso.core.request.regex.ValidPattern;
 import com.damso.core.request.regex.pattern.MemberRegexPattern;
 
-public record EmailSignupCommand(@ValidPattern(value = MemberRegexPattern.class, fieldCode = "NAME", notEmpty = true)
+public record EmailSignupRequest(@ValidPattern(value = MemberRegexPattern.class, fieldCode = "NAME", notEmpty = true)
                                  String name,
 
                                  @ValidPattern(value = MemberRegexPattern.class, fieldCode = "EMAIL", notEmpty = true)

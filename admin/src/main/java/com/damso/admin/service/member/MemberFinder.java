@@ -1,14 +1,14 @@
 package com.damso.admin.service.member;
 
-import com.damso.admin.service.member.command.MemberSearchFilterCommand;
-import com.damso.admin.service.member.model.MemberInfoModel;
-import com.damso.admin.service.member.model.MemberSearchModel;
+import com.damso.admin.service.member.request.MemberSearchFilterRequest;
+import com.damso.admin.service.member.response.MemberInfoResponse;
+import com.damso.admin.service.member.response.MemberSearchResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface MemberFinder {
-    Page<MemberSearchModel> findMembers(MemberSearchFilterCommand command,
-                                        Pageable pageable);
+    Page<MemberSearchResponse> findMembers(MemberSearchFilterRequest request,
+                                           Pageable pageable);
 
-    MemberInfoModel get(Long memberId);
+    MemberInfoResponse get(Long memberId);
 }

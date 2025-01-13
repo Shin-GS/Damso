@@ -1,7 +1,7 @@
 package com.damso.admin.service.auth.impl;
 
 import com.damso.admin.service.auth.RefreshInfoFetcher;
-import com.damso.admin.service.auth.model.RefreshInfoModel;
+import com.damso.admin.service.auth.response.RefreshInfoResponse;
 import com.damso.core.response.error.ErrorCode;
 import com.damso.core.response.exception.BusinessException;
 import com.damso.domain.db.repository.member.MemberRepository;
@@ -16,9 +16,9 @@ public class RefreshInfoFetcherImpl implements RefreshInfoFetcher {
     private final MemberRepository memberRepository;
 
     @Override
-    public RefreshInfoModel refresh(Long memberId) {
+    public RefreshInfoResponse refresh(Long memberId) {
         return memberRepository.findById(memberId)
-                .map(RefreshInfoModel::of)
+                .map(RefreshInfoResponse::of)
                 .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
     }
 }

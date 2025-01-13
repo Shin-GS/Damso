@@ -1,8 +1,8 @@
 package com.damso.user.service.upload;
 
-import com.damso.user.service.upload.model.FileUploadModel;
+import com.damso.user.service.upload.response.FileUploadResponse;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface ImageFileUploader {
-    FileUploadModel upload(MultipartFile image, Long memberId);
+    FileUploadResponse upload(MultipartFile image, Long memberId);
 }

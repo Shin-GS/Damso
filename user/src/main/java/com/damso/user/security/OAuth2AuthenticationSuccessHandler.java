@@ -5,7 +5,7 @@ import com.damso.core.enums.member.MemberSocialAccountType;
 import com.damso.domain.db.entity.member.MemberSocialAccount;
 import com.damso.domain.db.repository.member.MemberSocialAccountRepository;
 import com.damso.user.client.auth.OAuth2ClientImpl;
-import com.damso.user.client.auth.model.OAuth2Model;
+import com.damso.user.client.auth.response.OAuth2Response;
 import com.damso.user.service.member.MemberRegister;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -44,7 +44,7 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
                 .getTokenValue();
 
         MemberSocialAccountType provider = extractProvider(oauth2Auth);
-        OAuth2Model snsUser = oAuth2Client.getUser(provider, accessToken);
+        OAuth2Response snsUser = oAuth2Client.getUser(provider, accessToken);
         memberSocialAccountRepository.findByProviderAndProviderAccountId(provider, snsUser.getProviderAccountId())
                 .ifPresentOrElse(
                         memberSocial -> this.login(response, memberSocial),
@@ -72,7 +72,7 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
 
     private void register(HttpServletResponse response,
                           MemberSocialAccountType provider,
-                          OAuth2Model snsUser) {
+                          OAuth2Response snsUser) {
         Long memberId = memberRegister.signup(provider, snsUser.getProviderAccountId(), snsUser.getEmail(), snsUser.getName());
         jwtTokenProvider.generateJwtCookie(response, memberId);
     }

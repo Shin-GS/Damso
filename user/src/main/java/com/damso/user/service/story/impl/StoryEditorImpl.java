@@ -9,8 +9,8 @@ import com.damso.domain.db.repository.story.StoryRepository;
 import com.damso.user.service.member.MemberFinder;
 import com.damso.user.service.story.StoryEditor;
 import com.damso.user.service.story.StoryFinder;
-import com.damso.user.service.story.command.StoryEditCommand;
-import com.damso.user.service.story.model.StoryEditModel;
+import com.damso.user.service.story.request.StoryEditRequest;
+import com.damso.user.service.story.response.StoryEditResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,31 +24,31 @@ public class StoryEditorImpl implements StoryEditor {
     private final StoryFinder storyFinder;
 
     @Override
-    public StoryEditModel create(Long memberId) {
+    public StoryEditResponse create(Long memberId) {
         Member member = memberFinder.getEntity(memberId);
         Story story = storyRepository.save(new Story(member));
-        return StoryEditModel.of(story);
+        return StoryEditResponse.of(story);
     }
 
     @Override
-    public StoryEditModel update(Long storyId,
-                                 Long memberId,
-                                 StoryEditCommand command) {
+    public StoryEditResponse update(Long storyId,
+                                    Long memberId,
+                                    StoryEditRequest request) {
         Member member = memberFinder.getEntity(memberId);
         Story story = storyFinder.getEntity(storyId);
         if (!story.isUpdateable(member)) {
             throw new BusinessException(ErrorCode.STORY_UNAUTHORIZED);
         }
 
-        story.update(command.title(),
-                command.storyType(),
-                StringUtil.defaultIfEmpty(command.text(), ""),
-                StringUtil.defaultIfEmpty(command.planText(), ""),
-                command.files(),
-                command.commentType());
-        story.publish(command.published());
+        story.update(request.title(),
+                request.storyType(),
+                StringUtil.defaultIfEmpty(request.text(), ""),
+                StringUtil.defaultIfEmpty(request.planText(), ""),
+                request.files(),
+                request.commentType());
+        story.publish(request.published());
 
         Story savedStory = storyRepository.save(story);
-        return StoryEditModel.of(savedStory);
+        return StoryEditResponse.of(savedStory);
     }
 }
