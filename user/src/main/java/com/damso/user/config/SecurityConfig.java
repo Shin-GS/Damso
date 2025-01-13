@@ -74,7 +74,7 @@ public class SecurityConfig {
     }
 
     private static void getRequestMatchers(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry request) {
-        Set<String> memberRolePatterns = Set.of(
+        Set<String> userRolePatterns = Set.of(
                 "/member/**",
                 "/api/member/**",
                 "/api/stories/**",
@@ -83,16 +83,8 @@ public class SecurityConfig {
                 "/api/upload/**"
         );
 
-        Set<String> userRolePatterns = Set.of(
-        );
-
-        Set<String> creatorRolePatterns = Set.of(
-        );
-
         request
-                .requestMatchers(memberRolePatterns.toArray(String[]::new)).hasAnyRole(MemberRoleType.USER.name(), MemberRoleType.CREATOR.name())
                 .requestMatchers(userRolePatterns.toArray(String[]::new)).hasAnyRole(MemberRoleType.USER.name())
-                .requestMatchers(creatorRolePatterns.toArray(String[]::new)).hasAnyRole(MemberRoleType.CREATOR.name())
                 .anyRequest().permitAll();
     }
 

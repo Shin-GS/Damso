@@ -64,7 +64,7 @@ public class SecurityConfig {
     }
 
     private static void getRequestMatchers(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry request) {
-        Set<String> permitAllPattern = Set.of(
+        Set<String> guestRolePatterns = Set.of(
                 "/login",
                 "/api/auth/**",
                 "/css/**",
@@ -73,7 +73,7 @@ public class SecurityConfig {
         );
 
         request
-                .requestMatchers(permitAllPattern.toArray(String[]::new)).permitAll()
+                .requestMatchers(guestRolePatterns.toArray(String[]::new)).permitAll()
                 .anyRequest().hasAnyRole(MemberRoleType.ADMIN.name());
     }
 
