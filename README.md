@@ -193,6 +193,40 @@ def cdnFiles = [
 ## 💡 개발 팁
 
 ### IntelliJ IDEA에서 Run/Debug 시마다 output.css를 생성하고 외부 CDN(js, css) 파일을 자동 다운로드 처리
+
 1. **Run/Debug Configurations** 창에서 상단의 **Modify options** 클릭
 2. **"Build, Execution, Deployment"** → **Before launch** 섹션 확인
 3. **Add** 버튼 클릭 → **"Run Gradle task"** 선택 후, `tailwindBuild` 및 `downloadCdnFiles` 추가
+
+---
+
+## 🛠 OAuth2 설정 추가
+
+서버를 실행하려면 OAuth2 관련 설정을 `application.yml`에 추가해야 합니다. 아래는 예시 설정입니다:
+
+```yaml
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: YOUR_GOOGLE_CLIENT_ID
+            client-secret: YOUR_GOOGLE_CLIENT_SECRET
+            scope:
+              - email
+              - profile
+            redirect-uri: "{baseUrl}/login/oauth2/code/google"
+        provider:
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/auth
+            token-uri: https://oauth2.googleapis.com/token
+            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+            user-name-attribute: email
+```
+
+위 설정에서 `client-id`와 `client-secret`은 각 OAuth 제공자(Google 등)에서 발급받아야 합니다. `redirect-uri`는 서버의 OAuth2 리디렉션 경로를
+설정해야 합니다.
+
+---
+
