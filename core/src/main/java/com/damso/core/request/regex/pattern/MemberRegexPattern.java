@@ -3,10 +3,6 @@ package com.damso.core.request.regex.pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 @Getter
 @AllArgsConstructor
 public enum MemberRegexPattern implements CommonRegexPattern {
@@ -18,9 +14,4 @@ public enum MemberRegexPattern implements CommonRegexPattern {
     private final String code;
     private final String pattern;
     private final String message;
-
-    public static Map<String, MemberRegexPattern> getMap() {
-        return Stream.of(values())
-                .collect(Collectors.toMap(MemberRegexPattern::getCode, memberRegexPattern -> memberRegexPattern));
-    }
 }
