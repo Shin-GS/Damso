@@ -78,12 +78,10 @@ public class Story extends CommonTime {
                        String text,
                        String planText,
                        List<String> files,
-                       StoryCommentType commentType,
-                       boolean published) {
+                       StoryCommentType commentType) {
         this.title = title;
         this.storyType = storyType;
         this.commentType = commentType;
-        this.published = published;
 
         switch (storyType) {
             case TEXT -> updateStoryText(text, planText);
@@ -92,15 +90,19 @@ public class Story extends CommonTime {
         }
     }
 
+    public void publish(Boolean published) {
+        this.published = ObjectUtils.isEmpty(published) ? Boolean.FALSE : published;
+    }
+
     private void updateStoryText(String text,
-                                 String planText) {
+                                 String plainText) {
         this.storyFiles.clear();
         if (ObjectUtils.isEmpty(this.storyText)) {
-            this.storyText = new StoryText(this, text, planText);
+            this.storyText = new StoryText(this, text, plainText);
             return;
         }
 
-        this.storyText.update(text, planText);
+        this.storyText.update(text, plainText);
     }
 
     private void updateStoryImages(List<String> files) {

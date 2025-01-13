@@ -19,8 +19,12 @@ additionalScript='/script/story/quill.min.js,/script/story/cropper.min.js,/scrip
                     <input type="text"
                            id="title"
                            name="title"
+                           th:pattern="${storyRegexPattern.TITLE.pattern}"
+                           th:title="${storyRegexPattern.TITLE.message}"
                            th:value="${story.title}"
-                           class="w-full border rounded-md px-4 py-2 focus:ring focus:ring-blue-400" required>
+                           class="w-full border rounded-md px-4 py-2 focus:ring focus:ring-blue-400"
+                           required>
+                    <small class="text-gray-500" th:text="${storyRegexPattern.TITLE.message}"></small>
                 </label>
             </div>
 

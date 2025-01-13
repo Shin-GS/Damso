@@ -2,6 +2,7 @@ package com.damso.user.service.story.impl;
 
 import com.damso.core.response.error.ErrorCode;
 import com.damso.core.response.exception.BusinessException;
+import com.damso.core.utils.common.StringUtil;
 import com.damso.domain.db.entity.member.Member;
 import com.damso.domain.db.entity.story.Story;
 import com.damso.domain.db.repository.story.StoryRepository;
@@ -41,11 +42,11 @@ public class StoryEditorImpl implements StoryEditor {
 
         story.update(command.title(),
                 command.storyType(),
-                command.text(),
-                command.planText(),
+                StringUtil.defaultIfEmpty(command.text(), ""),
+                StringUtil.defaultIfEmpty(command.planText(), ""),
                 command.files(),
-                command.commentType(),
-                command.published());
+                command.commentType());
+        story.publish(command.published());
 
         Story savedStory = storyRepository.save(story);
         return StoryEditModel.of(savedStory);

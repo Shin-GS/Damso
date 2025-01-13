@@ -6,6 +6,7 @@ import com.damso.core.response.success.SuccessResponse;
 import com.damso.user.service.story.StoryEditor;
 import com.damso.user.service.story.command.StoryEditCommand;
 import com.damso.user.service.story.model.StoryEditModel;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +25,7 @@ public class StoryApi {
     @PutMapping("{storyId}")
     public SuccessResponse updateStory(@PathVariable("storyId") Long storyId,
                                        @SessionMemberId Long memberId,
-                                       @RequestBody StoryEditCommand command) {
+                                       @RequestBody @Valid StoryEditCommand command) {
         StoryEditModel model = storyEditor.update(storyId, memberId, command);
         return SuccessResponse.of(SuccessCode.SUCCESS, model);
     }
