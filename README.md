@@ -37,6 +37,57 @@
 
 ---
 
+## 🛠 모듈 구조
+
+### 전체 모듈 설명
+
+- **`admin`** : 어드민 서버
+- **`user`** : 사용자 서버
+- **`core`** : 전체 모듈에서 사용하는 공통 기능 정의 (예: `enum`, `정규식`, `공통 응답값`, `successCode`, `errorCode`, `utils`, `에러 handler` 등)
+- **`domain`** : DB나 Cache 같은 도메인 관련 코드가 있는 모듈
+- **`auth`** : `user`, `admin`에서 사용하는 인증 관련 코드
+
+---
+
+## ✍ 컨벤션
+
+### 1. 요청/응답 값 Postfix
+
+- **요청값**: `xxxRequest` (예: `CreateUserRequest`)
+- **응답값**: `xxxResponse` (예: `GetUserResponse`)
+
+### 2. Controller 네이밍
+
+- **`xxxController`**: 사용자가 접근하는 페이지 컨트롤러
+- **`xxxHxController`**: HTMX 또는 Fetch API를 통해 HTML을 응답받는 컨트롤러
+- **`xxxApi`**: 일반적인 API 컨트롤러 (JSON 응답용)
+
+### 3. 서비스 패키지 구조
+
+- **구성 요소**:
+    - 인터페이스
+    - 인터페이스 구현체 (Impl 패키지 내부)
+    - 요청 객체 (Request)
+    - 응답 객체 (Response)
+- **예시 구조**:
+  ```
+  service/
+    userFinder.java
+    impl/
+      userFinderImpl.java
+    request/
+      CreateUserRequest.java
+    response/
+      GetUserResponse.java
+  ```
+
+### 4. Templates 패키지 구조
+
+- **`views`**: `xxxController`에서 사용하는 HTML 템플릿
+- **`components`**: `xxxHxController`에서 사용하는 HTML 템플릿
+
+---
+
 ## 🔑 환경 변수 설정
 
 ### Java 환경 변수 설정 (Windows 기준)
