@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 
 import java.util.LinkedHashSet;
@@ -47,7 +48,7 @@ public class ErrorResponse {
                                    BindingResult bindingResult) {
         Set<FieldError> fieldErrors = bindingResult.getFieldErrors().stream()
                 .map(error -> new FieldError(error.getField(),
-                        error.getRejectedValue().toString(),
+                        !ObjectUtils.isEmpty(error.getRejectedValue()) ? error.getRejectedValue().toString() : "",
                         error.getDefaultMessage()))
                 .collect(Collectors.toCollection(LinkedHashSet::new));
 

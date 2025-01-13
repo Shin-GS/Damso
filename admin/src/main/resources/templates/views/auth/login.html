@@ -22,16 +22,29 @@
               hx-on::after-request="handleAdminLogin(event)">
 
             <div class="mb-8">
-                <label for="email" class="block text-sm font-medium text-gray-300">이메일</label>
-                <input type="email" id="email" name="email"
+                <label for="email"
+                       class="block text-sm font-medium text-gray-300">이메일</label>
+                <input type="email"
+                       id="email"
+                       name="email"
                        class="mt-2 block w-full px-5 py-4 border border-gray-700 bg-gray-900 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-600"
-                       placeholder="이메일을 입력하세요" required>
+                       placeholder="이메일을 입력하세요"
+                       th:pattern="${memberRegexPattern.EMAIL.pattern}"
+                       th:title="${memberRegexPattern.EMAIL.message}"
+                       required>
+                <small class="text-gray-500" th:text="${memberRegexPattern.EMAIL.message}"></small>
             </div>
             <div class="mb-10">
                 <label for="password" class="block text-sm font-medium text-gray-300">비밀번호</label>
-                <input type="password" id="password" name="password"
+                <input type="password"
+                       id="password"
+                       name="password"
                        class="mt-2 block w-full px-5 py-4 border border-gray-700 bg-gray-900 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-600"
-                       placeholder="비밀번호를 입력하세요" required>
+                       placeholder="비밀번호를 입력하세요"
+                       th:pattern="${memberRegexPattern.PASSWORD.pattern}"
+                       th:title="${memberRegexPattern.PASSWORD.message}"
+                       required>
+                <small class="text-gray-500" th:text="${memberRegexPattern.PASSWORD.message}"></small>
             </div>
             <div class="mb-8 text-center">
                 <button type="submit"
@@ -40,7 +53,8 @@
                 </button>
             </div>
         </form>
-        <div id="error-message" class="text-red-500 text-sm mt-8 text-center h-6"></div>
+        <div id="error-message"
+             class="text-red-500 text-sm mt-8 text-center h-6"></div>
     </section>
 </main>
 
