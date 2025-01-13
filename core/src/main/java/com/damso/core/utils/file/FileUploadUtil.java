@@ -3,6 +3,7 @@ package com.damso.core.utils.file;
 import com.damso.core.response.error.ErrorCode;
 import com.damso.core.response.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,7 +30,7 @@ public class FileUploadUtil {
     }
 
     public static void validateFile(MultipartFile file, long maxFileSize, String[] allowedExtensions) {
-        if (file == null || file.isEmpty() || !StringUtils.hasText(file.getOriginalFilename())) {
+        if (ObjectUtils.isEmpty(file) || file.isEmpty() || !StringUtils.hasText(file.getOriginalFilename())) {
             throw new BusinessException(ErrorCode.FILE_EMPTY);
         }
 
