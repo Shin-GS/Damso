@@ -1,10 +1,14 @@
 package com.damso.core.response.exception;
 
+import com.damso.core.response.error.ErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.thymeleaf.TemplateEngine;
@@ -33,6 +37,15 @@ public class GlobalHxControllerExceptionHandler {
 
         // 기본 HTMX 오류 처리
         return renderThymeleafTemplate("fragments/genericError", "알 수 없는 오류가 발생했습니다.", requestPath);
+    }
+
+    @ExceptionHandler(BusinessException.class)
+    protected ResponseEntity<ErrorResponse> handleBusinessException(BusinessException e) {
+        log.error("handle BusinessException: ", e);
+        ErrorResponse errorResponse = StringUtils.hasText(e.getMessage()) ? ErrorResponse.of(e.getCode(), e.getMessage()) : ErrorResponse.of(e.getCode());
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(org.springframework.http.MediaType.APPLICATION_JSON);
+        return new ResponseEntity<>(errorResponse, headers, HttpStatus.valueOf(errorResponse.getStatus()));
     }
 
     // 공통 Thymeleaf 템플릿 렌더링

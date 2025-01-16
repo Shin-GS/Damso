@@ -9,6 +9,8 @@ public interface CommonRegexPattern {
 
     String getPattern();
 
+    String getFePattern();
+
     String getMessage();
 
     static <T extends CommonRegexPattern> Map<String, T> getMap(Class<T> enumClass) {

@@ -29,7 +29,7 @@
                        name="email"
                        class="mt-2 block w-full px-5 py-4 border border-gray-700 bg-gray-900 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-600"
                        placeholder="이메일을 입력하세요"
-                       th:pattern="${memberRegexPattern.EMAIL.pattern}"
+                       th:pattern="${memberRegexPattern.EMAIL.fePattern}"
                        th:title="${memberRegexPattern.EMAIL.message}"
                        required>
                 <small class="text-gray-500" th:text="${memberRegexPattern.EMAIL.message}"></small>
@@ -41,7 +41,7 @@
                        name="password"
                        class="mt-2 block w-full px-5 py-4 border border-gray-700 bg-gray-900 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-600"
                        placeholder="비밀번호를 입력하세요"
-                       th:pattern="${memberRegexPattern.PASSWORD.pattern}"
+                       th:pattern="${memberRegexPattern.PASSWORD.fePattern}"
                        th:title="${memberRegexPattern.PASSWORD.message}"
                        required>
                 <small class="text-gray-500" th:text="${memberRegexPattern.PASSWORD.message}"></small>

@@ -19,88 +19,85 @@ additionalScript='/script/story/quill.min.js,/script/story/cropper.min.js,/scrip
         </div>
 
         <h1 class="text-2xl font-bold mb-6">이야기 편집</h1>
-        <form id="storyEditForm" class="space-y-6">
-            <input type="hidden" id="storyId" name="storyId" th:value="${story.id}">
+        <input type="hidden" id="storyId" name="storyId" th:value="${story.id}">
+        <div>
+            <label class="block font-medium mb-2">이야기 제목</label>
+            <label>
+                <input type="text"
+                       id="title"
+                       name="title"
+                       th:hx-put="@{'/hx/stories/' + ${storyId} + '/title'}"
+                       hx-target="#toast-container"
+                       hx-swap="innerHTML"
+                       hx-trigger="keyup changed delay:300ms"
+                       th:pattern="${storyRegexPattern.TITLE.fePattern}"
+                       th:value="${story.title}"
+                       class="w-full border rounded-md px-4 py-2 focus:ring focus:ring-blue-400">
+                <small id="title-error"
+                       class="text-red-500 hidden"
+                       th:text="${storyRegexPattern.TITLE.message}"></small>
+            </label>
+        </div>
 
-            <!-- 이야기 제목 -->
-            <div>
-                <label class="block font-medium mb-2">이야기 제목</label>
-                <label>
-                    <input type="text"
-                           id="title"
-                           name="title"
-                           th:pattern="${storyRegexPattern.TITLE.pattern}"
-                           th:title="${storyRegexPattern.TITLE.message}"
-                           th:value="${story.title}"
-                           class="w-full border rounded-md px-4 py-2 focus:ring focus:ring-blue-400"
-                           required>
-                    <small class="text-gray-500" th:text="${storyRegexPattern.TITLE.message}"></small>
-                </label>
-            </div>
+        <section id="pages-container" class="mt-8"
+                 hx-get="@{'/hx/stories/' + ${story.id} + '/pages'}"
+                 hx-trigger="load"
+                 hx-swap="innerHTML">
+        </section>
 
-            <!-- 페이지 편집 -->
-            <section id="pages-container" class="mt-8"
-                     hx-get="@{'/hx/stories/' + ${story.id} + '/pages'}"
-                     hx-trigger="load"
-                     hx-swap="innerHTML">
-                <!-- 페이지 목록 동적 로드 -->
-            </section>
+        <div class="flex justify-between mt-4">
+            <button type="button" id="add-page-button"
+                    class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-6 rounded"
+                    hx-post="@{'/hx/stories/' + ${story.id} + '/pages'}"
+                    hx-target="#pages-container"
+                    hx-swap="beforeend">
+                페이지 추가
+            </button>
+        </div>
 
-            <div class="flex justify-between mt-4">
-                <button type="button" id="add-page-button"
-                        class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-6 rounded"
-                        hx-post="@{'/hx/stories/' + ${story.id} + '/pages'}"
-                        hx-target="#pages-container"
-                        hx-swap="beforeend">
-                    페이지 추가
-                </button>
-            </div>
+        <div>
+            <label class="block font-medium mb-2">댓글 설정</label>
+            <label>
+                <select name="commentType"
+                        class="w-full border rounded-md px-4 py-2 focus:ring focus:ring-blue-400">
+                    <option th:each="option : ${commentTypes}"
+                            th:value="${option.code}"
+                            th:text="${option.value}"
+                            th:selected="${option.code == story.commentType.code}">
+                    </option>
+                </select>
+            </label>
+        </div>
 
-            <!-- 댓글 설정 -->
-            <div>
-                <label class="block font-medium mb-2">댓글 설정</label>
-                <label>
-                    <select name="commentType"
-                            class="w-full border rounded-md px-4 py-2 focus:ring focus:ring-blue-400">
-                        <option th:each="option : ${commentTypes}"
-                                th:value="${option.code}"
-                                th:text="${option.value}"
-                                th:selected="${option.code == story.commentType.code}">
-                        </option>
-                    </select>
-                </label>
-            </div>
+        <div class="flex items-center">
+            <label>
+                <input type="checkbox"
+                       name="published"
+                       th:checked="${story.published}"
+                       class="form-checkbox h-5 w-5">
+            </label>
+            <span class="ml-2">이야기 발행</span>
+        </div>
 
-            <!-- 발행 체크박스 -->
-            <div class="flex items-center">
-                <label>
-                    <input type="checkbox"
-                           name="published"
-                           th:checked="${story.published}"
-                           class="form-checkbox h-5 w-5">
-                </label>
-                <span class="ml-2">이야기 발행</span>
-            </div>
+        <div class="flex justify-end space-x-4">
+            <button type="button"
+                    id="temporarySaveButton"
+                    class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-6 rounded">
+                임시 저장
+            </button>
+            <button type="button"
+                    id="cancelEditButton"
+                    class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-6 rounded">
+                수정 취소
+            </button>
+            <button type="submit"
+                    id="publishButton"
+                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded">
+                이야기 발행
+            </button>
+        </div>
 
-            <!-- 임시저장, 수정취소, 이야기 발행 버튼 -->
-            <div class="flex justify-end space-x-4">
-                <button type="button"
-                        id="temporarySaveButton"
-                        class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-6 rounded">
-                    임시 저장
-                </button>
-                <button type="button"
-                        id="cancelEditButton"
-                        class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-6 rounded">
-                    수정 취소
-                </button>
-                <button type="submit"
-                        id="publishButton"
-                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded">
-                    이야기 발행
-                </button>
-            </div>
-        </form>
+        <div id="toast-container"></div>
     </section>
 </main>
 
@@ -109,41 +106,32 @@ additionalScript='/script/story/quill.min.js,/script/story/cropper.min.js,/scrip
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const pagesContainer = document.getElementById('pages-container');
+        document.body.addEventListener('htmx:beforeRequest', (event) => {
+            const input = event.target;
+            const patternAttr = input.getAttribute('pattern');
+            const errorElement = document.getElementById(input.id + '-error');
+            if (!patternAttr || !errorElement) {
+                return;
+            }
+
+            const pattern = new RegExp(patternAttr);
+            if (!pattern.test(input.value)) {
+                errorElement.classList.remove('hidden');
+                input.classList.add('border-red-500');
+                event.preventDefault();
+            } else {
+                errorElement.classList.add('hidden');
+                input.classList.remove('border-red-500');
+            }
+        });
 
         document.body.addEventListener('htmx:afterRequest', (event) => {
-            if (event.detail.path.includes('/pages')) {
-                initializeEditors();
-            }
-        });
-
-        // 임시 저장 버튼 로직
-        document.getElementById('temporarySaveButton').addEventListener('click', async () => {
-            const storyId = document.getElementById('storyId').value;
-            const title = document.getElementById('title').value;
-            const payload = {title};
-
-            try {
-                const response = await fetch(`/api/stories/${storyId}/temporary-save`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(payload),
-                });
-
-                if (response.ok) {
-                    alert('임시 저장 완료!');
-                } else {
-                    alert('임시 저장 실패!');
-                }
-            } catch (error) {
-                console.error('임시 저장 중 오류:', error);
-            }
-        });
-
-        // 수정 취소 버튼 로직
-        document.getElementById('cancelEditButton').addEventListener('click', () => {
-            if (confirm('수정을 취소하시겠습니까? 저장되지 않은 내용은 사라집니다.')) {
-                location.reload();
+            const toast = document.querySelector('#toast-success') || document.querySelector('#toast-fail');
+            if (toast) {
+                setTimeout(() => {
+                    toast.classList.add('opacity-0');
+                    setTimeout(() => toast.remove(), 300);
+                }, 3000);
             }
         });
     });

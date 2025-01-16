@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       lang="ko">
+<div th:fragment="success"
+     id="toast-success"
+     class="fixed bottom-5 right-5 px-4 py-3 rounded shadow-lg transition-opacity duration-300 bg-green-500 text-white">
+    <p th:text="${message}"></p>
+</div>
 
-
+<div th:fragment="fail"
+     id="toast-fail"
+     class="fixed bottom-5 right-5 px-4 py-3 rounded shadow-lg transition-opacity duration-300 bg-red-500 text-white">
+    <p th:text="${message}"></p>
+</div>
 </html>

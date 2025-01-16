@@ -30,7 +30,7 @@
                        name="name"
                        placeholder="이름을 입력하세요"
                        class="mt-1 p-3 w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-                       th:pattern="${memberRegexPattern.NAME.pattern}"
+                       th:pattern="${memberRegexPattern.NAME.fePattern}"
                        th:title="${memberRegexPattern.NAME.message}"
                        required>
                 <small class="text-gray-500"
@@ -48,7 +48,7 @@
                        name="email"
                        placeholder="이메일을 입력하세요"
                        class="mt-1 p-3 w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-                       th:pattern="${memberRegexPattern.EMAIL.pattern}"
+                       th:pattern="${memberRegexPattern.EMAIL.fePattern}"
                        th:title="${memberRegexPattern.EMAIL.message}"
                        required>
                 <small class="text-gray-500"
@@ -71,7 +71,7 @@
                        name="password"
                        placeholder="비밀번호를 입력하세요"
                        class="mt-1 p-3 w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-                       th:pattern="${memberRegexPattern.PASSWORD.pattern}"
+                       th:pattern="${memberRegexPattern.PASSWORD.fePattern}"
                        th:title="${memberRegexPattern.PASSWORD.message}"
                        required>
                 <small class="text-gray-500"

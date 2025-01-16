@@ -59,7 +59,7 @@ public class Story extends CommonTime {
         this.title = "NEW STORY";
         this.commentType = StoryCommentType.ALL;
         this.published = Boolean.FALSE;
-        // todo StoryPage
+        this.storyPages.add(new StoryPage(this));
     }
 
     public boolean isUpdateable(Member member) {

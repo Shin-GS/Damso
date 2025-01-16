@@ -34,8 +34,8 @@ public class StoryHxController {
                            Model model) {
         StoryEditInfoResponse editInfoResponse = storyFinder.getEditInfo(storyId, memberId);
         model.addAttribute("story", editInfoResponse);
-        model.addAttribute("images", editInfoResponse.images());
-        model.addAttribute("video", editInfoResponse.video());
+//        model.addAttribute("images", editInfoResponse.images());
+//        model.addAttribute("video", editInfoResponse.video());
 
         String fragment = switch (storyType) {
             case TEXT -> " :: text-editor";
@@ -45,14 +45,15 @@ public class StoryHxController {
         return "components/story/edit/editor" + fragment;
     }
 
-    @PostMapping("/{storyId}/edit/title")
+    @PutMapping("/{storyId}/title")
     public String saveTitle(@PathVariable("storyId") Long storyId,
                             @SessionMemberId Long memberId,
-                            @RequestBody @Valid StoryEditTitleRequest request,
+                            @ModelAttribute @Valid StoryEditTitleRequest request,
                             Model model) {
         storyEditor.updateTitle(storyId, memberId, request.title());
+        model.addAttribute("message", "스토리 임시저장에 성공했습니다.");
 
-        String fragment = " :: success"; // todo exception handler에 error시 처리 추가 필요
+        String fragment = " :: success";
         return "components/story/edit/toast" + fragment;
     }
 

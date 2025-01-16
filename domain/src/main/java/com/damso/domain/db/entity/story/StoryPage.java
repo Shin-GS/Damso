@@ -31,9 +31,6 @@ public class StoryPage extends CommonTime {
     @Column(name = "PAGE_ORDER", columnDefinition = "INT", nullable = false)
     private Integer pageOrder;
 
-    @Column(name = "CONTENT", columnDefinition = "TEXT")
-    private String content;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "PAGE_STORY_TYPE", columnDefinition = "VARCHAR(20)", nullable = false)
     private StoryType storyType;
@@ -47,5 +44,11 @@ public class StoryPage extends CommonTime {
 
     @OneToMany(mappedBy = "storyPage", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<StoryFile> storyFiles = new ArrayList<>();
+
+    public StoryPage(Story story) {
+        this.story = story;
+        this.pageOrder = 0;
+        this.storyType = StoryType.TEXT;
+    }
 }
 
