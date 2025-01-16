@@ -9,4 +9,8 @@ public interface StoryEditor {
     StoryEditResponse update(Long storyId,
                              Long memberId,
                              StoryEditRequest request);
+
+    void updateTitle(Long storyId,
+                     Long memberId,
+                     String title);
 }

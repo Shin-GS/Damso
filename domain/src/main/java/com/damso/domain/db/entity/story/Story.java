@@ -53,4 +53,16 @@ public class Story extends CommonTime {
 
     @OneToMany(mappedBy = "story", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SubscriptionPlanStory> subscriptionPlanStories = new ArrayList<>();
+
+    public Story(Member member) {
+        this.member = member;
+        this.title = "NEW STORY";
+        this.commentType = StoryCommentType.ALL;
+        this.published = Boolean.FALSE;
+        // todo StoryPage
+    }
+
+    public boolean isUpdateable(Member member) {
+        return this.member.equals(member) && !this.deleted;
+    }
 }

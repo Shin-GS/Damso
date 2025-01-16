@@ -2,11 +2,14 @@ package com.damso.user.controller.story;
 
 import com.damso.auth.session.SessionMemberId;
 import com.damso.core.enums.story.StoryType;
+import com.damso.user.service.story.StoryEditor;
 import com.damso.user.service.story.StoryFinder;
+import com.damso.user.service.story.request.StoryEditTitleRequest;
 import com.damso.user.service.story.response.StoryEditInfoResponse;
 import com.damso.user.service.upload.ImageFileUploader;
 import com.damso.user.service.upload.VideoFileUploader;
 import com.damso.user.service.upload.response.FileUploadResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StoryHxController {
     private final StoryFinder storyFinder;
+    private final StoryEditor storyEditor;
     private final ImageFileUploader imageFileUploader;
     private final VideoFileUploader videoFileUploader;
 
@@ -38,7 +42,18 @@ public class StoryHxController {
             case IMAGE -> " :: image-editor";
             case VIDEO -> " :: video-editor";
         };
-        return "components/story/storyEditor" + fragment;
+        return "components/story/edit/editor" + fragment;
+    }
+
+    @PostMapping("/{storyId}/edit/title")
+    public String saveTitle(@PathVariable("storyId") Long storyId,
+                            @SessionMemberId Long memberId,
+                            @RequestBody @Valid StoryEditTitleRequest request,
+                            Model model) {
+        storyEditor.updateTitle(storyId, memberId, request.title());
+
+        String fragment = " :: success"; // todo exception handler에 error시 처리 추가 필요
+        return "components/story/edit/toast" + fragment;
     }
 
     @PostMapping("/upload/image")

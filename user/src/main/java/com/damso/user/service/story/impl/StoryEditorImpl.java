@@ -2,7 +2,6 @@ package com.damso.user.service.story.impl;
 
 import com.damso.core.response.error.ErrorCode;
 import com.damso.core.response.exception.BusinessException;
-import com.damso.core.utils.common.StringUtil;
 import com.damso.domain.db.entity.member.Member;
 import com.damso.domain.db.entity.story.Story;
 import com.damso.domain.db.repository.story.StoryRepository;
@@ -40,15 +39,21 @@ public class StoryEditorImpl implements StoryEditor {
             throw new BusinessException(ErrorCode.STORY_UNAUTHORIZED);
         }
 
-        story.update(request.title(),
-                request.storyType(),
-                StringUtil.defaultIfEmpty(request.text(), ""),
-                StringUtil.defaultIfEmpty(request.planText(), ""),
-                request.files(),
-                request.commentType());
-        story.publish(request.published());
+//        story.update(request.title(),
+//                request.storyType(),
+//                StringUtil.defaultIfEmpty(request.text(), ""),
+//                StringUtil.defaultIfEmpty(request.planText(), ""),
+//                request.files(),
+//                request.commentType());
+//        story.publish(request.published());
 
         Story savedStory = storyRepository.save(story);
         return StoryEditResponse.of(savedStory);
+    }
+
+    @Override
+    public void updateTitle(Long storyId, Long memberId, String title) {
+        Story story = storyFinder.getEditableEntity(storyId, memberId);
+        story.setTitle(title);
     }
 }

@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Slf4j
 @RestControllerAdvice
-public class GlobalRestControllerExceptionHandler {
-    private GlobalRestControllerExceptionHandler() {
+public class GlobalApiExceptionHandler {
+    private GlobalApiExceptionHandler() {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
