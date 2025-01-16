@@ -1,6 +1,8 @@
 package com.damso.core.request.regex;
 
 import com.damso.core.request.regex.pattern.CommonRegexPattern;
+import com.damso.core.response.error.ErrorCode;
+import com.damso.core.response.exception.BusinessException;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.util.ObjectUtils;
@@ -18,7 +20,7 @@ public class ValidPatternValidator implements ConstraintValidator<ValidPattern, 
         this.regexPattern = Stream.of(enumClass.getEnumConstants())
                 .filter(pattern -> pattern.getCode().equals(fieldCode)) // Enum에서 패턴 찾기
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Invalid fieldCode: " + fieldCode));
+                .orElseThrow(() -> new BusinessException(ErrorCode.VALID_PATTERN_NOT_FOUND));
         this.notEmpty = constraintAnnotation.notEmpty();
     }
 

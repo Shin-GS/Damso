@@ -58,6 +58,13 @@ public class ErrorResponse {
                 fieldErrors);
     }
 
+    public String getFirstMessage() {
+        return this.getError().stream()
+                .findFirst()
+                .map(ErrorResponse.FieldError::getReason)
+                .orElse(ErrorCode.INVALID_INPUT_VALUE.getMessage());
+    }
+
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @EqualsAndHashCode(of = {"field", "value", "reason"})

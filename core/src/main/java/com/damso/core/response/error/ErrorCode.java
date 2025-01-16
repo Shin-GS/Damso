@@ -15,6 +15,7 @@ public enum ErrorCode {
     FILE_NAME_INVALID(400, "I006", "File Name Is Invalid"),
     FILE_PATH_NOT_VALID(400, "I007", "File Path Is Not Valid"),
     FILE_UPLOAD_FAIL(400, "I008", "File Upload Fail"),
+    VALID_PATTERN_NOT_FOUND(400, "I009", "Pattern Not Found"),
 
     //T : 사용자 토큰 관련
     TOKEN_EXPIRED(400, "T001", "인증번호 유효기간이 만료되었습니다."),
