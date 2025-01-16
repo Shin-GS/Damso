@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="ko">
+<div class="page-item border rounded-md p-4 mb-4 bg-gray-50" data-id="${page.id}">
+    <div class="flex justify-between items-center">
+        <h2 class="font-bold text-lg">페이지 <span th:text="${page.pageNumber}"></span></h2>
+        <button type="button" class="delete-page-button text-red-500 hover:text-red-700 font-bold"
+                hx-delete="@{'/hx/stories/' + ${story.id} + '/pages/' + ${page.id}}"
+                hx-target="this"
+                hx-swap="outerHTML">
+            삭제
+        </button>
+    </div>
+    <div class="mt-2">
+        <label class="block font-medium mb-2">이야기 유형</label>
+        <label>
+            <select id="storyTypeSelect"
+                    name="storyType"
+                    class="w-full border rounded-md px-4 py-2 focus:ring focus:ring-blue-400"
+                    th:hx-get="@{'/hx/stories/' + ${story.id} + '/page'+ ${story.id} +'/edit'}"
+                    hx-include="[name='storyType']"
+                    hx-confirm="이야기 유형을 변경하면 기존에 작성한 내용이 삭제됩니다. 계속하시겠습니까?"
+                    hx-target="#editor">
+                <option th:each="option : ${storyTypes}"
+                        th:value="${option.code}"
+                        th:text="${option.value}"
+                        th:selected="${option.code == story.storyType.code}">
+                </option>
+            </select>
+        </label>
+    </div>
+    <div class="editor-content mt-4">
+        <section id="editor"
+                 class="mt-8"
+                 th:hx-get="@{'/hx/stories/' + ${story.id} + '/edit'}"
+                 hx-include="[name='storyType']" hx-trigger="load" hx-target="this">
+        </section>
+    </div>
+</div>
+</html>

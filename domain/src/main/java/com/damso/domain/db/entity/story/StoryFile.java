@@ -21,8 +21,8 @@ public class StoryFile extends CommonTime {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "STORY_NO", columnDefinition = "BIGINT", nullable = false)
-    private Story story;
+    @JoinColumn(name = "STORY_PAGE_NO", columnDefinition = "BIGINT", nullable = false)
+    private StoryPage storyPage;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "STORY_FILE_TYPE", columnDefinition = "VARCHAR(10)", nullable = false)
@@ -34,11 +34,11 @@ public class StoryFile extends CommonTime {
     @Column(name = "STORY_FILE_ORDER", columnDefinition = "INT DEFAULT 1")
     private Integer order;
 
-    public StoryFile(Story story,
+    public StoryFile(StoryPage storyPage,
                      StoryFileType fileType,
                      String filePath,
                      Integer order) {
-        this.story = story;
+        this.storyPage = storyPage;
         this.fileType = fileType;
         this.filePath = filePath;
         this.order = order;
