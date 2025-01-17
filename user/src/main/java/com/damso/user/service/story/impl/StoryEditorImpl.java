@@ -1,5 +1,6 @@
 package com.damso.user.service.story.impl;
 
+import com.damso.core.enums.story.StoryCommentType;
 import com.damso.core.response.error.ErrorCode;
 import com.damso.core.response.exception.BusinessException;
 import com.damso.domain.db.entity.member.Member;
@@ -52,13 +53,25 @@ public class StoryEditorImpl implements StoryEditor {
     }
 
     @Override
-    public void updateTitle(Long storyId, Long memberId, String title) {
+    public void updateTitle(Long storyId,
+                            Long memberId,
+                            String title) {
         Story story = storyFinder.getEditableEntity(storyId, memberId);
         story.setTitle(title);
     }
 
     @Override
-    public void updatePublished(Long storyId, Long memberId, boolean published) {
+    public void updateCommentType(Long storyId,
+                                  Long memberId,
+                                  StoryCommentType commentType) {
+        Story story = storyFinder.getEditableEntity(storyId, memberId);
+        story.setCommentType(commentType);
+    }
+
+    @Override
+    public void updatePublished(Long storyId,
+                                Long memberId,
+                                boolean published) {
         Story story = storyFinder.getEditableEntity(storyId, memberId);
         story.setPublished(published);
     }

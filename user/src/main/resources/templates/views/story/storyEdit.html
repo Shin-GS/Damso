@@ -58,7 +58,11 @@ additionalScript='/script/story/quill.min.js,/script/story/cropper.min.js,/scrip
         <div>
             <label class="block font-medium mb-2">댓글 설정</label>
             <label>
-                <select name="commentType"
+                <select id="commentType"
+                        name="commentType"
+                        th:hx-put="@{'/hx/stories/' + ${storyId} + '/comment-type'}"
+                        hx-target="#toast-container"
+                        hx-swap="innerHTML"
                         class="w-full border rounded-md px-4 py-2 focus:ring focus:ring-blue-400">
                     <option th:each="option : ${commentTypes}"
                             th:value="${option.code}"

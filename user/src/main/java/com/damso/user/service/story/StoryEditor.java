@@ -1,5 +1,6 @@
 package com.damso.user.service.story;
 
+import com.damso.core.enums.story.StoryCommentType;
 import com.damso.user.service.story.request.StoryEditRequest;
 import com.damso.user.service.story.response.StoryEditResponse;
 
@@ -13,6 +14,10 @@ public interface StoryEditor {
     void updateTitle(Long storyId,
                      Long memberId,
                      String title);
+
+    void updateCommentType(Long storyId,
+                           Long memberId,
+                           StoryCommentType commentType);
 
     void updatePublished(Long storyId,
                          Long memberId,
