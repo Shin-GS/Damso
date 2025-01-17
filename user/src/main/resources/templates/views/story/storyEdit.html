@@ -69,41 +69,27 @@ additionalScript='/script/story/quill.min.js,/script/story/cropper.min.js,/scrip
             </label>
         </div>
 
-        <div class="flex items-center">
-            <label>
-                <input type="hidden" id="hidden-published" name="published" value="false">
-                <input type="checkbox"
-                       id="published"
-                       class="form-checkbox h-5 w-5"
-                       name="published"
-                       th:checked="${story.published}"
-                       th:hx-put="@{'/hx/stories/' + ${storyId} + '/published'}"
-                       hx-target="#toast-container"
-                       hx-swap="innerHTML"
-                       hx-trigger="change"
-                       value="true"
-                       hx-include="#hidden-published"
-                       onchange="toggleHiddenInput(this)">
-            </label>
-            <span class="ml-2">이야기 발행</span>
-        </div>
-
         <div class="flex justify-end space-x-4">
-            <button type="button"
-                    id="temporarySaveButton"
-                    class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-6 rounded">
-                임시 저장
-            </button>
-            <button type="button"
-                    id="cancelEditButton"
-                    class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-6 rounded">
-                수정 취소
-            </button>
-            <button type="submit"
-                    id="publishButton"
-                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded">
-                이야기 발행
-            </button>
+            <div class="flex justify-end space-x-4">
+                <button type="button"
+                        id="resetButton"
+                        class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-6 rounded">
+                    초기화
+                </button>
+
+                <button type="button"
+                        id="temporarySaveButton"
+                        class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-6 rounded">
+                    임시 저장
+                </button>
+
+                <button type="submit"
+                        id="publishButton"
+                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded">
+                    이야기 발행
+                </button>
+            </div>
+
         </div>
     </section>
 </main>
