@@ -21,7 +21,8 @@ public class GlobalHxControllerExceptionHandler {
                                   Exception e,
                                   Model model) throws Exception {
         if ("true".equals(request.getHeader("HX-Request"))) {
-            model.addAttribute("message", e.getMessage());
+            log.error(e.getMessage(), e);
+            model.addAttribute("message", ErrorCode.INVALID_INPUT_VALUE.INTERNAL_SERVER_ERROR.getMessage());
 
             String fragment = " :: error";
             return "fragments/components/toast" + fragment;
