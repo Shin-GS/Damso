@@ -6,7 +6,7 @@ import com.damso.core.enums.story.StoryType;
 import com.damso.core.request.regex.pattern.CommonRegexPattern;
 import com.damso.core.request.regex.pattern.StoryRegexPattern;
 import com.damso.user.service.common.CodeFinder;
-import com.damso.user.service.story.StoryFinder;
+import com.damso.user.service.story.StoryEditor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/stories")
 @RequiredArgsConstructor
 public class StoryController {
-    private final StoryFinder storyFinder;
     private final CodeFinder codeFinder;
+    private final StoryEditor storyEditor;
 
     @GetMapping("/{storyId}/edit")
     public String storyEdit(@PathVariable("storyId") Long storyId,
@@ -28,7 +28,7 @@ public class StoryController {
         model.addAttribute("storyRegexPattern", CommonRegexPattern.getMap(StoryRegexPattern.class));
         model.addAttribute("storyTypes", codeFinder.getCodes(StoryType.class));
         model.addAttribute("commentTypes", codeFinder.getCodes(StoryCommentType.class));
-        model.addAttribute("story", storyFinder.getEditInfo(storyId, memberId));
+        model.addAttribute("story", storyEditor.resolveTemporaryEditInfo(storyId, memberId));
         return "views/story/storyEdit";
     }
 }

@@ -1,16 +1,14 @@
 package com.damso.user.service.story.response;
 
 import com.damso.core.enums.story.StoryCommentType;
-import com.damso.domain.db.entity.story.Story;
+import com.damso.domain.db.entity.story.temporary.TemporaryStory;
 
 public record StoryEditInfoResponse(Long id,
                                     String title,
-                                    StoryCommentType commentType,
-                                    boolean published) {
-    public static StoryEditInfoResponse of(Story story) {
-        return new StoryEditInfoResponse(story.getId(),
-                story.getTitle(),
-                story.getCommentType(),
-                story.isPublished());
+                                    StoryCommentType commentType) {
+    public static StoryEditInfoResponse of(TemporaryStory temporaryStory) {
+        return new StoryEditInfoResponse(temporaryStory.getStoryId(),
+                temporaryStory.getTitle(),
+                temporaryStory.getCommentType());
     }
 }

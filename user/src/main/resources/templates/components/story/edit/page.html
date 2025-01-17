@@ -12,14 +12,14 @@
         </button>
     </div>
     <div class="mt-2">
-        <label class="block font-medium mb-2">이야기 유형</label>
+        <label class="block font-medium mb-2">스토리 유형</label>
         <label>
             <select id="storyTypeSelect"
                     name="storyType"
                     class="w-full border rounded-md px-4 py-2 focus:ring focus:ring-blue-400"
                     th:hx-get="@{'/hx/stories/' + ${story.id} + '/page'+ ${story.id} +'/edit'}"
                     hx-include="[name='storyType']"
-                    hx-confirm="이야기 유형을 변경하면 기존에 작성한 내용이 삭제됩니다. 계속하시겠습니까?"
+                    hx-confirm="스토리 유형을 변경하면 기존에 작성한 내용이 삭제됩니다. 계속하시겠습니까?"
                     hx-target="#editor">
                 <option th:each="option : ${storyTypes}"
                         th:value="${option.code}"

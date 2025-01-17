@@ -3,10 +3,8 @@ package com.damso.user.controller.story;
 import com.damso.auth.session.SessionMemberId;
 import com.damso.core.enums.story.StoryType;
 import com.damso.user.service.story.StoryEditor;
-import com.damso.user.service.story.StoryFinder;
 import com.damso.user.service.story.request.StoryUpdateCommentTypeRequest;
 import com.damso.user.service.story.request.StoryUpdateTitleRequest;
-import com.damso.user.service.story.response.StoryEditInfoResponse;
 import com.damso.user.service.upload.ImageFileUploader;
 import com.damso.user.service.upload.VideoFileUploader;
 import com.damso.user.service.upload.response.FileUploadResponse;
@@ -23,7 +21,6 @@ import java.util.List;
 @RequestMapping("/hx/stories")
 @RequiredArgsConstructor
 public class StoryHxController {
-    private final StoryFinder storyFinder;
     private final StoryEditor storyEditor;
     private final ImageFileUploader imageFileUploader;
     private final VideoFileUploader videoFileUploader;
@@ -33,8 +30,7 @@ public class StoryHxController {
                            @SessionMemberId Long memberId,
                            @RequestParam(value = "storyType", required = false, defaultValue = "TEXT") StoryType storyType,
                            Model model) {
-        StoryEditInfoResponse editInfoResponse = storyFinder.getEditInfo(storyId, memberId);
-        model.addAttribute("story", editInfoResponse);
+        model.addAttribute("story", storyEditor.resolveTemporaryEditInfo(storyId, memberId));
 //        model.addAttribute("images", editInfoResponse.images());
 //        model.addAttribute("video", editInfoResponse.video());
 
@@ -70,13 +66,34 @@ public class StoryHxController {
         return "components/story/edit/toast" + fragment;
     }
 
+    @DeleteMapping("/{storyId}/temporary")
+    public String reset(@PathVariable("storyId") Long storyId,
+                        @SessionMemberId Long memberId,
+                        Model model) {
+        storyEditor.reset(storyId, memberId);
+        model.addAttribute("message", "스토리 초기화에 성공했습니다.");
+
+        String fragment = " :: success";
+        return "components/story/edit/toast" + fragment;
+    }
+
     @PutMapping("/{storyId}/published")
-    public String updatePublished(@PathVariable("storyId") Long storyId,
-                                  @SessionMemberId Long memberId,
-                                  @RequestParam boolean published,
-                                  Model model) {
-        storyEditor.updatePublished(storyId, memberId, published);
-        model.addAttribute("message", "스토리 임시저장에 성공했습니다.");
+    public String published(@PathVariable("storyId") Long storyId,
+                            @SessionMemberId Long memberId,
+                            Model model) {
+        storyEditor.published(storyId, memberId);
+        model.addAttribute("message", "스토리 반영에 성공했습니다.");
+
+        String fragment = " :: success";
+        return "components/story/edit/toast" + fragment;
+    }
+
+    @DeleteMapping("/{storyId}")
+    public String delete(@PathVariable("storyId") Long storyId,
+                         @SessionMemberId Long memberId,
+                         Model model) {
+        storyEditor.delete(storyId, memberId);
+        model.addAttribute("message", "스토리 삭제에 성공했습니다.");
 
         String fragment = " :: success";
         return "components/story/edit/toast" + fragment;

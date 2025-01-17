@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:hx-on="http://www.w3.org/1999/xhtml" lang="ko">
 <head th:replace="views/layout :: head(additionalCss='/css/story/quill.snow.css,/css/story/cropper.min.css,/css/story/dropzone.min.css',
 additionalScript='/script/story/quill.min.js,/script/story/cropper.min.js,/script/story/dropzone.min.js,/script/story/sortable.min.js,/script/story/editor/textEditor.js,/script/story/editor/imageEditor.js,/script/story/editor/videoEditor.js')">
-    <title>이야기 편집</title>
+    <title>스토리 편집</title>
 </head>
 <body class="content-edit-page flex flex-col min-h-screen bg-gray-100">
 <!-- Header -->
@@ -18,10 +18,10 @@ additionalScript='/script/story/quill.min.js,/script/story/cropper.min.js,/scrip
             </p>
         </div>
 
-        <h1 class="text-2xl font-bold mb-6">이야기 편집</h1>
+        <h1 class="text-2xl font-bold mb-6">스토리 편집</h1>
         <input type="hidden" id="storyId" name="storyId" th:value="${story.id}">
         <div>
-            <label class="block font-medium mb-2">이야기 제목</label>
+            <label class="block font-medium mb-2">스토리 제목</label>
             <label>
                 <input type="text"
                        id="title"
@@ -40,7 +40,7 @@ additionalScript='/script/story/quill.min.js,/script/story/cropper.min.js,/scrip
         </div>
 
         <section id="pages-container" class="mt-8"
-                 hx-get="@{'/hx/stories/' + ${story.id} + '/pages'}"
+                 th:hx-get="@{'/hx/stories/' + ${storyId} + '/pages'}"
                  hx-trigger="load"
                  hx-swap="innerHTML">
         </section>
@@ -48,7 +48,7 @@ additionalScript='/script/story/quill.min.js,/script/story/cropper.min.js,/scrip
         <div class="flex justify-between mt-4">
             <button type="button" id="add-page-button"
                     class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-6 rounded"
-                    hx-post="@{'/hx/stories/' + ${story.id} + '/pages'}"
+                    th:hx-post="@{'/hx/stories/' + ${storyId} + '/pages'}"
                     hx-target="#pages-container"
                     hx-swap="beforeend">
                 페이지 추가
@@ -76,21 +76,36 @@ additionalScript='/script/story/quill.min.js,/script/story/cropper.min.js,/scrip
         <div class="flex justify-end space-x-4">
             <div class="flex justify-end space-x-4">
                 <button type="button"
-                        id="resetButton"
+                        id="deleteButton"
+                        th:hx-delete="@{'/hx/stories/' + ${storyId}}"
+                        hx-confirm="스토리를 삭제하면 다시 복구할 수 없습니다. 계속하시겠습니까?"
+                        hx-target="#toast-container"
+                        hx-swap="innerHTML"
+                        hx-on::after-request="window.location.href='/';"
                         class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-6 rounded">
-                    초기화
+                    스토리 삭제
                 </button>
 
                 <button type="button"
-                        id="temporarySaveButton"
-                        class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-6 rounded">
-                    임시 저장
+                        id="resetButton"
+                        th:hx-delete="@{'/hx/stories/' + ${storyId} + '/temporary'}"
+                        hx-confirm="기존에 작성한 내용이 삭제됩니다. 계속하시겠습니까?"
+                        hx-target="#toast-container"
+                        hx-swap="innerHTML"
+                        hx-on::after-request="window.location.reload()"
+                        class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-6 rounded">
+                    초기화
                 </button>
 
                 <button type="submit"
                         id="publishButton"
-                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded">
-                    이야기 발행
+                        th:hx-put="@{'/hx/stories/' + ${storyId} + '/published'}"
+                        hx-confirm="작성한 내용이 원본 스토리에 반영됩니다. 계속하시겠습니까?"
+                        hx-target="#toast-container"
+                        hx-swap="innerHTML"
+                        hx-on::after-request="window.location.reload()"
+                        class="bg-green-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded">
+                    스토리 발행
                 </button>
             </div>
 
