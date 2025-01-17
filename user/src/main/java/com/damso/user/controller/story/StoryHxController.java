@@ -51,7 +51,7 @@ public class StoryHxController {
         model.addAttribute("message", "스토리 임시저장에 성공했습니다.");
 
         String fragment = " :: success";
-        return "components/story/edit/toast" + fragment;
+        return "components/toast" + fragment;
     }
 
     @PutMapping("/{storyId}/comment-type")
@@ -63,7 +63,7 @@ public class StoryHxController {
         model.addAttribute("message", "스토리 임시저장에 성공했습니다.");
 
         String fragment = " :: success";
-        return "components/story/edit/toast" + fragment;
+        return "components/toast" + fragment;
     }
 
     @DeleteMapping("/{storyId}/temporary")
@@ -74,7 +74,7 @@ public class StoryHxController {
         model.addAttribute("message", "스토리 초기화에 성공했습니다.");
 
         String fragment = " :: success";
-        return "components/story/edit/toast" + fragment;
+        return "components/toast" + fragment;
     }
 
     @PutMapping("/{storyId}/published")
@@ -85,7 +85,7 @@ public class StoryHxController {
         model.addAttribute("message", "스토리 반영에 성공했습니다.");
 
         String fragment = " :: success";
-        return "components/story/edit/toast" + fragment;
+        return "components/toast" + fragment;
     }
 
     @DeleteMapping("/{storyId}")
@@ -96,7 +96,7 @@ public class StoryHxController {
         model.addAttribute("message", "스토리 삭제에 성공했습니다.");
 
         String fragment = " :: success";
-        return "components/story/edit/toast" + fragment;
+        return "components/toast" + fragment;
     }
 
     @PostMapping("/upload/image")
