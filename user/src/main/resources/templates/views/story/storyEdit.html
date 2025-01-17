@@ -71,10 +71,19 @@ additionalScript='/script/story/quill.min.js,/script/story/cropper.min.js,/scrip
 
         <div class="flex items-center">
             <label>
+                <input type="hidden" id="hidden-published" name="published" value="false">
                 <input type="checkbox"
+                       id="published"
+                       class="form-checkbox h-5 w-5"
                        name="published"
                        th:checked="${story.published}"
-                       class="form-checkbox h-5 w-5">
+                       th:hx-put="@{'/hx/stories/' + ${storyId} + '/published'}"
+                       hx-target="#toast-container"
+                       hx-swap="innerHTML"
+                       hx-trigger="change"
+                       value="true"
+                       hx-include="#hidden-published"
+                       onchange="toggleHiddenInput(this)">
             </label>
             <span class="ml-2">이야기 발행</span>
         </div>
@@ -103,6 +112,20 @@ additionalScript='/script/story/quill.min.js,/script/story/cropper.min.js,/scrip
 <footer th:replace="views/layout :: footer"></footer>
 
 <script>
+    function toggleHiddenInput(checkbox) {
+        const hiddenInput = document.getElementById(`hidden-${checkbox.id}`);
+        if (!hiddenInput) {
+            console.warn(`Hidden input not found for checkbox with id: ${checkbox.id}`);
+            return;
+        }
+
+        if (checkbox.checked) {
+            hiddenInput.setAttribute('name', '');
+        } else {
+            hiddenInput.setAttribute('name', 'published');
+        }
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
         document.body.addEventListener('htmx:beforeRequest', (event) => {
             const input = event.target;

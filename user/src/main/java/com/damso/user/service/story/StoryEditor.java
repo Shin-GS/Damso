@@ -13,4 +13,8 @@ public interface StoryEditor {
     void updateTitle(Long storyId,
                      Long memberId,
                      String title);
+
+    void updatePublished(Long storyId,
+                         Long memberId,
+                         boolean published);
 }

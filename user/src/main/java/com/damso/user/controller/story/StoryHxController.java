@@ -2,9 +2,10 @@ package com.damso.user.controller.story;
 
 import com.damso.auth.session.SessionMemberId;
 import com.damso.core.enums.story.StoryType;
+import com.damso.core.request.regex.ValidPattern;
+import com.damso.core.request.regex.pattern.StoryRegexPattern;
 import com.damso.user.service.story.StoryEditor;
 import com.damso.user.service.story.StoryFinder;
-import com.damso.user.service.story.request.StoryEditTitleRequest;
 import com.damso.user.service.story.response.StoryEditInfoResponse;
 import com.damso.user.service.upload.ImageFileUploader;
 import com.damso.user.service.upload.VideoFileUploader;
@@ -48,9 +49,21 @@ public class StoryHxController {
     @PutMapping("/{storyId}/title")
     public String saveTitle(@PathVariable("storyId") Long storyId,
                             @SessionMemberId Long memberId,
-                            @ModelAttribute @Valid StoryEditTitleRequest request,
+                            @RequestParam @Valid @ValidPattern(value = StoryRegexPattern.class, fieldCode = "TITLE", notEmpty = true) String title,
                             Model model) {
-        storyEditor.updateTitle(storyId, memberId, request.title());
+        storyEditor.updateTitle(storyId, memberId, title);
+        model.addAttribute("message", "스토리 임시저장에 성공했습니다.");
+
+        String fragment = " :: success";
+        return "components/story/edit/toast" + fragment;
+    }
+
+    @PutMapping("/{storyId}/published")
+    public String savePublished(@PathVariable("storyId") Long storyId,
+                                @SessionMemberId Long memberId,
+                                @RequestParam boolean published,
+                                Model model) {
+        storyEditor.updatePublished(storyId, memberId, published);
         model.addAttribute("message", "스토리 임시저장에 성공했습니다.");
 
         String fragment = " :: success";

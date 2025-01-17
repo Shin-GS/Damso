@@ -56,4 +56,10 @@ public class StoryEditorImpl implements StoryEditor {
         Story story = storyFinder.getEditableEntity(storyId, memberId);
         story.setTitle(title);
     }
+
+    @Override
+    public void updatePublished(Long storyId, Long memberId, boolean published) {
+        Story story = storyFinder.getEditableEntity(storyId, memberId);
+        story.setPublished(published);
+    }
 }
