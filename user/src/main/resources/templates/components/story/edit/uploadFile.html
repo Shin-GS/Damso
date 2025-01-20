@@ -2,8 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org"
       lang="ko">
 <div th:fragment="story-upload-image"
-     th:if="${images != null && !images.isEmpty()}"
-     th:each="image : ${images}"
+     th:if="${files != null && !files.isEmpty()}"
+     th:each="image : ${files}"
      class="p-2 bg-white shadow rounded relative">
     <img th:src="${image}"
          class="w-full rounded"
@@ -16,10 +16,10 @@
 </div>
 
 <div th:fragment="story-upload-video"
-     th:if="${video != null && !video.isEmpty()}"
+     th:if="${files != null && !files.isEmpty()}"
      id="uploaded-videos"
      class="video-preview mt-2 relative">
-    <video th:each="video : ${video}"
+    <video th:each="video : ${files}"
            controls class="w-full max-w-xl mx-auto rounded-md">
         <source th:src="${video}" type="video/mp4">
         Your browser does not support the video tag.

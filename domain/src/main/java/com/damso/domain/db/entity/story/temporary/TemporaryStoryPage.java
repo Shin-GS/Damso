@@ -1,5 +1,6 @@
 package com.damso.domain.db.entity.story.temporary;
 
+import com.damso.core.enums.story.StoryFileType;
 import com.damso.core.enums.story.StoryType;
 import com.damso.domain.db.converter.BooleanConverter;
 import com.damso.domain.db.entity.base.CommonTime;
@@ -10,6 +11,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.util.ObjectUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Entity
 @Table(name = "TEMPORARY_STORY_PAGE")
@@ -42,6 +47,12 @@ public class TemporaryStoryPage extends CommonTime {
     @JoinColumn(name = "STORY_PAGE_NO", columnDefinition = "BIGINT")
     private StoryPage storyPage;
 
+    @OneToOne(mappedBy = "temporaryStoryPage", cascade = CascadeType.ALL, orphanRemoval = true)
+    private TemporaryStoryText temporaryStoryText;
+
+    @OneToMany(mappedBy = "temporaryStoryPage", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TemporaryStoryFile> temporaryStoryFiles = new ArrayList<>();
+
     public TemporaryStoryPage(TemporaryStory temporaryStory) {
         this.temporaryStory = temporaryStory;
         this.pageOrder = 99;
@@ -56,11 +67,70 @@ public class TemporaryStoryPage extends CommonTime {
         this.storyPage = storyPage;
     }
 
+    public void update(StoryType storyType,
+                       String text,
+                       String planText,
+                       List<String> files) {
+        switch (storyType) {
+            case TEXT -> updateStoryText(text, planText);
+            case IMAGE -> updateStoryImages(files);
+            case VIDEO -> updateStoryVideo(files);
+        }
+    }
+
+    private void updateStoryText(String text,
+                                 String plainText) {
+        this.temporaryStoryFiles.clear();
+        if (ObjectUtils.isEmpty(this.temporaryStoryText)) {
+            this.temporaryStoryText = new TemporaryStoryText(this, text, plainText);
+            return;
+        }
+
+        this.temporaryStoryText.update(text, plainText);
+    }
+
+    private void updateStoryImages(List<String> files) {
+        this.temporaryStoryText = null;
+        this.temporaryStoryFiles.clear();
+        if (ObjectUtils.isEmpty(files)) {
+            return;
+        }
+
+        AtomicInteger orderCounter = new AtomicInteger(0);
+        files.stream()
+                .map(file -> new TemporaryStoryFile(this, StoryFileType.IMAGE, file, orderCounter.getAndIncrement()))
+                .forEach(storyFile -> this.temporaryStoryFiles.add(storyFile));
+    }
+
+    private void updateStoryVideo(List<String> files) {
+        this.temporaryStoryText = null;
+        this.temporaryStoryFiles.clear();
+        if (ObjectUtils.isEmpty(files)) {
+            return;
+        }
+
+        this.temporaryStoryFiles.add(new TemporaryStoryFile(this, StoryFileType.VIDEO, files.get(0), 0));
+    }
+
     public Long getStoryPageId() {
         return ObjectUtils.isEmpty(this.storyPage) ? null : this.storyPage.getId();
     }
 
     public boolean isNeed() {
         return !this.deleted || !ObjectUtils.isEmpty(this.storyPage);
+    }
+
+    public List<String> getImagePaths() {
+        return this.temporaryStoryFiles.stream()
+                .filter(TemporaryStoryFile::isImage)
+                .map(TemporaryStoryFile::getFilePath)
+                .toList();
+    }
+
+    public List<String> getVideoPaths() {
+        return this.temporaryStoryFiles.stream()
+                .filter(TemporaryStoryFile::isVideo)
+                .map(TemporaryStoryFile::getFilePath)
+                .toList();
     }
 }

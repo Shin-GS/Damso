@@ -26,7 +26,7 @@ public class StoryUploadHxController {
                               @SessionMemberId Long memberId,
                               Model model) {
         FileUploadResponse uploadResponse = imageFileUploader.upload(image, memberId);
-        model.addAttribute("images", List.of(uploadResponse.url()));
+        model.addAttribute("files", List.of(uploadResponse.url()));
 
         String fragment = " :: story-upload-image";
         return "components/story/edit/uploadFile" + fragment;
@@ -37,7 +37,7 @@ public class StoryUploadHxController {
                               @SessionMemberId Long memberId,
                               Model model) {
         FileUploadResponse uploadResponse = videoFileUploader.upload(video, memberId);
-        model.addAttribute("video", List.of(uploadResponse.url()));
+        model.addAttribute("files", List.of(uploadResponse.url()));
 
         String fragment = " :: story-upload-video";
         return "components/story/edit/uploadFile" + fragment;

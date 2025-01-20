@@ -27,7 +27,7 @@ public class StoryEditApi {
     public SuccessResponse reorder(@PathVariable("storyId") Long storyId,
                                    @RequestBody StoryPageReorderRequest request,
                                    @SessionMemberId Long memberId) {
-        storyPageEditor.reorderPage(storyId, memberId, request.pageOrders());
+        storyPageEditor.reorder(storyId, memberId, request.pageOrders());
         return SuccessResponse.of(SuccessCode.SUCCESS);
     }
 }

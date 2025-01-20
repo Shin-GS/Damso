@@ -1,5 +1,6 @@
 package com.damso.user.service.story.impl;
 
+import com.damso.core.enums.story.StoryType;
 import com.damso.core.response.error.ErrorCode;
 import com.damso.core.response.exception.BusinessException;
 import com.damso.domain.db.entity.story.Story;
@@ -9,11 +10,13 @@ import com.damso.domain.db.repository.story.StoryPageRepositorySupport;
 import com.damso.user.service.story.StoryEditor;
 import com.damso.user.service.story.StoryFinder;
 import com.damso.user.service.story.StoryPageEditor;
+import com.damso.user.service.story.request.StoryPageEditRequest;
 import com.damso.user.service.story.request.StoryPageReorderRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -26,8 +29,8 @@ public class StoryPageEditorImpl implements StoryPageEditor {
     private final StoryPageRepositorySupport storyPageRepositorySupport;
 
     @Override
-    public void createPage(Long storyId,
-                           Long memberId) {
+    public void create(Long storyId,
+                       Long memberId) {
         Story story = storyFinder.getEditableEntity(storyId, memberId);
         if (storyPageRepositorySupport.countByNotDeleted(story) > 10) {
             throw new BusinessException(ErrorCode.STORY_PAGE_MAX_EXCEED);
@@ -38,9 +41,9 @@ public class StoryPageEditorImpl implements StoryPageEditor {
     }
 
     @Override
-    public void deletePage(Long storyId,
-                           Long memberId,
-                           Long storyPageId) {
+    public void delete(Long storyId,
+                       Long memberId,
+                       Long storyPageId) {
         Story story = storyFinder.getEditableEntity(storyId, memberId);
         if (storyPageRepositorySupport.countByNotDeleted(story) <= 1) {
             throw new BusinessException(ErrorCode.STORY_PAGE_MIN_EXCEED);
@@ -53,9 +56,9 @@ public class StoryPageEditorImpl implements StoryPageEditor {
     }
 
     @Override
-    public void reorderPage(Long storyId,
-                            Long memberId,
-                            List<StoryPageReorderRequest.StoryPageOrderRequest> pageOrders) {
+    public void reorder(Long storyId,
+                        Long memberId,
+                        List<StoryPageReorderRequest.StoryPageOrderRequest> pageOrders) {
         Story story = storyFinder.getEditableEntity(storyId, memberId);
         TemporaryStory temporaryStory = storyEditor.resolveTemporaryStory(story);
         pageOrders.stream()
@@ -63,7 +66,37 @@ public class StoryPageEditorImpl implements StoryPageEditor {
                 .forEach(pageOrder -> temporaryStory.getStoryPage(pageOrder.storyPageId())
                         .ifPresent(temporaryStoryPage -> temporaryStoryPage.setPageOrder(pageOrder.order()))
                 );
-
         temporaryStory.reorderPages();
+    }
+
+    @Override
+    public void updateType(Long storyId,
+                           Long memberId,
+                           Long storyPageId,
+                           StoryType storyType) {
+        Story story = storyFinder.getEditableEntity(storyId, memberId);
+        TemporaryStory temporaryStory = storyEditor.resolveTemporaryStory(story);
+        TemporaryStoryPage temporaryStoryPage = temporaryStory.getStoryPage(storyPageId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.ENTITY_NOT_FOUND));
+        temporaryStoryPage.setStoryType(storyType);
+        temporaryStoryPage.update(storyType,
+                "",
+                "",
+                new ArrayList<>());
+    }
+
+    @Override
+    public void update(Long storyId,
+                       Long memberId,
+                       Long storyPageId,
+                       StoryPageEditRequest request) {
+        Story story = storyFinder.getEditableEntity(storyId, memberId);
+        TemporaryStory temporaryStory = storyEditor.resolveTemporaryStory(story);
+        TemporaryStoryPage temporaryStoryPage = temporaryStory.getStoryPage(storyPageId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.ENTITY_NOT_FOUND));
+        temporaryStoryPage.update(request.storyType(),
+                request.text(),
+                request.planText(),
+                request.files());
     }
 }
