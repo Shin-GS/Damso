@@ -20,22 +20,22 @@ public class GlobalHxControllerExceptionHandler {
     public String handleException(HttpServletRequest request,
                                   Exception e,
                                   Model model) throws Exception {
-        if ("true".equals(request.getHeader("HX-Request"))) {
-            log.error(e.getMessage(), e);
-            model.addAttribute("message", ErrorCode.INVALID_INPUT_VALUE.INTERNAL_SERVER_ERROR.getMessage());
-
-            String fragment = " :: error";
-            return "fragments/components/toast" + fragment;
+        if (isNotHxRequest(request)) {
+            throw e;
         }
 
-        throw e;
+        log.error(e.getMessage(), e);
+        model.addAttribute("message", ErrorCode.INTERNAL_SERVER_ERROR.getMessage());
+
+        String fragment = " :: error";
+        return "fragments/components/toast" + fragment;
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     protected String handleMethodArgumentNotValidException(HttpServletRequest request,
                                                            MethodArgumentNotValidException e,
                                                            Model model) throws MethodArgumentNotValidException {
-        if (!isHxRequest(request)) {
+        if (isNotHxRequest(request)) {
             throw e;
         }
 
@@ -50,7 +50,7 @@ public class GlobalHxControllerExceptionHandler {
     public String handleBusinessException(HttpServletRequest request,
                                           BusinessException e,
                                           Model model) {
-        if (isHxRequest(request)) {
+        if (isNotHxRequest(request)) {
             throw e;
         }
 
@@ -60,7 +60,7 @@ public class GlobalHxControllerExceptionHandler {
         return "fragments/components/toast" + fragment;
     }
 
-    private boolean isHxRequest(HttpServletRequest request) {
-        return "true".equals(request.getHeader("HX-Request"));
+    private boolean isNotHxRequest(HttpServletRequest request) {
+        return !"true".equals(request.getHeader("HX-Request"));
     }
 }

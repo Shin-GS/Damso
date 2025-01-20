@@ -22,8 +22,8 @@ public class StoryEditPageHxController {
         model.addAttribute("storyPages", storyPageFinder.getPages(storyId, memberId));
         model.addAttribute("storyId", storyId);
 
-        String fragment = " :: page-editor";
-        return "components/story/edit/pageList" + fragment;
+        String fragment = " :: page-list";
+        return "components/story/edit/pageEdit" + fragment;
     }
 
     @PostMapping
@@ -35,8 +35,8 @@ public class StoryEditPageHxController {
         model.addAttribute("storyId", storyId);
         model.addAttribute("message", "신규 페이지 추가를 성공했습니다.");
 
-        String fragment = " :: page-editor";
-        return "components/story/edit/pageList" + fragment;
+        String fragment = " :: page-edit";
+        return "components/story/edit/pageEdit" + fragment;
     }
 
     @DeleteMapping("/{storyPageId}")
@@ -49,7 +49,7 @@ public class StoryEditPageHxController {
         model.addAttribute("storyId", storyId);
         model.addAttribute("message", "해당 페이지 삭제를 성공했습니다.");
 
-        String fragment = " :: page-editor";
-        return "components/story/edit/pageList" + fragment;
+        String fragment = " :: page-edit";
+        return "components/story/edit/pageEdit" + fragment;
     }
 }

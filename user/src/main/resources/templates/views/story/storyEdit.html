@@ -39,12 +39,12 @@ additionalScript='/script/story/quill.min.js,/script/story/cropper.min.js,/scrip
             </label>
         </div>
 
-        <section id="pages-container"
-                 class="mt-8"
-                 th:hx-get="@{'/hx/stories/' + ${storyId} + '/pages'}"
-                 hx-trigger="load"
-                 hx-swap="innerHTML">
-        </section>
+        <div id="pages-container"
+             class="mt-8"
+             th:hx-get="@{'/hx/stories/' + ${storyId} + '/pages'}"
+             hx-trigger="load"
+             hx-swap="innerHTML">
+        </div>
 
         <div>
             <label class="block font-medium mb-2">댓글 설정</label>
