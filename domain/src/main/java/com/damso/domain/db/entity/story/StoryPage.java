@@ -3,6 +3,7 @@ package com.damso.domain.db.entity.story;
 import com.damso.core.enums.story.StoryType;
 import com.damso.domain.db.converter.BooleanConverter;
 import com.damso.domain.db.entity.base.CommonTime;
+import com.damso.domain.db.entity.story.temporary.TemporaryStoryPage;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -49,6 +50,19 @@ public class StoryPage extends CommonTime {
         this.story = story;
         this.pageOrder = 99;
         this.storyType = StoryType.TEXT;
+    }
+
+    public StoryPage(Story story,
+                     TemporaryStoryPage temporaryStoryPage) {
+        this.story = story;
+        this.pageOrder = temporaryStoryPage.getPageOrder();
+        this.storyType = temporaryStoryPage.getStoryType();
+    }
+
+    public void published(TemporaryStoryPage temporaryStoryPage) {
+        this.pageOrder = temporaryStoryPage.getPageOrder();
+        this.storyType = temporaryStoryPage.getStoryType();
+        this.deleted = temporaryStoryPage.isDeleted();
     }
 }
 

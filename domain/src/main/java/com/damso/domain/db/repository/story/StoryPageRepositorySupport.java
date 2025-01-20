@@ -1,5 +1,6 @@
 package com.damso.domain.db.repository.story;
 
+import com.damso.core.enums.story.StoryTemporaryStatusType;
 import com.damso.domain.db.entity.story.Story;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -7,7 +8,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-import static com.damso.domain.db.entity.story.QStoryPage.storyPage;
+import static com.damso.domain.db.entity.story.temporary.QTemporaryStory.temporaryStory;
+import static com.damso.domain.db.entity.story.temporary.QTemporaryStoryPage.temporaryStoryPage;
 
 @Repository
 @RequiredArgsConstructor
@@ -16,10 +18,13 @@ public class StoryPageRepositorySupport {
 
     public long countByNotDeleted(Story story) {
         return Optional.ofNullable(queryFactory
-                        .select(storyPage.count())
-                        .from(storyPage)
-                        .where(storyPage.story.eq(story),
-                                storyPage.deleted.isFalse())
+                        .select(temporaryStoryPage.count())
+                        .from(temporaryStory)
+                        .join(temporaryStoryPage).on(temporaryStoryPage.temporaryStory.eq(temporaryStory))
+                        .where(
+                                temporaryStory.story.eq(story),
+                                temporaryStory.status.eq(StoryTemporaryStatusType.WRITING),
+                                temporaryStoryPage.deleted.isFalse())
                         .fetchOne())
                 .orElse(0L);
     }

@@ -1,7 +1,9 @@
 package com.damso.user.service.story.impl;
 
 import com.damso.domain.db.entity.story.Story;
-import com.damso.domain.db.entity.story.StoryPage;
+import com.damso.domain.db.entity.story.temporary.TemporaryStory;
+import com.damso.domain.db.entity.story.temporary.TemporaryStoryPage;
+import com.damso.user.service.story.StoryEditor;
 import com.damso.user.service.story.StoryFinder;
 import com.damso.user.service.story.StoryPageFinder;
 import com.damso.user.service.story.response.StoryEditPageResponse;
@@ -17,13 +19,16 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class StoryPageFinderImpl implements StoryPageFinder {
     private final StoryFinder storyFinder;
+    private final StoryEditor storyEditor;
 
     @Override
-    public List<StoryEditPageResponse> getPages(Long storyId, Long memberId) {
+    @Transactional
+    public List<StoryEditPageResponse> getTemporaryStoryPages(Long storyId, Long memberId) {
         Story story = storyFinder.getEditableEntity(storyId, memberId);
-        return story.getStoryPages().stream()
+        TemporaryStory temporaryStory = storyEditor.resolveTemporaryStory(story);
+        return temporaryStory.getTemporaryStoryPages().stream()
                 .filter(page -> !page.isDeleted())
-                .sorted(Comparator.comparing(StoryPage::getPageOrder))
+                .sorted(Comparator.comparing(TemporaryStoryPage::getPageOrder))
                 .map(StoryEditPageResponse::of)
                 .toList();
     }

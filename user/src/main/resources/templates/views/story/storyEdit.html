@@ -114,7 +114,9 @@ additionalScript='/script/story/quill.min.js,/script/story/cropper.min.js,/scrip
             await initializeImageEditor();
             await initializeVideoEditor();
         }
+    });
 
+    document.body.addEventListener('htmx:oobAfterSwap', async (event) => {
         if (event.detail.target.id === 'pages-container') {
             await initializePageEditor();
         }

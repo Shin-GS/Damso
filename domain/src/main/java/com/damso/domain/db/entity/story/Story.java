@@ -5,12 +5,14 @@ import com.damso.core.enums.story.StoryStatusType;
 import com.damso.domain.db.entity.base.CommonTime;
 import com.damso.domain.db.entity.member.Member;
 import com.damso.domain.db.entity.story.temporary.TemporaryStory;
+import com.damso.domain.db.entity.story.temporary.TemporaryStoryPage;
 import com.damso.domain.db.entity.subscribe.SubscriptionPlanStory;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -57,6 +59,7 @@ public class Story extends CommonTime {
         this.status = StoryStatusType.CREATED;
         this.commentType = StoryCommentType.ALL;
         this.storyPages.add(new StoryPage(this));
+        this.reorderPages();
     }
 
     public boolean isEditable(Member member) {
@@ -67,20 +70,25 @@ public class Story extends CommonTime {
         this.title = temporaryStory.getTitle();
         this.commentType = temporaryStory.getCommentType();
         this.status = StoryStatusType.PUBLISHED;
+
+        temporaryStory.getTemporaryStoryPages().stream()
+                .filter(TemporaryStoryPage::isNeed)
+                .forEach(this::createOrPublishStoryPage);
+        this.reorderPages();
+    }
+
+    private void createOrPublishStoryPage(TemporaryStoryPage temporaryStoryPage) {
+        if (ObjectUtils.isEmpty(temporaryStoryPage.getStoryPageId())) {
+            this.storyPages.add(new StoryPage(this, temporaryStoryPage));
+            return;
+        }
+
+        this.getStoryPage(temporaryStoryPage.getStoryPageId())
+                .ifPresent(storyPage -> storyPage.published(temporaryStoryPage));
     }
 
     public void delete() {
         this.status = StoryStatusType.DELETED;
-    }
-
-    public void addPage() {
-        this.storyPages.add(new StoryPage(this));
-        this.reorderPages();
-    }
-
-    public void deletePage(StoryPage storyPage) {
-        storyPage.setDeleted(Boolean.TRUE);
-        this.reorderPages();
     }
 
     public Optional<StoryPage> getStoryPage(Long storyPageId) {

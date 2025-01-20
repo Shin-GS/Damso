@@ -90,7 +90,8 @@ public class StoryEditorImpl implements StoryEditor {
         story.delete();
     }
 
-    private TemporaryStory resolveTemporaryStory(Story story) {
+    @Override
+    public TemporaryStory resolveTemporaryStory(Story story) {
         return temporaryStoryRepositorySupport.findLatestWritingTemporaryStory(story)
                 .orElseGet(() -> temporaryStoryRepository.save(new TemporaryStory(story)));
     }

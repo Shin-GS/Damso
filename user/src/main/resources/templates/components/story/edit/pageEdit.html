@@ -27,8 +27,6 @@
                     <span th:if="${page.storyType.code} == 'IMAGE'">🖼️</span>
                     <span th:if="${page.storyType.code} == 'VIDEO'">🎥</span>
                 </span>
-                    <span class="text-sm font-medium mt-2"
-                          th:text="${page.id}"></span>
                     <button type="button"
                             class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded mt-2"
                             th:hx-delete="@{'/hx/stories/' + ${storyId} + '/pages/' + ${page.id}}"

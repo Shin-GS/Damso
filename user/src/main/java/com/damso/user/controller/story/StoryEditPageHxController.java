@@ -19,7 +19,7 @@ public class StoryEditPageHxController {
     public String getPages(@PathVariable("storyId") Long storyId,
                            @SessionMemberId Long memberId,
                            Model model) {
-        model.addAttribute("storyPages", storyPageFinder.getPages(storyId, memberId));
+        model.addAttribute("storyPages", storyPageFinder.getTemporaryStoryPages(storyId, memberId));
         model.addAttribute("storyId", storyId);
 
         String fragment = " :: page-list";
@@ -31,7 +31,7 @@ public class StoryEditPageHxController {
                              @SessionMemberId Long memberId,
                              Model model) {
         storyPageEditor.createPage(storyId, memberId);
-        model.addAttribute("storyPages", storyPageFinder.getPages(storyId, memberId));
+        model.addAttribute("storyPages", storyPageFinder.getTemporaryStoryPages(storyId, memberId));
         model.addAttribute("storyId", storyId);
         model.addAttribute("message", "신규 페이지 추가를 성공했습니다.");
 
@@ -45,7 +45,7 @@ public class StoryEditPageHxController {
                              @SessionMemberId Long memberId,
                              Model model) {
         storyPageEditor.deletePage(storyId, memberId, storyPageId);
-        model.addAttribute("storyPages", storyPageFinder.getPages(storyId, memberId));
+        model.addAttribute("storyPages", storyPageFinder.getTemporaryStoryPages(storyId, memberId));
         model.addAttribute("storyId", storyId);
         model.addAttribute("message", "해당 페이지 삭제를 성공했습니다.");
 

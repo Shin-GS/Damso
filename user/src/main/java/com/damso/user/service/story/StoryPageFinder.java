@@ -5,5 +5,5 @@ import com.damso.user.service.story.response.StoryEditPageResponse;
 import java.util.List;
 
 public interface StoryPageFinder {
-    List<StoryEditPageResponse> getPages(Long storyId, Long memberId);
+    List<StoryEditPageResponse> getTemporaryStoryPages(Long storyId, Long memberId);
 }
