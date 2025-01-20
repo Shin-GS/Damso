@@ -2,6 +2,10 @@ package com.damso.user.controller.story;
 
 import com.damso.auth.session.SessionMemberId;
 import com.damso.core.enums.story.StoryType;
+import com.damso.core.response.hx.HxPostMapping;
+import com.damso.core.response.hx.response.FragmentResponse;
+import com.damso.core.response.hx.response.FragmentResponseBuilder;
+import com.damso.core.response.hx.response.FragmentResponseRenderer;
 import com.damso.user.service.common.CodeFinder;
 import com.damso.user.service.story.StoryPageEditor;
 import com.damso.user.service.story.StoryPageFinder;
@@ -13,6 +17,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @Controller
 @RequestMapping("/hx/stories/{storyId}/pages")
 @RequiredArgsConstructor
@@ -20,6 +28,7 @@ public class StoryEditPageHxController {
     private final StoryPageFinder storyPageFinder;
     private final StoryPageEditor storyPageEditor;
     private final CodeFinder codeFinder;
+    private final FragmentResponseRenderer fragmentResponseRenderer;
 
     @GetMapping
     public String getPages(@PathVariable("storyId") Long storyId,
@@ -34,15 +43,22 @@ public class StoryEditPageHxController {
 
     @PostMapping
     public String createPage(@PathVariable("storyId") Long storyId,
-                             @SessionMemberId Long memberId,
-                             Model model) {
+                             @SessionMemberId Long memberId) {
         storyPageEditor.create(storyId, memberId);
-        model.addAttribute("storyPages", storyPageFinder.getTemporaryStoryPages(storyId, memberId));
-        model.addAttribute("storyId", storyId);
-        model.addAttribute("message", "신규 페이지 추가를 성공했습니다.");
 
-        String fragment = " :: page-edit";
-        return "components/story/edit/pageEdit" + fragment;
+        Map<String, Object> pageListData = new HashMap<>();
+        pageListData.put("storyPages", storyPageFinder.getTemporaryStoryPages(storyId, memberId));
+        pageListData.put("storyId", storyId);
+
+        List<FragmentResponse> fragmentResponses = new FragmentResponseBuilder()
+                .addFragment("templates/components/toast.html", "success", "message", "신규 페이지 추가를 성공했습니다.")
+//                .addTemplate("components/toast", Map.of("message", "신규 페이지 추가를 성공했습니다."))
+                .build();
+
+        return fragmentResponses.stream()
+                .findFirst()
+                .map(fragmentResponseRenderer::renderFragment)
+                .orElse("Error rendering fragment");
     }
 
     @GetMapping("/{temporaryStoryPageId}")
