@@ -12,7 +12,7 @@ public interface StoryPageEditor {
 
     void delete(Long storyId,
                 Long memberId,
-                Long storyPageId);
+                Long temporaryStoryPageId);
 
     void reorder(Long storyId,
                  Long memberId,
@@ -20,11 +20,11 @@ public interface StoryPageEditor {
 
     void updateType(Long storyId,
                     Long memberId,
-                    Long storyPageId,
+                    Long temporaryStoryPageId,
                     StoryType storyType);
 
     void update(Long storyId,
                 Long memberId,
-                Long storyPageId,
+                Long temporaryStoryPageId,
                 StoryPageEditRequest request);
 }

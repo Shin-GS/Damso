@@ -83,7 +83,7 @@ public class TemporaryStory extends CommonTime {
     }
 
     public void reorderPages() {
-        AtomicInteger sortNumber = new AtomicInteger(1);
+        AtomicInteger sortNumber = new AtomicInteger(0);
         temporaryStoryPages.stream()
                 .filter(storyPage -> !storyPage.isDeleted())
                 .sorted(Comparator.comparingInt(TemporaryStoryPage::getPageOrder))

@@ -2,7 +2,6 @@ package com.damso.user.controller.story;
 
 import com.damso.auth.session.SessionMemberId;
 import com.damso.core.enums.story.StoryCommentType;
-import com.damso.core.enums.story.StoryType;
 import com.damso.core.request.regex.pattern.CommonRegexPattern;
 import com.damso.core.request.regex.pattern.StoryRegexPattern;
 import com.damso.user.service.common.CodeFinder;
@@ -26,7 +25,6 @@ public class StoryController {
                             @SessionMemberId Long memberId,
                             Model model) {
         model.addAttribute("storyRegexPattern", CommonRegexPattern.getMap(StoryRegexPattern.class));
-        model.addAttribute("storyTypes", codeFinder.getCodes(StoryType.class));
         model.addAttribute("commentTypes", codeFinder.getCodes(StoryCommentType.class));
         model.addAttribute("story", storyEditor.resolveTemporaryEditInfo(storyId, memberId));
         return "views/story/storyEdit";

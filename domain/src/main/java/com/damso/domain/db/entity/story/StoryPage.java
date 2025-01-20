@@ -1,5 +1,6 @@
 package com.damso.domain.db.entity.story;
 
+import com.damso.core.enums.story.StoryFileType;
 import com.damso.core.enums.story.StoryType;
 import com.damso.domain.db.converter.BooleanConverter;
 import com.damso.domain.db.entity.base.CommonTime;
@@ -9,9 +10,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Entity
 @Table(name = "STORY_PAGE")
@@ -52,17 +55,57 @@ public class StoryPage extends CommonTime {
         this.storyType = StoryType.TEXT;
     }
 
-    public StoryPage(Story story,
-                     TemporaryStoryPage temporaryStoryPage) {
-        this.story = story;
-        this.pageOrder = temporaryStoryPage.getPageOrder();
-        this.storyType = temporaryStoryPage.getStoryType();
-    }
-
     public void published(TemporaryStoryPage temporaryStoryPage) {
         this.pageOrder = temporaryStoryPage.getPageOrder();
         this.storyType = temporaryStoryPage.getStoryType();
         this.deleted = temporaryStoryPage.isDeleted();
+
+        switch (this.storyType) {
+            case TEXT -> updateStoryText(temporaryStoryPage.getStoryText(), temporaryStoryPage.getStoryPlainText());
+            case IMAGE -> updateStoryImages(temporaryStoryPage.getImagePaths());
+            case VIDEO -> updateStoryVideo(temporaryStoryPage.getVideoPaths());
+        }
+    }
+
+    private void updateStoryText(String text,
+                                 String plainText) {
+        this.storyFiles.clear();
+        if (ObjectUtils.isEmpty(this.storyText)) {
+            this.storyText = new StoryText(this, text, plainText);
+            return;
+        }
+
+        this.storyText.update(text, plainText);
+    }
+
+    private void updateStoryImages(List<String> images) {
+        this.storyText = null;
+        this.storyFiles.clear();
+        if (ObjectUtils.isEmpty(images)) {
+            return;
+        }
+
+        AtomicInteger orderCounter = new AtomicInteger(0);
+        images.stream()
+                .map(file -> new StoryFile(this, StoryFileType.IMAGE, file, orderCounter.getAndIncrement()))
+                .forEach(storyFile -> this.storyFiles.add(storyFile));
+    }
+
+    private void updateStoryVideo(List<String> videos) {
+        this.storyText = null;
+        this.storyFiles.clear();
+        if (ObjectUtils.isEmpty(videos)) {
+            return;
+        }
+
+        this.storyFiles.add(new StoryFile(this, StoryFileType.VIDEO, videos.get(0), 0));
+    }
+
+    public String getStoryText() {
+        return ObjectUtils.isEmpty(this.storyText) ? "" : this.storyText.getText();
+    }
+
+    public String getStoryPlainText() {
+        return ObjectUtils.isEmpty(this.storyText) ? "" : this.storyText.getPlanText();
     }
 }
-

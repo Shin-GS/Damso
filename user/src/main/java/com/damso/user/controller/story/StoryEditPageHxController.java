@@ -2,6 +2,7 @@ package com.damso.user.controller.story;
 
 import com.damso.auth.session.SessionMemberId;
 import com.damso.core.enums.story.StoryType;
+import com.damso.user.service.common.CodeFinder;
 import com.damso.user.service.story.StoryPageEditor;
 import com.damso.user.service.story.StoryPageFinder;
 import com.damso.user.service.story.request.StoryPageEditRequest;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 public class StoryEditPageHxController {
     private final StoryPageFinder storyPageFinder;
     private final StoryPageEditor storyPageEditor;
+    private final CodeFinder codeFinder;
 
     @GetMapping
     public String getPages(@PathVariable("storyId") Long storyId,
@@ -43,61 +45,68 @@ public class StoryEditPageHxController {
         return "components/story/edit/pageEdit" + fragment;
     }
 
-    @GetMapping("/{storyPageId}")
+    @GetMapping("/{temporaryStoryPageId}")
     public String getPageContent(@PathVariable("storyId") Long storyId,
-                                 @PathVariable("storyPageId") Long storyPageId,
+                                 @PathVariable("temporaryStoryPageId") Long temporaryStoryPageId,
                                  @SessionMemberId Long memberId,
                                  Model model) {
-        StoryEditPageInfoResponse response = storyPageFinder.getTemporaryStoryPageInfo(storyId, memberId, storyPageId);
+        StoryEditPageInfoResponse response = storyPageFinder.getTemporaryStoryPageInfo(storyId, memberId, temporaryStoryPageId);
+        model.addAttribute("storyTypes", codeFinder.getCodes(StoryType.class));
         model.addAttribute("story", response);
         model.addAttribute("files", response.files());
 
-        String fragment = switch (response.storyType()) {
-            case TEXT -> " :: text-editor";
-            case IMAGE -> " :: image-editor";
-            case VIDEO -> " :: video-editor";
-        };
-        return "components/story/edit/editor" + fragment;
+        String fragment = " :: content";
+        return "components/story/edit/contentEdit" + fragment;
     }
 
-    @PutMapping("/{storyPageId}/type")
+    @GetMapping("/first-page")
+    public String getFirstPageContent(@PathVariable("storyId") Long storyId,
+                                      @SessionMemberId Long memberId,
+                                      Model model) {
+        StoryEditPageInfoResponse response = storyPageFinder.getFirstTemporaryStoryPageInfo(storyId, memberId);
+        model.addAttribute("storyTypes", codeFinder.getCodes(StoryType.class));
+        model.addAttribute("story", response);
+        model.addAttribute("files", response.files());
+
+        String fragment = " :: content";
+        return "components/story/edit/contentEdit" + fragment;
+    }
+
+    @PutMapping("/{temporaryStoryPageId}/type")
     public String updatePageType(@PathVariable("storyId") Long storyId,
-                                 @PathVariable("storyPageId") Long storyPageId,
+                                 @PathVariable("temporaryStoryPageId") Long temporaryStoryPageId,
                                  @ModelAttribute @Valid StoryType storyType,
                                  @SessionMemberId Long memberId,
                                  Model model) {
-        storyPageEditor.updateType(storyId, memberId, storyPageId, storyType);
-        StoryEditPageInfoResponse response = storyPageFinder.getTemporaryStoryPageInfo(storyId, memberId, storyPageId);
+        storyPageEditor.updateType(storyId, memberId, temporaryStoryPageId, storyType);
+        StoryEditPageInfoResponse response = storyPageFinder.getTemporaryStoryPageInfo(storyId, memberId, temporaryStoryPageId);
+        model.addAttribute("storyTypes", codeFinder.getCodes(StoryType.class));
         model.addAttribute("story", response);
         model.addAttribute("files", response.files());
 
-        String fragment = switch (response.storyType()) {
-            case TEXT -> " :: text-editor";
-            case IMAGE -> " :: image-editor";
-            case VIDEO -> " :: video-editor";
-        };
-        return "components/story/edit/editor" + fragment;
+        String fragment = " :: content";
+        return "components/story/edit/contentEdit" + fragment;
     }
 
-    @PutMapping("/{storyPageId}")
+    @PutMapping("/{temporaryStoryPageId}")
     public String updatePage(@PathVariable("storyId") Long storyId,
-                             @PathVariable("storyPageId") Long storyPageId,
+                             @PathVariable("temporaryStoryPageId") Long temporaryStoryPageId,
                              @RequestBody @Valid StoryPageEditRequest request,
                              @SessionMemberId Long memberId,
                              Model model) {
-        storyPageEditor.update(storyId, memberId, storyPageId, request);
+        storyPageEditor.update(storyId, memberId, temporaryStoryPageId, request);
         model.addAttribute("message", "페이지 수정에 성공했습니다.");
 
         String fragment = " :: success";
         return "components/toast" + fragment;
     }
 
-    @DeleteMapping("/{storyPageId}")
+    @DeleteMapping("/{temporaryStoryPageId}")
     public String deletePage(@PathVariable("storyId") Long storyId,
-                             @PathVariable("storyPageId") Long storyPageId,
+                             @PathVariable("temporaryStoryPageId") Long temporaryStoryPageId,
                              @SessionMemberId Long memberId,
                              Model model) {
-        storyPageEditor.delete(storyId, memberId, storyPageId);
+        storyPageEditor.delete(storyId, memberId, temporaryStoryPageId);
         model.addAttribute("storyPages", storyPageFinder.getTemporaryStoryPages(storyId, memberId));
         model.addAttribute("storyId", storyId);
         model.addAttribute("message", "해당 페이지 삭제를 성공했습니다.");

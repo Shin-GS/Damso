@@ -79,7 +79,9 @@ public class Story extends CommonTime {
 
     private void createOrPublishStoryPage(TemporaryStoryPage temporaryStoryPage) {
         if (ObjectUtils.isEmpty(temporaryStoryPage.getStoryPageId())) {
-            this.storyPages.add(new StoryPage(this, temporaryStoryPage));
+            StoryPage storyPage = new StoryPage(this);
+            storyPage.published(temporaryStoryPage);
+            this.storyPages.add(storyPage);
             return;
         }
 
@@ -98,7 +100,7 @@ public class Story extends CommonTime {
     }
 
     public void reorderPages() {
-        AtomicInteger sortNumber = new AtomicInteger(1);
+        AtomicInteger sortNumber = new AtomicInteger(0);
         storyPages.stream()
                 .filter(storyPage -> !storyPage.isDeleted())
                 .sorted(Comparator.comparingInt(StoryPage::getPageOrder))

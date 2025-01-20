@@ -4,6 +4,7 @@ import com.damso.core.enums.story.StoryFileType;
 import com.damso.core.enums.story.StoryType;
 import com.damso.domain.db.converter.BooleanConverter;
 import com.damso.domain.db.entity.base.CommonTime;
+import com.damso.domain.db.entity.story.StoryFile;
 import com.damso.domain.db.entity.story.StoryPage;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -13,6 +14,7 @@ import lombok.Setter;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -65,13 +67,22 @@ public class TemporaryStoryPage extends CommonTime {
         this.pageOrder = storyPage.getPageOrder();
         this.storyType = storyPage.getStoryType();
         this.storyPage = storyPage;
+
+        if (!ObjectUtils.isEmpty(storyPage.getStoryText())) {
+            this.temporaryStoryText = new TemporaryStoryText(this, storyPage.getStoryText(), storyPage.getStoryPlainText());
+        }
+
+        AtomicInteger sortNumber = new AtomicInteger(0);
+        storyPage.getStoryFiles().stream()
+                .sorted(Comparator.comparingInt(StoryFile::getOrder))
+                .map(storyFile -> new TemporaryStoryFile(this, storyFile.getFileType(), storyFile.getFilePath(), sortNumber.getAndIncrement()))
+                .forEach(temporaryStoryFile -> this.temporaryStoryFiles.add(temporaryStoryFile));
     }
 
-    public void update(StoryType storyType,
-                       String text,
+    public void update(String text,
                        String planText,
                        List<String> files) {
-        switch (storyType) {
+        switch (this.storyType) {
             case TEXT -> updateStoryText(text, planText);
             case IMAGE -> updateStoryImages(files);
             case VIDEO -> updateStoryVideo(files);
@@ -120,6 +131,14 @@ public class TemporaryStoryPage extends CommonTime {
         return !this.deleted || !ObjectUtils.isEmpty(this.storyPage);
     }
 
+    public String getStoryText() {
+        return ObjectUtils.isEmpty(this.temporaryStoryText) ? "" : this.temporaryStoryText.getText();
+    }
+
+    public String getStoryPlainText() {
+        return ObjectUtils.isEmpty(this.temporaryStoryText) ? "" : this.temporaryStoryText.getPlanText();
+    }
+
     public List<String> getImagePaths() {
         return this.temporaryStoryFiles.stream()
                 .filter(TemporaryStoryFile::isImage)
@@ -132,5 +151,9 @@ public class TemporaryStoryPage extends CommonTime {
                 .filter(TemporaryStoryFile::isVideo)
                 .map(TemporaryStoryFile::getFilePath)
                 .toList();
+    }
+
+    public Long getStoryId() {
+        return this.storyPage.getId();
     }
 }

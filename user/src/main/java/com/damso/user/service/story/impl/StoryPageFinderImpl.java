@@ -32,20 +32,31 @@ public class StoryPageFinderImpl implements StoryPageFinder {
         TemporaryStory temporaryStory = storyEditor.resolveTemporaryStory(story);
         return temporaryStory.getTemporaryStoryPages().stream()
                 .filter(page -> !page.isDeleted())
-                .sorted(Comparator.comparing(TemporaryStoryPage::getPageOrder))
                 .map(StoryEditPageResponse::of)
                 .toList();
+    }
+
+    @Override
+    public StoryEditPageInfoResponse getFirstTemporaryStoryPageInfo(Long storyId,
+                                                                    Long memberId) {
+        Story story = storyFinder.getEditableEntity(storyId, memberId);
+        TemporaryStory temporaryStory = storyEditor.resolveTemporaryStory(story);
+        TemporaryStoryPage temporaryStoryPage = temporaryStory.getTemporaryStoryPages().stream()
+                .filter(temporaryStoryPageItem -> !temporaryStoryPageItem.isDeleted())
+                .min(Comparator.comparing(TemporaryStoryPage::getPageOrder))
+                .orElseThrow(() -> new BusinessException(ErrorCode.ENTITY_NOT_FOUND));
+        return StoryEditPageInfoResponse.of(storyId, temporaryStoryPage);
     }
 
     @Override
     @Transactional
     public StoryEditPageInfoResponse getTemporaryStoryPageInfo(Long storyId,
                                                                Long memberId,
-                                                               Long storyPageId) {
+                                                               Long temporaryStoryPageId) {
         Story story = storyFinder.getEditableEntity(storyId, memberId);
         TemporaryStory temporaryStory = storyEditor.resolveTemporaryStory(story);
-        TemporaryStoryPage temporaryStoryPage = temporaryStory.getStoryPage(storyPageId)
+        TemporaryStoryPage temporaryStoryPage = temporaryStory.getStoryPage(temporaryStoryPageId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.ENTITY_NOT_FOUND));
-        return StoryEditPageInfoResponse.of(temporaryStoryPage);
+        return StoryEditPageInfoResponse.of(storyId, temporaryStoryPage);
     }
 }
