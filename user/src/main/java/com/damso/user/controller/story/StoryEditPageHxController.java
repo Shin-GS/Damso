@@ -3,7 +3,6 @@ package com.damso.user.controller.story;
 import com.damso.auth.session.SessionMemberId;
 import com.damso.user.service.story.StoryPageEditor;
 import com.damso.user.service.story.StoryPageFinder;
-import com.damso.user.service.story.request.StoryPageReorderRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -49,20 +48,6 @@ public class StoryEditPageHxController {
         model.addAttribute("storyPages", storyPageFinder.getPages(storyId, memberId));
         model.addAttribute("storyId", storyId);
         model.addAttribute("message", "해당 페이지 삭제를 성공했습니다.");
-
-        String fragment = " :: page-editor";
-        return "components/story/edit/pageList" + fragment;
-    }
-
-    @PutMapping("/reorder")
-    public String reorder(@PathVariable("storyId") Long storyId,
-                          @RequestBody StoryPageReorderRequest request,
-                          @SessionMemberId Long memberId,
-                          Model model) {
-        storyPageEditor.reorderPage(storyId, memberId, request.pageOrders());
-        model.addAttribute("storyPages", storyPageFinder.getPages(storyId, memberId));
-        model.addAttribute("storyId", storyId);
-        model.addAttribute("message", "페이지 순서 변경을 성공했습니다.");
 
         String fragment = " :: page-editor";
         return "components/story/edit/pageList" + fragment;
