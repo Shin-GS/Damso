@@ -83,8 +83,11 @@ public class StoryEditPageHxController {
         model.addAttribute("storyTypes", codeFinder.getCodes(StoryType.class));
         model.addAttribute("story", response);
         model.addAttribute("files", response.files());
+        model.addAttribute("storyPages", storyPageFinder.getTemporaryStoryPages(storyId, memberId));
+        model.addAttribute("storyId", storyId);
+        model.addAttribute("message", "타입 변경에 성공했습니다.");
 
-        String fragment = " :: content";
+        String fragment = " :: content-type";
         return "components/story/edit/contentEdit" + fragment;
     }
 

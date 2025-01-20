@@ -55,6 +55,7 @@ public class TemporaryStory extends CommonTime {
         story.getStoryPages().stream()
                 .filter(storyPage -> !storyPage.isDeleted())
                 .forEach(this::addPage);
+        this.reorderPages();
     }
 
     public Long getStoryId() {

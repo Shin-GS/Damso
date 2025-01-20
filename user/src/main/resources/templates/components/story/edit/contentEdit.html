@@ -1,7 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       lang="ko">
-<div th:fragment="content">
+<div th:fragment="content-type">
+    <div th:replace="~{components/story/edit/pageEdit::page-list}"></div>
+    <div th:replace="~{components/toast::success}"></div>
+    <div th:replace="~{::content}"></div>
+</div>
+
+<div th:fragment="content"
+     id="content-container"
+     class="mt-8"
+     hx-swap-oob="true">
     <input type="hidden"
            id="temporaryStoryPageId"
            name="temporaryStoryPageId"
@@ -15,7 +24,7 @@
                     class="w-full border rounded-md px-4 py-2 focus:ring focus:ring-blue-400"
                     th:hx-put="@{'/hx/stories/' + ${story.storyId} + '/pages/'+ ${story.temporaryStoryPageId} +'/type'}"
                     hx-confirm="스토리 유형을 변경하면 기존에 작성한 내용이 삭제됩니다. 계속하시겠습니까?"
-                    hx-target="#editor">
+                    hx-swap="none">
                 <option th:each="option : ${storyTypes}"
                         th:value="${option.code}"
                         th:text="${option.value}"

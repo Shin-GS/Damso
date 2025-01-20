@@ -32,6 +32,7 @@ public class StoryPageFinderImpl implements StoryPageFinder {
         TemporaryStory temporaryStory = storyEditor.resolveTemporaryStory(story);
         return temporaryStory.getTemporaryStoryPages().stream()
                 .filter(page -> !page.isDeleted())
+                .sorted(Comparator.comparing(TemporaryStoryPage::getPageOrder))
                 .map(StoryEditPageResponse::of)
                 .toList();
     }

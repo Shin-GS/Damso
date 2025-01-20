@@ -17,16 +17,19 @@
                 <div th:each="page, iterStat : ${storyPages}"
                      th:id="'page-' + ${page.id}"
                      th:data-id="${page.id}"
+                     th:hx-get="@{'/hx/stories/' + ${storyId} + '/pages/' + ${page.id}}"
+                     hx-trigger="click"
+                     hx-swap="none"
                      class="flex flex-col justify-start bg-gray-100 rounded shadow-md p-4"
                      draggable="true">
-                <span class="text-2xl"
-                      th:classappend="${page.storyType.code} == 'TEXT' ? 'emoji-text' :
-                          (page.storyType.code == 'IMAGE' ? 'emoji-image' :
-                          (page.storyType.code == 'VIDEO' ? 'emoji-video' : ''))">
-                    <span th:if="${page.storyType.code} == 'TEXT'">📝</span>
-                    <span th:if="${page.storyType.code} == 'IMAGE'">🖼️</span>
-                    <span th:if="${page.storyType.code} == 'VIDEO'">🎥</span>
-                </span>
+                    <span class="text-2xl"
+                          th:classappend="${page.storyType.code} == 'TEXT' ? 'emoji-text' :
+                              (page.storyType.code == 'IMAGE' ? 'emoji-image' :
+                              (page.storyType.code == 'VIDEO' ? 'emoji-video' : ''))">
+                        <span th:if="${page.storyType.code} == 'TEXT'">📝</span>
+                        <span th:if="${page.storyType.code} == 'IMAGE'">🖼️</span>
+                        <span th:if="${page.storyType.code} == 'VIDEO'">🎥</span>
+                    </span>
                     <button type="button"
                             class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded mt-2"
                             th:hx-delete="@{'/hx/stories/' + ${storyId} + '/pages/' + ${page.id}}"

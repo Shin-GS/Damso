@@ -115,7 +115,7 @@ additionalScript='/script/story/quill.min.js,/script/story/cropper.min.js,/scrip
 <footer th:replace="views/layout :: footer"></footer>
 
 <script>
-    document.body.addEventListener('htmx:afterSwap', async (event) => {
+    document.body.addEventListener('htmx:oobAfterSwap', async (event) => {
         if (event.detail.target.id === 'content-container') {
             await initializeTextEditor();
             await initializeImageEditor();
@@ -124,9 +124,7 @@ additionalScript='/script/story/quill.min.js,/script/story/cropper.min.js,/scrip
             document.getElementById('contentEditButton')
                 .addEventListener('click', handleFormSubmit);
         }
-    });
 
-    document.body.addEventListener('htmx:oobAfterSwap', async (event) => {
         if (event.detail.target.id === 'pages-container') {
             await initializePageEditor();
         }
