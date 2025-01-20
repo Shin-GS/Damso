@@ -39,21 +39,12 @@ additionalScript='/script/story/quill.min.js,/script/story/cropper.min.js,/scrip
             </label>
         </div>
 
-        <section id="pages-container" class="mt-8"
+        <section id="pages-container"
+                 class="mt-8"
                  th:hx-get="@{'/hx/stories/' + ${storyId} + '/pages'}"
                  hx-trigger="load"
                  hx-swap="innerHTML">
         </section>
-
-        <div class="flex justify-between mt-4">
-            <button type="button" id="add-page-button"
-                    class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-6 rounded"
-                    th:hx-post="@{'/hx/stories/' + ${storyId} + '/pages'}"
-                    hx-target="#pages-container"
-                    hx-swap="beforeend">
-                페이지 추가
-            </button>
-        </div>
 
         <div>
             <label class="block font-medium mb-2">댓글 설정</label>

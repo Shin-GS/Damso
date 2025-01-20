@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<div th:fragment="page-editor"
+     class="flex flex-col items-center w-full"
+     id="sortable-page-container"
+     th:attr="data-story-id=${storyId}">
+    <div id="sortable-page-list-wrapper" class="w-full overflow-x-auto">
+        <div id="sortable-page-list" class="flex gap-4 w-max items-start">
+            <div th:each="page, iterStat : ${storyPages}"
+                 th:id="'page-' + ${page.id}"
+                 th:data-id="${page.id}"
+                 class="flex flex-col justify-start bg-gray-100 rounded shadow-md p-4"
+                 draggable="true">
+                <span class="text-2xl"
+                      th:classappend="${page.storyType.code} == 'TEXT' ? 'emoji-text' :
+                          (page.storyType.code == 'IMAGE' ? 'emoji-image' :
+                          (page.storyType.code == 'VIDEO' ? 'emoji-video' : ''))">
+                    <span th:if="${page.storyType.code} == 'TEXT'">📝</span>
+                    <span th:if="${page.storyType.code} == 'IMAGE'">🖼️</span>
+                    <span th:if="${page.storyType.code} == 'VIDEO'">🎥</span>
+                </span>
+                <span class="text-sm font-medium mt-2"
+                      th:text="${page.id}"></span>
+                <button type="button"
+                        class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded mt-2"
+                        th:hx-delete="@{'/hx/stories/' + ${storyId} + '/pages/' + ${page.id}}"
+                        hx-confirm="이 페이지를 삭제하시겠습니까?"
+                        hx-target="#pages-container"
+                        hx-swap="innerHTML">
+                    삭제
+                </button>
+            </div>
+
+            <div class="flex flex-col justify-center bg-green-500 hover:bg-green-700 text-white font-bold rounded shadow-md p-4 cursor-pointer"
+                 th:hx-post="@{'/hx/stories/' + ${storyId} + '/pages'}"
+                 hx-trigger="click"
+                 hx-target="#pages-container"
+                 hx-swap="innerHTML">
+                <span class="text-2xl">➕</span>
+                <span class="text-sm mt-2">추가</span>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

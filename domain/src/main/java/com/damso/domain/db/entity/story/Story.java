@@ -13,7 +13,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Entity
 @Table(name = "STORY")
@@ -68,5 +71,29 @@ public class Story extends CommonTime {
 
     public void delete() {
         this.status = StoryStatusType.DELETED;
+    }
+
+    public void addPage() {
+        this.storyPages.add(new StoryPage(this));
+        this.reorderPages();
+    }
+
+    public void deletePage(StoryPage storyPage) {
+        storyPage.setDeleted(Boolean.TRUE);
+        this.reorderPages();
+    }
+
+    public Optional<StoryPage> getStoryPage(Long storyPageId) {
+        return storyPages.stream()
+                .filter(page -> page.getId().equals(storyPageId))
+                .findFirst();
+    }
+
+    public void reorderPages() {
+        AtomicInteger sortNumber = new AtomicInteger(1);
+        storyPages.stream()
+                .filter(storyPage -> !storyPage.isDeleted())
+                .sorted(Comparator.comparingInt(StoryPage::getPageOrder))
+                .forEach(storyPage -> storyPage.setPageOrder(sortNumber.getAndIncrement()));
     }
 }

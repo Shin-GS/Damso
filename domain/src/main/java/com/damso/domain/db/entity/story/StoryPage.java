@@ -29,7 +29,7 @@ public class StoryPage extends CommonTime {
     private Story story;
 
     @Column(name = "PAGE_ORDER", columnDefinition = "INT", nullable = false)
-    private Integer pageOrder;
+    private int pageOrder;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "PAGE_STORY_TYPE", columnDefinition = "VARCHAR(20)", nullable = false)
@@ -47,7 +47,7 @@ public class StoryPage extends CommonTime {
 
     public StoryPage(Story story) {
         this.story = story;
-        this.pageOrder = 0;
+        this.pageOrder = 99;
         this.storyType = StoryType.TEXT;
     }
 }
