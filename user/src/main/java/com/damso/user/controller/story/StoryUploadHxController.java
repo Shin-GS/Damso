@@ -29,7 +29,7 @@ public class StoryUploadHxController {
         model.addAttribute("images", List.of(uploadResponse.url()));
 
         String fragment = " :: story-upload-image";
-        return "components/story/storyUploadFile" + fragment;
+        return "components/story/edit/uploadFile" + fragment;
     }
 
     @PostMapping("/upload/video")
@@ -40,6 +40,6 @@ public class StoryUploadHxController {
         model.addAttribute("video", List.of(uploadResponse.url()));
 
         String fragment = " :: story-upload-video";
-        return "components/story/storyUploadFile" + fragment;
+        return "components/story/edit/uploadFile" + fragment;
     }
 }
