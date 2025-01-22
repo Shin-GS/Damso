@@ -12,6 +12,13 @@ public class ModelAndViewBuilder {
     private final List<ModelAndView> fragments = new ArrayList<>();
 
     public ModelAndViewBuilder addFragment(String developOnlyPath,
+                                           String viewName) {
+        log.debug(developOnlyPath);
+        this.fragments.add(new ModelAndView(viewName, Map.of()));
+        return this;
+    }
+
+    public ModelAndViewBuilder addFragment(String developOnlyPath,
                                            String viewName,
                                            Map<String, Object> model) {
         log.debug(developOnlyPath);

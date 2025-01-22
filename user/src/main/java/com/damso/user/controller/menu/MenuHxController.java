@@ -1,14 +1,19 @@
 package com.damso.user.controller.menu;
 
 import com.damso.auth.session.SessionMemberId;
+import com.damso.core.response.ModelAndViewBuilder;
 import com.damso.user.service.auth.RefreshInfoFetcher;
 import com.damso.user.service.auth.response.RefreshInfoResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/hx")
@@ -17,17 +22,18 @@ public class MenuHxController {
     private final RefreshInfoFetcher refreshInfoFetcher;
 
     @GetMapping("/menu")
-    public String menu(@SessionMemberId Long memberId,
-                       Model model) {
+    public List<ModelAndView> menu(@SessionMemberId Long memberId) {
         if (ObjectUtils.isEmpty(memberId)) {
-            String fragment = " :: guest-menu";
-            return "components/menu" + fragment;
+            return new ModelAndViewBuilder()
+                    .addFragment("templates/components/menu.html", "components/menu :: guest-menu")
+                    .build();
         }
 
         RefreshInfoResponse refreshInfoResponse = refreshInfoFetcher.refresh(memberId);
-        model.addAttribute("info", refreshInfoResponse);
-
-        String fragment = " :: user-menu";
-        return "components/menu" + fragment;
+        Map<String, Object> menuData = new HashMap<>();
+        menuData.put("info", refreshInfoResponse);
+        return new ModelAndViewBuilder()
+                .addFragment("templates/components/menu.html", "components/menu :: user-menu", menuData)
+                .build();
     }
 }

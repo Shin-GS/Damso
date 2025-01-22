@@ -8,10 +8,10 @@ import com.damso.user.service.story.StoryPageEditor;
 import com.damso.user.service.story.StoryPageFinder;
 import com.damso.user.service.story.request.StoryPageEditRequest;
 import com.damso.user.service.story.response.StoryEditPageInfoResponse;
+import com.damso.user.service.story.response.StoryEditPageResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -28,101 +28,110 @@ public class StoryEditPageHxController {
     private final CodeFinder codeFinder;
 
     @GetMapping
-    public String getPages(@PathVariable("storyId") Long storyId,
-                           @SessionMemberId Long memberId,
-                           Model model) {
-        model.addAttribute("storyPages", storyPageFinder.getTemporaryStoryPages(storyId, memberId));
-        model.addAttribute("storyId", storyId);
+    public List<ModelAndView> getPages(@PathVariable("storyId") Long storyId,
+                                       @SessionMemberId Long memberId) {
+        List<StoryEditPageResponse> temporaryStoryPages = storyPageFinder.getTemporaryStoryPages(storyId, memberId);
 
-        String fragment = " :: page-list";
-        return "components/story/edit/pageEdit" + fragment;
+        Map<String, Object> pageListData = new HashMap<>();
+        pageListData.put("storyPages", temporaryStoryPages);
+        pageListData.put("storyId", storyId);
+        return new ModelAndViewBuilder()
+                .addFragment("templates/components/story/edit/pageEdit.html", "components/story/edit/pageEdit :: page-list", pageListData)
+                .build();
     }
 
     @PostMapping
     public List<ModelAndView> createPage(@PathVariable("storyId") Long storyId,
                                          @SessionMemberId Long memberId) {
         storyPageEditor.create(storyId, memberId);
+        List<StoryEditPageResponse> temporaryStoryPages = storyPageFinder.getTemporaryStoryPages(storyId, memberId);
 
         Map<String, Object> pageListData = new HashMap<>();
-        pageListData.put("storyPages", storyPageFinder.getTemporaryStoryPages(storyId, memberId));
+        pageListData.put("storyPages", temporaryStoryPages);
         pageListData.put("storyId", storyId);
-
         return new ModelAndViewBuilder()
                 .addFragment("templates/components/story/edit/pageEdit.html", "components/story/edit/pageEdit :: page-list", pageListData)
-                .addFragment("templates/components/toast.html", "components/toast :: success", "message", "신규 페이지 추가를 성공했습니다.")
+                .addFragment("templates/components/toast.html", "components/toast :: success", "message", "스토리 임시저장에 성공했습니다.")
                 .build();
     }
 
     @GetMapping("/{temporaryStoryPageId}")
-    public String getPageContent(@PathVariable("storyId") Long storyId,
-                                 @PathVariable("temporaryStoryPageId") Long temporaryStoryPageId,
-                                 @SessionMemberId Long memberId,
-                                 Model model) {
+    public List<ModelAndView> getPageContent(@PathVariable("storyId") Long storyId,
+                                             @PathVariable("temporaryStoryPageId") Long temporaryStoryPageId,
+                                             @SessionMemberId Long memberId) {
         StoryEditPageInfoResponse response = storyPageFinder.getTemporaryStoryPageInfo(storyId, memberId, temporaryStoryPageId);
-        model.addAttribute("storyTypes", codeFinder.getCodes(StoryType.class));
-        model.addAttribute("story", response);
-        model.addAttribute("files", response.files());
 
-        String fragment = " :: content";
-        return "components/story/edit/contentEdit" + fragment;
+        Map<String, Object> pageContentData = new HashMap<>();
+        pageContentData.put("storyTypes", codeFinder.getCodes(StoryType.class));
+        pageContentData.put("story", response);
+        pageContentData.put("files", response.files());
+        return new ModelAndViewBuilder()
+                .addFragment("templates/components/story/edit/contentEdit.html", "components/story/edit/contentEdit :: content", pageContentData)
+                .build();
     }
 
     @GetMapping("/first-page")
-    public String getFirstPageContent(@PathVariable("storyId") Long storyId,
-                                      @SessionMemberId Long memberId,
-                                      Model model) {
+    public List<ModelAndView> getFirstPageContent(@PathVariable("storyId") Long storyId,
+                                                  @SessionMemberId Long memberId) {
         StoryEditPageInfoResponse response = storyPageFinder.getFirstTemporaryStoryPageInfo(storyId, memberId);
-        model.addAttribute("storyTypes", codeFinder.getCodes(StoryType.class));
-        model.addAttribute("story", response);
-        model.addAttribute("files", response.files());
 
-        String fragment = " :: content";
-        return "components/story/edit/contentEdit" + fragment;
+        Map<String, Object> pageContentData = new HashMap<>();
+        pageContentData.put("storyTypes", codeFinder.getCodes(StoryType.class));
+        pageContentData.put("story", response);
+        pageContentData.put("files", response.files());
+        return new ModelAndViewBuilder()
+                .addFragment("templates/components/story/edit/contentEdit.html", "components/story/edit/contentEdit :: content", pageContentData)
+                .build();
     }
 
     @PutMapping("/{temporaryStoryPageId}/type")
-    public String updatePageType(@PathVariable("storyId") Long storyId,
-                                 @PathVariable("temporaryStoryPageId") Long temporaryStoryPageId,
-                                 @ModelAttribute @Valid StoryType storyType,
-                                 @SessionMemberId Long memberId,
-                                 Model model) {
+    public List<ModelAndView> updatePageType(@PathVariable("storyId") Long storyId,
+                                             @PathVariable("temporaryStoryPageId") Long temporaryStoryPageId,
+                                             @ModelAttribute @Valid StoryType storyType,
+                                             @SessionMemberId Long memberId) {
         storyPageEditor.updateType(storyId, memberId, temporaryStoryPageId, storyType);
-        StoryEditPageInfoResponse response = storyPageFinder.getTemporaryStoryPageInfo(storyId, memberId, temporaryStoryPageId);
-        model.addAttribute("storyTypes", codeFinder.getCodes(StoryType.class));
-        model.addAttribute("story", response);
-        model.addAttribute("files", response.files());
-        model.addAttribute("storyPages", storyPageFinder.getTemporaryStoryPages(storyId, memberId));
-        model.addAttribute("storyId", storyId);
-        model.addAttribute("message", "타입 변경에 성공했습니다.");
+        StoryEditPageInfoResponse temporaryStoryPageInfo = storyPageFinder.getTemporaryStoryPageInfo(storyId, memberId, temporaryStoryPageId);
 
-        String fragment = " :: content-type";
-        return "components/story/edit/contentEdit" + fragment;
+        Map<String, Object> pageContentData = new HashMap<>();
+        pageContentData.put("storyTypes", codeFinder.getCodes(StoryType.class));
+        pageContentData.put("story", temporaryStoryPageInfo);
+        pageContentData.put("files", temporaryStoryPageInfo.files());
+
+        Map<String, Object> pageListData = new HashMap<>();
+        pageListData.put("storyPages", storyPageFinder.getTemporaryStoryPages(storyId, memberId));
+        pageListData.put("storyId", storyId);
+        return new ModelAndViewBuilder()
+                .addFragment("templates/components/story/edit/contentEdit.html", "components/story/edit/contentEdit :: content", pageContentData)
+                .addFragment("templates/components/story/edit/pageEdit.html", "components/story/edit/pageEdit :: page-list", pageListData)
+                .addFragment("templates/components/toast.html", "components/toast :: success", "message", "스토리 임시저장에 성공했습니다.")
+                .build();
     }
 
     @PutMapping("/{temporaryStoryPageId}")
-    public String updatePage(@PathVariable("storyId") Long storyId,
-                             @PathVariable("temporaryStoryPageId") Long temporaryStoryPageId,
-                             @RequestBody @Valid StoryPageEditRequest request,
-                             @SessionMemberId Long memberId,
-                             Model model) {
+    public List<ModelAndView> updatePage(@PathVariable("storyId") Long storyId,
+                                         @PathVariable("temporaryStoryPageId") Long temporaryStoryPageId,
+                                         @RequestBody @Valid StoryPageEditRequest request,
+                                         @SessionMemberId Long memberId) {
         storyPageEditor.update(storyId, memberId, temporaryStoryPageId, request);
-        model.addAttribute("message", "페이지 수정에 성공했습니다.");
 
-        String fragment = " :: success";
-        return "components/toast" + fragment;
+        return new ModelAndViewBuilder()
+                .addFragment("templates/components/toast.html", "components/toast :: success", "message", "스토리 임시저장에 성공했습니다.")
+                .build();
     }
 
     @DeleteMapping("/{temporaryStoryPageId}")
-    public String deletePage(@PathVariable("storyId") Long storyId,
-                             @PathVariable("temporaryStoryPageId") Long temporaryStoryPageId,
-                             @SessionMemberId Long memberId,
-                             Model model) {
+    public List<ModelAndView> deletePage(@PathVariable("storyId") Long storyId,
+                                         @PathVariable("temporaryStoryPageId") Long temporaryStoryPageId,
+                                         @SessionMemberId Long memberId) {
         storyPageEditor.delete(storyId, memberId, temporaryStoryPageId);
-        model.addAttribute("storyPages", storyPageFinder.getTemporaryStoryPages(storyId, memberId));
-        model.addAttribute("storyId", storyId);
-        model.addAttribute("message", "해당 페이지 삭제를 성공했습니다.");
+        List<StoryEditPageResponse> temporaryStoryPages = storyPageFinder.getTemporaryStoryPages(storyId, memberId);
 
-        String fragment = " :: page-edit";
-        return "components/story/edit/pageEdit" + fragment;
+        Map<String, Object> pageListData = new HashMap<>();
+        pageListData.put("storyPages", temporaryStoryPages);
+        pageListData.put("storyId", storyId);
+        return new ModelAndViewBuilder()
+                .addFragment("templates/components/story/edit/pageEdit.html", "components/story/edit/pageEdit :: page-list", pageListData)
+                .addFragment("templates/components/toast.html", "components/toast :: success", "message", "스토리 임시저장에 성공했습니다.")
+                .build();
     }
 }
