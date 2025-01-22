@@ -58,7 +58,7 @@ public class StoryEditPageHxController {
         contentData.put("files", response.files());
         return new ModelAndViewBuilder()
                 .addFragment("templates/components/story/edit/pageList.html", "components/story/edit/pageList :: page-list", pageData)
-                .addFragment("templates/components/story/edit/contentEdit.html", "components/story/edit/contentEdit :: content", contentData)
+                .addFragment("templates/components/story/edit/content.html", "components/story/edit/content :: content", contentData)
                 .addFragment("templates/components/toast.html", "components/toast :: success", "message", "스토리 임시저장에 성공했습니다.")
                 .build();
     }
@@ -81,7 +81,7 @@ public class StoryEditPageHxController {
         contentData.put("files", storyPageInfo.files());
         return new ModelAndViewBuilder()
                 .addFragment("templates/components/story/edit/pageList.html", "components/story/edit/pageList :: page-list", pageData)
-                .addFragment("templates/components/story/edit/contentEdit.html", "components/story/edit/contentEdit :: content", contentData)
+                .addFragment("templates/components/story/edit/content.html", "components/story/edit/content :: content", contentData)
                 .addFragment("templates/components/toast.html", "components/toast :: success", "message", "스토리 임시저장에 성공했습니다.")
                 .build();
     }

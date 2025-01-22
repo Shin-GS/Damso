@@ -27,6 +27,6 @@ public class StoryController {
         model.addAttribute("storyRegexPattern", CommonRegexPattern.getMap(StoryRegexPattern.class));
         model.addAttribute("commentTypes", codeFinder.getCodes(StoryCommentType.class));
         model.addAttribute("story", storyEditor.resolveTemporaryEditInfo(storyId, memberId));
-        return "views/story/storyEdit";
+        return "views/story/edit";
     }
 }

@@ -32,7 +32,7 @@ public class StoryUploadHxController {
         Map<String, Object> imageUploadData = new HashMap<>();
         imageUploadData.put("files", List.of(upload.url()));
         return new ModelAndViewBuilder()
-                .addFragment("templates/components/story/edit/uploadFile.html", "components/story/edit/uploadFile :: story-upload-image", imageUploadData)
+                .addFragment("templates/components/story/edit/upload.html", "components/story/edit/upload :: story-upload-image", imageUploadData)
                 .build();
     }
 
@@ -44,7 +44,7 @@ public class StoryUploadHxController {
         Map<String, Object> videoUploadData = new HashMap<>();
         videoUploadData.put("files", List.of(upload.url()));
         return new ModelAndViewBuilder()
-                .addFragment("templates/components/story/edit/uploadFile.html", "components/story/edit/uploadFile :: story-upload-video", videoUploadData)
+                .addFragment("templates/components/story/edit/upload.html", "components/story/edit/upload :: story-upload-video", videoUploadData)
                 .build();
     }
 }
