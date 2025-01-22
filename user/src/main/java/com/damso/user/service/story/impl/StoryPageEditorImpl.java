@@ -15,6 +15,7 @@ import com.damso.user.service.story.request.StoryPageReorderRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -41,7 +42,7 @@ public class StoryPageEditorImpl implements StoryPageEditor {
     }
 
     @Override
-    public void delete(Long storyId,
+    public Long delete(Long storyId,
                        Long memberId,
                        Long temporaryStoryPageId) {
         Story story = storyFinder.getEditableEntity(storyId, memberId);
@@ -53,6 +54,9 @@ public class StoryPageEditorImpl implements StoryPageEditor {
         TemporaryStoryPage temporaryStoryPage = temporaryStory.getStoryPage(temporaryStoryPageId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.ENTITY_NOT_FOUND));
         temporaryStory.deletePage(temporaryStoryPage);
+
+        TemporaryStoryPage temporaryStoryPageToMove = temporaryStory.getStoryPageByOrder(temporaryStoryPage.getPageOrder());
+        return ObjectUtils.isEmpty(temporaryStoryPageToMove) ? null : temporaryStoryPageToMove.getId();
     }
 
     @Override

@@ -30,9 +30,7 @@ public class StoryPageFinderImpl implements StoryPageFinder {
                                                               Long memberId) {
         Story story = storyFinder.getEditableEntity(storyId, memberId);
         TemporaryStory temporaryStory = storyEditor.resolveTemporaryStory(story);
-        return temporaryStory.getTemporaryStoryPages().stream()
-                .filter(page -> !page.isDeleted())
-                .sorted(Comparator.comparing(TemporaryStoryPage::getPageOrder))
+        return temporaryStory.getEditableTemporaryStoryPages().stream()
                 .map(StoryEditPageResponse::of)
                 .toList();
     }
@@ -42,8 +40,7 @@ public class StoryPageFinderImpl implements StoryPageFinder {
                                                                     Long memberId) {
         Story story = storyFinder.getEditableEntity(storyId, memberId);
         TemporaryStory temporaryStory = storyEditor.resolveTemporaryStory(story);
-        TemporaryStoryPage temporaryStoryPage = temporaryStory.getTemporaryStoryPages().stream()
-                .filter(temporaryStoryPageItem -> !temporaryStoryPageItem.isDeleted())
+        TemporaryStoryPage temporaryStoryPage = temporaryStory.getEditableTemporaryStoryPages().stream()
                 .min(Comparator.comparing(TemporaryStoryPage::getPageOrder))
                 .orElseThrow(() -> new BusinessException(ErrorCode.ENTITY_NOT_FOUND));
         return StoryEditPageInfoResponse.of(storyId, temporaryStoryPage);

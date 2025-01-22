@@ -84,11 +84,21 @@ public class TemporaryStory extends CommonTime {
                 .findFirst();
     }
 
+    public TemporaryStoryPage getStoryPageByOrder(int index) {
+        List<TemporaryStoryPage> orderedStoryPages = this.getEditableTemporaryStoryPages();
+        return (index >= 0 && index < orderedStoryPages.size()) ? orderedStoryPages.get(index) : null;
+    }
+
     public void reorderPages() {
         AtomicInteger sortNumber = new AtomicInteger(0);
-        temporaryStoryPages.stream()
-                .filter(storyPage -> !storyPage.isDeleted())
-                .sorted(Comparator.comparingInt(TemporaryStoryPage::getPageOrder))
+        this.getEditableTemporaryStoryPages()
                 .forEach(storyPage -> storyPage.setPageOrder(sortNumber.getAndIncrement()));
+    }
+
+    public List<TemporaryStoryPage> getEditableTemporaryStoryPages() {
+        return this.getTemporaryStoryPages().stream()
+                .filter(page -> !page.isDeleted())
+                .sorted(Comparator.comparing(TemporaryStoryPage::getPageOrder))
+                .toList();
     }
 }

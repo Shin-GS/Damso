@@ -16,6 +16,7 @@
                      hx-trigger="click"
                      hx-swap="none"
                      class="flex flex-col justify-start bg-gray-100 rounded shadow-md p-4"
+                     th:classappend="${page.id == currentPageId} ? 'border-4 border-green-500 bg-green-100' : ''"
                      draggable="true">
                     <span class="text-2xl"
                           th:classappend="${page.storyType.code} == 'TEXT' ? 'emoji-text' :

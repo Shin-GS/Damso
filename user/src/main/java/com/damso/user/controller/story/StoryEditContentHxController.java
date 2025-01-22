@@ -30,28 +30,34 @@ public class StoryEditContentHxController {
     public List<ModelAndView> getPageContent(@PathVariable("storyId") Long storyId,
                                              @PathVariable("temporaryStoryPageId") Long temporaryStoryPageId,
                                              @SessionMemberId Long memberId) {
-        StoryEditPageInfoResponse response = storyPageFinder.getTemporaryStoryPageInfo(storyId, memberId, temporaryStoryPageId);
+        StoryEditPageInfoResponse storyPageInfo = storyPageFinder.getTemporaryStoryPageInfo(storyId, memberId, temporaryStoryPageId);
 
-        Map<String, Object> pageContentData = new HashMap<>();
-        pageContentData.put("storyTypes", codeFinder.getCodes(StoryType.class));
-        pageContentData.put("story", response);
-        pageContentData.put("files", response.files());
+        Map<String, Object> contentData = new HashMap<>();
+        contentData.put("storyTypes", codeFinder.getCodes(StoryType.class));
+        contentData.put("story", storyPageInfo);
+        contentData.put("files", storyPageInfo.files());
+
+        Map<String, Object> pageData = new HashMap<>();
+        pageData.put("storyPages", storyPageFinder.getTemporaryStoryPages(storyId, memberId));
+        pageData.put("storyId", storyId);
+        pageData.put("currentPageId", temporaryStoryPageId);
         return new ModelAndViewBuilder()
-                .addFragment("templates/components/story/edit/contentEdit.html", "components/story/edit/contentEdit :: content", pageContentData)
+                .addFragment("templates/components/story/edit/contentEdit.html", "components/story/edit/contentEdit :: content", contentData)
+                .addFragment("templates/components/story/edit/pageList.html", "components/story/edit/pageList :: page-list", pageData)
                 .build();
     }
 
     @GetMapping("/first-page")
     public List<ModelAndView> getFirstPageContent(@PathVariable("storyId") Long storyId,
                                                   @SessionMemberId Long memberId) {
-        StoryEditPageInfoResponse response = storyPageFinder.getFirstTemporaryStoryPageInfo(storyId, memberId);
+        StoryEditPageInfoResponse storyPageInfo = storyPageFinder.getFirstTemporaryStoryPageInfo(storyId, memberId);
 
-        Map<String, Object> pageContentData = new HashMap<>();
-        pageContentData.put("storyTypes", codeFinder.getCodes(StoryType.class));
-        pageContentData.put("story", response);
-        pageContentData.put("files", response.files());
+        Map<String, Object> contentData = new HashMap<>();
+        contentData.put("storyTypes", codeFinder.getCodes(StoryType.class));
+        contentData.put("story", storyPageInfo);
+        contentData.put("files", storyPageInfo.files());
         return new ModelAndViewBuilder()
-                .addFragment("templates/components/story/edit/contentEdit.html", "components/story/edit/contentEdit :: content", pageContentData)
+                .addFragment("templates/components/story/edit/contentEdit.html", "components/story/edit/contentEdit :: content", contentData)
                 .build();
     }
 
@@ -61,19 +67,20 @@ public class StoryEditContentHxController {
                                              @ModelAttribute @Valid StoryType storyType,
                                              @SessionMemberId Long memberId) {
         storyPageEditor.updateType(storyId, memberId, temporaryStoryPageId, storyType);
-        StoryEditPageInfoResponse temporaryStoryPageInfo = storyPageFinder.getTemporaryStoryPageInfo(storyId, memberId, temporaryStoryPageId);
 
-        Map<String, Object> pageContentData = new HashMap<>();
-        pageContentData.put("storyTypes", codeFinder.getCodes(StoryType.class));
-        pageContentData.put("story", temporaryStoryPageInfo);
-        pageContentData.put("files", temporaryStoryPageInfo.files());
+        StoryEditPageInfoResponse storyPageInfo = storyPageFinder.getTemporaryStoryPageInfo(storyId, memberId, temporaryStoryPageId);
+        Map<String, Object> contentData = new HashMap<>();
+        contentData.put("storyTypes", codeFinder.getCodes(StoryType.class));
+        contentData.put("story", storyPageInfo);
+        contentData.put("files", storyPageInfo.files());
 
-        Map<String, Object> pageListData = new HashMap<>();
-        pageListData.put("storyPages", storyPageFinder.getTemporaryStoryPages(storyId, memberId));
-        pageListData.put("storyId", storyId);
+        Map<String, Object> pageData = new HashMap<>();
+        pageData.put("storyPages", storyPageFinder.getTemporaryStoryPages(storyId, memberId));
+        pageData.put("storyId", storyId);
+        pageData.put("currentPageId", temporaryStoryPageId);
         return new ModelAndViewBuilder()
-                .addFragment("templates/components/story/edit/contentEdit.html", "components/story/edit/contentEdit :: content", pageContentData)
-                .addFragment("templates/components/story/edit/pageEdit.html", "components/story/edit/pageEdit :: page-list", pageListData)
+                .addFragment("templates/components/story/edit/contentEdit.html", "components/story/edit/contentEdit :: content", contentData)
+                .addFragment("templates/components/story/edit/pageList.html", "components/story/edit/pageList :: page-list", pageData)
                 .addFragment("templates/components/toast.html", "components/toast :: success", "message", "스토리 임시저장에 성공했습니다.")
                 .build();
     }

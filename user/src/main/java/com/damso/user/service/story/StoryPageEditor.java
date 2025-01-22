@@ -10,7 +10,7 @@ public interface StoryPageEditor {
     void create(Long storyId,
                 Long memberId);
 
-    void delete(Long storyId,
+    Long delete(Long storyId,
                 Long memberId,
                 Long temporaryStoryPageId);
 

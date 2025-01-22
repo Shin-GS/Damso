@@ -27,10 +27,10 @@ public class StoryUploadHxController {
     @PostMapping("/upload/image")
     public List<ModelAndView> uploadImage(@RequestPart("file") MultipartFile image,
                                           @SessionMemberId Long memberId) {
-        FileUploadResponse uploadResponse = imageFileUploader.upload(image, memberId);
+        FileUploadResponse upload = imageFileUploader.upload(image, memberId);
 
         Map<String, Object> imageUploadData = new HashMap<>();
-        imageUploadData.put("files", List.of(uploadResponse.url()));
+        imageUploadData.put("files", List.of(upload.url()));
         return new ModelAndViewBuilder()
                 .addFragment("templates/components/story/edit/uploadFile.html", "components/story/edit/uploadFile :: story-upload-image", imageUploadData)
                 .build();
@@ -39,10 +39,10 @@ public class StoryUploadHxController {
     @PostMapping("/upload/video")
     public List<ModelAndView> uploadVideo(@RequestPart("file") MultipartFile video,
                                           @SessionMemberId Long memberId) {
-        FileUploadResponse uploadResponse = videoFileUploader.upload(video, memberId);
+        FileUploadResponse upload = videoFileUploader.upload(video, memberId);
 
         Map<String, Object> videoUploadData = new HashMap<>();
-        videoUploadData.put("files", List.of(uploadResponse.url()));
+        videoUploadData.put("files", List.of(upload.url()));
         return new ModelAndViewBuilder()
                 .addFragment("templates/components/story/edit/uploadFile.html", "components/story/edit/uploadFile :: story-upload-video", videoUploadData)
                 .build();
