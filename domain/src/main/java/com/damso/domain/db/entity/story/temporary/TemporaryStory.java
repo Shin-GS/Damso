@@ -53,6 +53,7 @@ public class TemporaryStory extends CommonTime {
         this.commentType = story.getCommentType();
         this.status = StoryTemporaryStatusType.WRITING;
         story.getStoryPages().stream()
+                .sorted(Comparator.comparingInt(StoryPage::getPageOrder))
                 .filter(storyPage -> !storyPage.isDeleted())
                 .forEach(this::addPage);
         this.reorderPages();
