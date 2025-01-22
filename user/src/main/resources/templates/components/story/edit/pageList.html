@@ -31,7 +31,8 @@
                             th:hx-delete="@{'/hx/stories/' + ${storyId} + '/pages/' + ${page.id}}"
                             hx-confirm="이 페이지를 삭제하시겠습니까?"
                             hx-target="this"
-                            hx-swap="outerHTML">
+                            hx-swap="outerHTML"
+                            onclick="event.stopPropagation();">
                         삭제
                     </button>
                 </div>

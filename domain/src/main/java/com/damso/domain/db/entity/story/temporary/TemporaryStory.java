@@ -86,7 +86,11 @@ public class TemporaryStory extends CommonTime {
 
     public TemporaryStoryPage getStoryPageByOrder(int index) {
         List<TemporaryStoryPage> orderedStoryPages = this.getEditableTemporaryStoryPages();
-        return (index >= 0 && index < orderedStoryPages.size()) ? orderedStoryPages.get(index) : null;
+        if (index <= 0) {
+            return orderedStoryPages.get(0);
+        }
+
+        return index < orderedStoryPages.size() ? orderedStoryPages.get(index) : orderedStoryPages.get(orderedStoryPages.size() - 1);
     }
 
     public void reorderPages() {
