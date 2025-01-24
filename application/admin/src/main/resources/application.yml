@@ -1,0 +1,16 @@
+server.port: 8080
+
+spring:
+  profiles:
+    active: product
+  application:
+    name: admin
+  config:
+    import:
+      - application-admin-service.yml
+      - application-core.yml
+      - application-common.yml
+      - application-domain-cache.yml
+      - application-domain-storage.yml
+  thymeleaf:
+    cache: false

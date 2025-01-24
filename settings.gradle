@@ -1,7 +1,10 @@
 rootProject.name = 'damso'
 
-include('core')
-include('auth')
-include('domain')
-include('admin')
-include('user')
+include(':core')
+include(':domain:storage')
+include(':domain:cache')
+include(':application:common')
+include(':application:admin-service')
+include(':application:user-service')
+include(':application:admin')
+include(':application:user')

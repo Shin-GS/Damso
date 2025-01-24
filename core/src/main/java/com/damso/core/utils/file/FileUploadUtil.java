@@ -1,7 +1,7 @@
 package com.damso.core.utils.file;
 
-import com.damso.core.response.error.ErrorCode;
-import com.damso.core.response.exception.BusinessException;
+import com.damso.core.code.ErrorCode;
+import com.damso.core.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
@@ -77,7 +77,8 @@ public class FileUploadUtil {
         );
     }
 
-    public static boolean copyFile(MultipartFile file, Path targetPath) {
+    public static boolean copyFile(MultipartFile file,
+                                   Path targetPath) {
         try (InputStream inputStream = file.getInputStream()) {
             Files.copy(inputStream, targetPath);
             return Boolean.TRUE;
