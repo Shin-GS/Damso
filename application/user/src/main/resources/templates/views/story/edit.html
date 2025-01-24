@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:hx-on="http://www.w3.org/1999/xhtml" lang="ko">
+<head th:replace="views/layout :: head(additionalCss='/css/story/quill.snow.css,/css/story/cropper.min.css,/css/story/dropzone.min.css',
+additionalScript='/script/story/quill.min.js,/script/story/cropper.min.js,/script/story/dropzone.min.js,/script/story/sortable.min.js,/script/story/editor/pageEditor.js,/script/story/editor/textEditor.js,/script/story/editor/imageEditor.js,/script/story/editor/videoEditor.js')">
+    <title>스토리 편집</title>
+</head>
+<body class="content-edit-page flex flex-col min-h-screen bg-gray-100">
+<!-- Header -->
+<header th:replace="views/layout :: header"></header>
+
+<main class="flex-grow flex justify-center items-center py-12">
+    <section class="content-edit-container bg-white shadow-lg rounded-lg p-8 max-w-5xl w-full">
+        <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-6">
+            <p>
+                ⚠️
+                <strong>주의:</strong> 현재 작성된 내용은 <strong>임시 저장</strong> 상태입니다.
+                <strong>발행</strong> 버튼을 눌러야 최종적으로 적용됩니다.
+            </p>
+        </div>
+
+        <h1 class="text-2xl font-bold mb-6">스토리 편집</h1>
+        <input type="hidden" id="storyId" name="storyId" th:value="${story.id}">
+        <div>
+            <label class="block font-medium mb-2">스토리 제목</label>
+            <label>
+                <input type="text"
+                       id="title"
+                       name="title"
+                       th:hx-put="@{'/hx/stories/' + ${storyId} + '/title'}"
+                       hx-target="#toast-container"
+                       hx-swap="innerHTML"
+                       hx-trigger="keyup changed delay:300ms"
+                       th:pattern="${storyRegexPattern.TITLE.fePattern}"
+                       th:value="${story.title}"
+                       class="w-full border rounded-md px-4 py-2 focus:ring focus:ring-blue-400">
+                <small id="title-error"
+                       class="text-red-500 hidden"
+                       th:text="${storyRegexPattern.TITLE.message}"></small>
+            </label>
+        </div>
+
+        <div id="pages-container"
+             class="mt-8"
+             th:hx-get="@{'/hx/stories/' + ${storyId} + '/pages'}"
+             hx-trigger="load"
+             hx-swap="innerHTML">
+        </div>
+
+        <div id="content-container"
+             class="mt-8"
+             th:hx-get="@{'/hx/stories/' + ${storyId} + '/pages/first-page'}"
+             hx-trigger="load"
+             hx-target="#content-container"
+             hx-swap="innerHTML">
+        </div>
+
+        <div>
+            <label class="block font-medium mb-2">댓글 설정</label>
+            <label>
+                <select id="commentType"
+                        name="commentType"
+                        th:hx-put="@{'/hx/stories/' + ${storyId} + '/comment-type'}"
+                        hx-target="#toast-container"
+                        hx-swap="innerHTML"
+                        class="w-full border rounded-md px-4 py-2 focus:ring focus:ring-blue-400">
+                    <option th:each="option : ${commentTypes}"
+                            th:value="${option.code}"
+                            th:text="${option.value}"
+                            th:selected="${option.code == story.commentType.code}">
+                    </option>
+                </select>
+            </label>
+        </div>
+
+        <div class="flex justify-end space-x-4">
+            <div class="flex justify-end space-x-4">
+                <button type="button"
+                        id="deleteButton"
+                        th:hx-delete="@{'/hx/stories/' + ${storyId}}"
+                        hx-confirm="스토리를 삭제하면 다시 복구할 수 없습니다. 계속하시겠습니까?"
+                        hx-target="#toast-container"
+                        hx-swap="innerHTML"
+                        hx-on::after-request="window.location.href='/';"
+                        class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-6 rounded">
+                    스토리 삭제
+                </button>
+
+                <button type="button"
+                        id="resetButton"
+                        th:hx-delete="@{'/hx/stories/' + ${storyId} + '/temporary'}"
+                        hx-confirm="기존에 작성한 내용이 삭제됩니다. 계속하시겠습니까?"
+                        hx-target="#toast-container"
+                        hx-swap="innerHTML"
+                        hx-on::after-request="window.location.reload()"
+                        class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-6 rounded">
+                    초기화
+                </button>
+
+                <button type="submit"
+                        id="publishButton"
+                        th:hx-put="@{'/hx/stories/' + ${storyId} + '/published'}"
+                        hx-confirm="작성한 내용이 원본 스토리에 반영됩니다. 계속하시겠습니까?(스토리를 수정하고 임시저장을 완료하셨는지 꼭 확인해주세요!)"
+                        hx-target="#toast-container"
+                        hx-swap="innerHTML"
+                        hx-on::after-request="window.location.reload()"
+                        class="bg-green-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded">
+                    스토리 발행
+                </button>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- Footer -->
+<footer th:replace="views/layout :: footer"></footer>
+
+<script>
+    document.body.addEventListener('htmx:oobAfterSwap', async (event) => {
+        if (event.detail.target.id === 'content-container') {
+            await initializeTextEditor();
+            await initializeImageEditor();
+            await initializeVideoEditor();
+
+            document.getElementById('contentEditButton')
+                .addEventListener('click', handleFormSubmit);
+        }
+
+        if (event.detail.target.id === 'pages-container') {
+            await initializePageEditor();
+        }
+    });
+
+    async function handleFormSubmit(event) {
+        event.preventDefault();
+
+        const storyId = document.getElementById('storyId').value;
+        const temporaryStoryPageId = document.getElementById('temporaryStoryPageId').value;
+        const storyType = document.getElementById('storyTypeSelect').value;
+
+        const payload = {
+            storyId: storyId,
+            temporaryStoryPageId: temporaryStoryPageId,
+            storyType: storyType,
+        };
+
+        if (storyType === 'TEXT') {
+            const textContent = document.querySelector('.ql-editor').innerHTML;
+            const plainText = document.querySelector('.ql-editor').textContent;
+            payload.text = textContent;
+            payload.plainText = plainText;
+        }
+
+        if (storyType === 'IMAGE') {
+            payload.files = Array.from(document.querySelectorAll('#sortable-list img')).map(img => img.src);
+        }
+
+        if (storyType === 'VIDEO') {
+            const videoElement = document.querySelector('#uploaded-videos video');
+            payload.files = videoElement ? [videoElement.querySelector('source')?.src || videoElement.src] : [];
+        }
+
+        try {
+            const response = await fetch(`/hx/stories/${storyId}/pages/${temporaryStoryPageId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            });
+
+            const toastContainer = document.getElementById('toast-container');
+            if (toastContainer) {
+                toastContainer.innerHTML = await response.text();
+            }
+
+        } catch (error) {
+            console.error('API 호출 중 오류 발생:', error);
+        }
+    }
+</script>
+</body>
+</html>

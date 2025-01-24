@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head th:replace="views/layout :: head">
+    <title>로그인</title>
+</head>
+<body class="member-list-page bg-gray-900 text-gray-100 min-h-screen flex flex-col">
+<header th:replace="views/layout :: header"></header>
+
+<main class="flex-grow w-full max-w-7xl mx-auto py-12 px-8">
+    <div class="bg-gray-800 p-10 rounded-lg shadow-2xl">
+        <h1 class="text-4xl font-extrabold text-white mb-8">Member List</h1>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div>
+                <label for="filter-memberId" class="block text-sm font-medium text-gray-300">Member ID</label>
+                <input type="text"
+                       id="filter-memberId"
+                       name="memberId"
+                       class="mt-2 block w-full px-4 py-3 border border-gray-600 bg-gray-700 rounded-md text-gray-100 focus:ring-2 focus:ring-blue-500"
+                       th:value="${filter.memberId}"/>
+            </div>
+
+            <div>
+                <label for="filter-email" class="block text-sm font-medium text-gray-300">Email</label>
+                <input type="text"
+                       id="filter-email"
+                       name="email"
+                       class="mt-2 block w-full px-4 py-3 border border-gray-600 bg-gray-700 rounded-md text-gray-100 focus:ring-2 focus:ring-blue-500"
+                       th:value="${filter.email}"/>
+            </div>
+
+            <div>
+                <label for="filter-name" class="block text-sm font-medium text-gray-300">Name</label>
+                <input type="text"
+                       id="filter-name"
+                       name="name"
+                       class="mt-2 block w-full px-4 py-3 border border-gray-600 bg-gray-700 rounded-md text-gray-100 focus:ring-2 focus:ring-blue-500"
+                       th:value="${filter.name}"/>
+            </div>
+
+            <div>
+                <label for="filter-status" class="block text-sm font-medium text-gray-300">Status</label>
+                <select id="filter-status"
+                        name="status"
+                        class="mt-2 block w-full px-4 py-3 border border-gray-600 bg-gray-700 rounded-md text-gray-100 focus:ring-2 focus:ring-blue-500">
+                    <option value="" th:selected="${filter.status == null}">--Select--</option>
+                    <option th:each="option : ${statusOptions}"
+                            th:value="${option.value}"
+                            th:text="${option.description}"
+                            th:selected="${filter.status == option.value}">
+                    </option>
+                </select>
+            </div>
+
+            <div>
+                <label for="filter-startDate" class="block text-sm font-medium text-gray-300">Start Date</label>
+                <input type="date"
+                       id="filter-startDate"
+                       name="startDate"
+                       class="mt-2 block w-full px-4 py-3 border border-gray-600 bg-gray-700 rounded-md text-gray-100 focus:ring-2 focus:ring-blue-500"
+                       th:value="${filter.startDate}"/>
+            </div>
+
+            <div>
+                <label for="filter-endDate" class="block text-sm font-medium text-gray-300">End Date</label>
+                <input type="date"
+                       id="filter-endDate"
+                       name="endDate"
+                       class="mt-2 block w-full px-4 py-3 border border-gray-600 bg-gray-700 rounded-md text-gray-100 focus:ring-2 focus:ring-blue-500"
+                       th:value="${filter.endDate}"/>
+            </div>
+        </div>
+        <div class="mt-8 flex space-x-4">
+            <button hx-get="/hx/members"
+                    hx-target="#tableContainer"
+                    hx-trigger="click"
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg">
+                Search
+            </button>
+            <button onclick="window.location.href='/members'"
+                    class="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-3 px-6 rounded-lg">
+                Clear
+            </button>
+            <button hx-get="/api/members/export"
+                    hx-boost="true"
+                    class="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg">
+                Download
+            </button>
+            <button hx-get="/modals/member/add"
+                    hx-target="#memberModal"
+                    hx-trigger="click"
+                    class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-lg">
+                Add
+            </button>
+        </div>
+
+        <!-- 초기 테이블 및 페이지네이션 렌더링 -->
+        <div id="tableContainer" th:replace="fragments/member/memberListContainer :: memberListContainer"></div>
+
+        <!-- 모달 영역 -->
+        <div id="memberModal"
+             class="modal"
+             hx-target="this"
+             hx-swap="outerHTML"></div>
+    </div>
+</main>
+
+<footer th:replace="views/layout :: footer"></footer>
+
+<script>
+    document.addEventListener('htmx:configRequest', function (evt) {
+        if (evt.detail.path === '/hx/members') {
+            const filters = document.querySelectorAll('[id^="filter-"]');
+            let params = new URLSearchParams();
+
+            // 필터 파라미터 추가
+            filters.forEach(filter => filter.value && params.append(filter.name, filter.value));
+
+            // 페이지네이션 버튼에서 page 값 가져오기
+            params.set('page', evt.target.getAttribute('data-page') || 0);
+            params.set('limit', evt.detail.parameters.limit ? evt.detail.parameters.limit : 1);
+
+            // 실제 요청 경로 수정
+            evt.detail.path = '/hx/members?' + params.toString();
+
+            // 브라우저 URL 수정
+            window.history.pushState({}, '', '/members?' + params.toString());
+        }
+    });
+</script>
+</body>
+</html>

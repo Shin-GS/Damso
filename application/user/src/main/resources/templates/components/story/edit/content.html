@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="ko">
+<div th:fragment="content"
+     id="content-container"
+     class="mt-8"
+     hx-swap-oob="true">
+    <input type="hidden"
+           id="temporaryStoryPageId"
+           name="temporaryStoryPageId"
+           th:value="${story.temporaryStoryPageId}">
+
+    <div class="mt-2">
+        <label class="block font-medium mb-2">스토리 유형</label>
+        <label>
+            <select id="storyTypeSelect"
+                    name="storyType"
+                    class="w-full border rounded-md px-4 py-2 focus:ring focus:ring-blue-400"
+                    th:hx-put="@{'/hx/stories/' + ${story.storyId} + '/pages/'+ ${story.temporaryStoryPageId} +'/type'}"
+                    hx-confirm="스토리 유형을 변경하면 기존에 작성한 내용이 삭제됩니다. 계속하시겠습니까?"
+                    hx-swap="none">
+                <option th:each="option : ${storyTypes}"
+                        th:value="${option.code}"
+                        th:text="${option.value}"
+                        th:selected="${option.code == story.storyType.code}">
+                </option>
+            </select>
+        </label>
+    </div>
+
+    <div th:if="${story.storyType.code} == 'TEXT'">
+        <div class="editor-container bg-white shadow-md rounded-lg p-6">
+            <div id="text-editor-container"
+                 class="quill-editor w-full max-w-4xl mx-auto min-h-[200px]"
+                 contenteditable="true">
+                <p th:utext="${story.text}"></p>
+            </div>
+        </div>
+    </div>
+
+    <div th:if="${story.storyType.code} == 'IMAGE'">
+        <div class="editor-container bg-white shadow-md rounded-lg p-6 relative z-10">
+            <div id="image-editor-container"
+                 class="w-full max-w-4xl mx-auto min-h-[200px]">
+                <form id="upload-dropzone"
+                      class="dropzone border-2 border-dashed border-gray-300 rounded-lg p-4 bg-gray-50">
+                    <div class="dz-message text-center text-gray-400">
+                        이미지를 드래그하거나 클릭하여 업로드하세요.
+                    </div>
+                </form>
+            </div>
+
+            <!-- 업로드된 이미지 정렬 섹션 -->
+            <div class="mt-8">
+                <h2 class="text-lg font-bold mb-4">업로드 완료</h2>
+                <div id="sortable-list"
+                     class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+                    <!-- 업로드된 이미지가 여기에 추가됩니다 -->
+                    <div th:replace="components/story/edit/upload :: story-upload-image"></div>
+                </div>
+            </div>
+
+            <!-- 모달 -->
+            <div id="image-edit-modal"
+                 class="modal-overlay fixed inset-0 bg-black bg-opacity-70 hidden flex items-center justify-center z-[1050]">
+                <div class="modal bg-white p-6 rounded-lg shadow-xl max-w-lg w-full z-[1100]">
+                    <h2 class="text-xl font-bold mb-4">이미지 편집</h2>
+
+                    <div class="cropper-container mb-4">
+                        <img id="image-edit-modal-image"
+                             class="cropper-image w-full rounded-lg"
+                             src=""
+                             alt="">
+                    </div>
+
+                    <div class="flex justify-center space-x-4 mt-6">
+                        <button type="button"
+                                id="apply-edit-button"
+                                class="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded">
+                            편집 후 업로드
+                        </button>
+                        <button type="button"
+                                id="skip-edit-button"
+                                class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded">
+                            원본 업로드
+                        </button>
+                        <button type="button"
+                                id="close-modal-button"
+                                class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">
+                            편집 취소
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:if="${story.storyType.code} == 'VIDEO'">
+        <div class="editor-container bg-white shadow-md rounded-lg p-6">
+            <div id="video-upload-container" class="flex justify-center mt-4">
+                <button id="video-upload-button" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700">
+                    Upload Video
+                </button>
+                <input id="video-input" type="file" accept="video/*" class="hidden">
+            </div>
+
+            <div id="uploaded-videos"
+                 class="video-preview mt-2">
+                <div th:replace="components/story/edit/upload :: story-upload-video"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex justify-end space-x-4">
+        <button id="contentEditButton"
+                type="submit"
+                class="bg-green-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded">
+            임시 저장
+        </button>
+    </div>
+</div>
+</html>

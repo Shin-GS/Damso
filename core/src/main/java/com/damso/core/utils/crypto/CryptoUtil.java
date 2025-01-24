@@ -1,6 +1,6 @@
 package com.damso.core.utils.crypto;
 
-import com.damso.core.response.exception.CryptoException;
+import com.damso.core.exception.CryptoException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 

@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="ko">
+<div th:fragment="error"
+     id="toast-container"
+     hx-swap-oob="true">
+    <div id="toast-error"
+         class="fixed bottom-5 left-1/2 transform -translate-x-1/2 px-4 py-3 rounded shadow-lg transition-opacity duration-300 bg-red-500 text-white">
+        <p th:text="${message}"></p>
+    </div>
+</div>
+</html>

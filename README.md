@@ -37,6 +37,63 @@
 
 ---
 
+## 🛠 모듈 구조
+
+### 모듈 설명
+서버 모듈에서 직접 도메인 모듈에 있는 코드를 직접 사용하지 못하도록 서버 모듈별로 서비스 모듈을 추가함.
+
+- **`application`** : 어플리케이션 모듈(서버, 서비스)
+    - **`common`** : 어플리케이션 레벨에서 공유하는 로직 모듈(예: `auth 관련 처리`)
+    - **`admin`** : 어드민 서버 모듈
+    - **`admin-service`** : 어드민 서버에서 사용하는 비즈니스 로직 모듈
+    - **`user`** : 사용자 서버 모듈
+    - **`user-service`** : 사용자 서버에서 사용하는 비즈니스 로직 모듈
+- **`core`** : 공통 모듈 (예: `enum`, `정규식`, `code`, `utils` 등)
+- **`domain`** : 도메인 모듈
+    - **`storage`** : DB 모듈
+    - **`cache`** : 캐시 모듈
+
+---
+
+## ✍ 컨벤션
+
+### 1. 요청/응답 값 Postfix
+
+- **요청값**: `xxxRequest` (예: `CreateUserRequest`)
+- **응답값**: `xxxResponse` (예: `GetUserResponse`)
+
+### 2. Controller 네이밍
+
+- **`xxxController`**: 사용자가 접근하는 페이지 컨트롤러
+- **`xxxHxController`**: HTMX 또는 Fetch API를 통해 HTML을 응답받는 컨트롤러
+- **`xxxApi`**: 일반적인 API 컨트롤러 (JSON 응답용)
+
+### 3. 서비스 패키지 구조
+
+- **구성 요소**:
+    - 인터페이스
+    - 인터페이스 구현체 (Impl 패키지 내부)
+    - 요청 객체 (Request)
+    - 응답 객체 (Response)
+- **예시 구조**:
+  ```
+  service/
+    userFinder.java
+    impl/
+      userFinderImpl.java
+    request/
+      CreateUserRequest.java
+    response/
+      GetUserResponse.java
+  ```
+
+### 4. Templates 패키지 구조
+
+- **`views`**: `xxxController`에서 사용하는 HTML 템플릿
+- **`components`**: `xxxHxController`에서 사용하는 HTML 템플릿
+
+---
+
 ## 🔑 환경 변수 설정
 
 ### Java 환경 변수 설정 (Windows 기준)
@@ -142,6 +199,39 @@ def cdnFiles = [
 ## 💡 개발 팁
 
 ### IntelliJ IDEA에서 Run/Debug 시마다 output.css를 생성하고 외부 CDN(js, css) 파일을 자동 다운로드 처리
+
 1. **Run/Debug Configurations** 창에서 상단의 **Modify options** 클릭
 2. **"Build, Execution, Deployment"** → **Before launch** 섹션 확인
 3. **Add** 버튼 클릭 → **"Run Gradle task"** 선택 후, `tailwindBuild` 및 `downloadCdnFiles` 추가
+
+---
+
+## 🛠 OAuth2 설정 추가
+
+서버를 실행하려면 OAuth2 관련 설정을 `application.yml`에 추가해야 합니다. 아래는 예시 설정입니다:
+
+```yaml
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: YOUR_GOOGLE_CLIENT_ID
+            client-secret: YOUR_GOOGLE_CLIENT_SECRET
+            scope:
+              - email
+              - profile
+            redirect-uri: "{baseUrl}/login/oauth2/code/google"
+        provider:
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/auth
+            token-uri: https://oauth2.googleapis.com/token
+            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+            user-name-attribute: email
+```
+
+위 설정에서 `client-id`와 `client-secret`은 각 OAuth 제공자(Google 등)에서 발급받아야 합니다. `redirect-uri`는 서버의 OAuth2 리디렉션 경로를
+설정해야 합니다.
+
+---

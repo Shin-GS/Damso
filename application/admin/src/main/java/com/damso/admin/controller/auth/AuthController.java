@@ -1,0 +1,16 @@
+package com.damso.admin.controller.auth;
+
+import com.damso.common.request.pattern.CommonRegexPattern;
+import com.damso.common.request.pattern.MemberRegexPattern;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+
+@Controller
+public class AuthController {
+    @GetMapping("/login")
+    public String login(Model model) {
+        model.addAttribute("memberRegexPattern", CommonRegexPattern.getMap(MemberRegexPattern.class));
+        return "views/auth/login";
+    }
+}

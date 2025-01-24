@@ -1,6 +1,6 @@
 package com.damso.core.utils.crypto;
 
-import com.damso.core.response.exception.CryptoException;
+import com.damso.core.exception.CryptoException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
