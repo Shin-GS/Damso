@@ -18,13 +18,13 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/hx/stories")
+@RequestMapping("/hx/stories/upload")
 @RequiredArgsConstructor
 public class StoryUploadHxController {
     private final ImageFileUploader imageFileUploader;
     private final VideoFileUploader videoFileUploader;
 
-    @PostMapping("/upload/image")
+    @PostMapping("/image")
     public List<ModelAndView> uploadImage(@RequestPart("file") MultipartFile image,
                                           @SessionMemberId Long memberId) {
         FileUploadResponse upload = imageFileUploader.upload(image, memberId);
@@ -36,7 +36,7 @@ public class StoryUploadHxController {
                 .build();
     }
 
-    @PostMapping("/upload/video")
+    @PostMapping("/video")
     public List<ModelAndView> uploadVideo(@RequestPart("file") MultipartFile video,
                                           @SessionMemberId Long memberId) {
         FileUploadResponse upload = videoFileUploader.upload(video, memberId);

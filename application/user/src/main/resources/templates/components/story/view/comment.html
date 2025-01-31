@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<div th:fragment="comments-container"
+     id="comments-container"
+     hx-swap-oob="true"
+     class="mt-8">
+    <div th:each="comment : ${comments}" class="mb-2 p-2 bg-gray-700 rounded">
+        <p class="text-sm"><strong th:text="${comment.username}"></strong></p>
+        <p th:text="${comment.text}" class="text-gray-300"></p>
+    </div>
+</div>
+</html>

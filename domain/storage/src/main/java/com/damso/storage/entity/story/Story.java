@@ -66,6 +66,10 @@ public class Story extends CommonTime {
         return this.member.equals(member) && !this.status.equals(StoryStatusType.DELETED);
     }
 
+    public boolean isPublished() {
+        return this.status.equals(StoryStatusType.PUBLISHED);
+    }
+
     public void published(TemporaryStory temporaryStory) {
         this.title = temporaryStory.getTitle();
         this.commentType = temporaryStory.getCommentType();
@@ -105,5 +109,12 @@ public class Story extends CommonTime {
                 .filter(storyPage -> !storyPage.isDeleted())
                 .sorted(Comparator.comparingInt(StoryPage::getPageOrder))
                 .forEach(storyPage -> storyPage.setPageOrder(sortNumber.getAndIncrement()));
+    }
+
+    public List<StoryPage> getSortedPages() {
+        return this.storyPages.stream()
+                .filter(page -> !page.isDeleted())
+                .sorted(Comparator.comparing(StoryPage::getPageOrder))
+                .toList();
     }
 }

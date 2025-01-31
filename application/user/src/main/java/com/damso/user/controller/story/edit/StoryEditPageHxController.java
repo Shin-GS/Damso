@@ -1,8 +1,8 @@
-package com.damso.user.controller.story;
+package com.damso.user.controller.story.edit;
 
 import com.damso.common.auth.session.SessionMemberId;
-import com.damso.core.enums.story.StoryType;
 import com.damso.common.request.ModelAndViewBuilder;
+import com.damso.core.enums.story.StoryType;
 import com.damso.userservice.common.CodeFinder;
 import com.damso.userservice.story.StoryPageEditor;
 import com.damso.userservice.story.StoryPageFinder;
@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/hx/stories/{storyId}/pages")
+@RequestMapping("/hx/stories/edit/{storyId}/pages")
 @RequiredArgsConstructor
 public class StoryEditPageHxController {
     private final StoryPageFinder storyPageFinder;

@@ -15,6 +15,7 @@ import org.springframework.util.ObjectUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.IntStream;
 
 @Entity
 @Table(name = "STORY_PAGE")
@@ -107,5 +108,33 @@ public class StoryPage extends CommonTime {
 
     public String getStoryPlainText() {
         return ObjectUtils.isEmpty(this.storyText) ? "" : this.storyText.getPlanText();
+    }
+
+    public List<String> getStoryFilePaths() {
+        return this.getStoryFiles().stream()
+                .map(StoryFile::getFilePath)
+                .toList();
+    }
+
+    public Long getStoryId() {
+        return this.story.getId();
+    }
+
+    public Long getPrevPageId() {
+        List<StoryPage> pages = this.story.getSortedPages();
+        return IntStream.range(1, pages.size())
+                .filter(i -> pages.get(i).getId().equals(this.getId()))
+                .mapToObj(i -> pages.get(i - 1).getId())
+                .findFirst()
+                .orElse(null);
+    }
+
+    public Long getNextPageId() {
+        List<StoryPage> pages = this.story.getSortedPages();
+        return IntStream.range(0, pages.size() - 1)
+                .filter(i -> pages.get(i).getId().equals(this.getId()))
+                .mapToObj(i -> pages.get(i + 1).getId())
+                .findFirst()
+                .orElse(null);
     }
 }

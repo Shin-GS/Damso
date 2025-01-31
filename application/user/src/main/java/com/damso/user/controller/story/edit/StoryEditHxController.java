@@ -1,4 +1,4 @@
-package com.damso.user.controller.story;
+package com.damso.user.controller.story.edit;
 
 import com.damso.common.auth.session.SessionMemberId;
 import com.damso.common.request.ModelAndViewBuilder;
@@ -14,7 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 @Controller
-@RequestMapping("/hx/stories")
+@RequestMapping("/hx/stories/edit")
 @RequiredArgsConstructor
 public class StoryEditHxController {
     private final StoryEditor storyEditor;

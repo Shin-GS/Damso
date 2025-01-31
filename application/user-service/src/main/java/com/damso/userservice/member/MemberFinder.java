@@ -8,6 +8,8 @@ import java.util.Optional;
 public interface MemberFinder {
     Member getEntity(Long memberId);
 
+    Member findEntity(Long memberId);
+
     Optional<Long> findMemberId(MemberSocialAccountType provider,
                                 String providerAccountId);
 }

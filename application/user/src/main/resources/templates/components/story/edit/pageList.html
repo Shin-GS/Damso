@@ -12,7 +12,7 @@
                 <div th:each="page, iterStat : ${storyPages}"
                      th:id="'page-' + ${page.id}"
                      th:data-id="${page.id}"
-                     th:hx-get="@{'/hx/stories/' + ${storyId} + '/pages/' + ${page.id}}"
+                     th:hx-get="@{'/hx/stories/edit/' + ${storyId} + '/pages/' + ${page.id}}"
                      hx-trigger="click"
                      hx-swap="none"
                      class="flex flex-col justify-start bg-gray-100 rounded shadow-md p-4"
@@ -28,7 +28,7 @@
                     </span>
                     <button type="button"
                             class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded mt-2"
-                            th:hx-delete="@{'/hx/stories/' + ${storyId} + '/pages/' + ${page.id}}"
+                            th:hx-delete="@{'/hx/stories/edit/' + ${storyId} + '/pages/' + ${page.id}}"
                             hx-confirm="이 페이지를 삭제하시겠습니까?"
                             hx-target="this"
                             hx-swap="outerHTML"
@@ -38,7 +38,7 @@
                 </div>
 
                 <div class="flex flex-col justify-center bg-green-500 hover:bg-green-700 text-white font-bold rounded shadow-md p-4 cursor-pointer"
-                     th:hx-post="@{'/hx/stories/' + ${storyId} + '/pages'}"
+                     th:hx-post="@{'/hx/stories/edit/' + ${storyId} + '/pages'}"
                      hx-trigger="click"
                      hx-target="this"
                      hx-swap="outerHTML">

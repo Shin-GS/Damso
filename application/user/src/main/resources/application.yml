@@ -4,19 +4,16 @@ server:
 
 file:
   upload:
-    path: C:/damso/uploads
     image:
-      max-file-size: 20971520  # 20MB (이미지)  # 10MB  # 500MB
+      max-file-size: 20971520  # 20MB
       allowed-extensions: png,jpg,jpeg,gif,bmp,webp
     video:
       max-file-size: 524288000  # 500MB
       allowed-extensions: mp4,mov,avi,mkv,wmv,flv
-  access:
-    path: /uploads
 
 spring:
   profiles:
-    active: product
+    active: local  # 기본 활성 프로파일
   application:
     name: user
   config:
@@ -32,6 +29,43 @@ spring:
     multipart:
       max-file-size: 500MB
       max-request-size: 500MB
+
+--- # local
+spring.config.activate.on-profile: local
+file:
+  upload:
+    path: "C:/damso/uploads"
+  access:
+    path: "/uploads"
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: YOUR_LOCAL_GOOGLE_CLIENT_ID
+            client-secret: YOUR_LOCAL_GOOGLE_CLIENT_SECRET
+            scope:
+              - email
+              - profile
+            redirect-uri: "{baseUrl}/login/oauth2/code/google"
+        provider:
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/auth
+            token-uri: https://oauth2.googleapis.com/token
+            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+            user-name-attribute: email
+
+--- # product
+spring.config.activate.on-profile: product
+file:
+  upload:
+    path: "/var/uploads"
+  access:
+    path: "/uploads"
+spring:
+  thymeleaf:
+    cache: true
   security:
     oauth2:
       client:
