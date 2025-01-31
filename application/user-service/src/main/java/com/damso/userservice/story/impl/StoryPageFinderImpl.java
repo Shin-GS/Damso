@@ -65,7 +65,10 @@ public class StoryPageFinderImpl implements StoryPageFinder {
     @Override
     public StoryViewPageResponse getStoryPage(Long storyId,
                                               Long memberId) {
-        Long firstPageId = storyFinder.getEntity(storyId).getStoryPages().get(0).getId();
+        Long firstPageId = storyFinder.getEntity(storyId)
+                .getSortedPages()
+                .get(0)
+                .getId();
         return getStoryPage(storyId, memberId, firstPageId);
     }
 
@@ -85,7 +88,9 @@ public class StoryPageFinderImpl implements StoryPageFinder {
     }
 
     @Override
-    public List<StoryViewCommentResponse> getPageComments(Long storyId, Long memberId, Long storyPageId) {
+    public List<StoryViewCommentResponse> getPageComments(Long storyId,
+                                                          Long memberId,
+                                                          Long storyPageId) {
         Story story = storyFinder.getEntity(storyId);
         // todo 조회 권한 여부 체크 추가 필요
         if (!story.isPublished()) {
