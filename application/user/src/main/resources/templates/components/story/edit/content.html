@@ -56,7 +56,7 @@
                 <div id="sortable-list"
                      class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
                     <!-- 업로드된 이미지가 여기에 추가됩니다 -->
-                    <div th:replace="components/story/edit/upload :: story-upload-image"></div>
+                    <div th:replace="~{components/story/edit/upload :: story-upload-image}"></div>
                 </div>
             </div>
 
@@ -106,7 +106,7 @@
 
             <div id="uploaded-videos"
                  class="video-preview mt-2">
-                <div th:replace="components/story/edit/upload :: story-upload-video"></div>
+                <div th:replace="~{components/story/edit/upload :: story-upload-video}"></div>
             </div>
         </div>
     </div>

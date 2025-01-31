@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
-<head th:replace="views/layout :: head(additionalCss='/css/story/viewer.css',
-additionalScript='/script/story/viewer.js')">
+<head th:replace="~{views/layout :: head(additionalCss='/css/story/viewer.css',
+additionalScript='/script/story/viewer.js')}">
     <title th:text="${story.title} + ' - 스토리 보기'">스토리 보기</title>
 </head>
 <body class="story-view-page flex flex-col min-h-screen bg-gray-900 text-white">
-<header th:replace="views/layout :: header"></header>
+<header th:replace="~{views/layout :: header}"></header>
 
 <main class="flex-grow flex flex-col items-center py-8">
     <div class="w-full max-w-5xl flex justify-between items-center px-6 mb-4">
@@ -18,7 +18,7 @@ additionalScript='/script/story/viewer.js')">
     </div>
 
     <section class=" bg-black shadow-lg rounded-lg p-4 max-w-5xl w-full flex">
-        <div th:replace="components/story/view/pageContent :: story-container"></div>
+        <div th:replace="~{components/story/view/pageContent :: story-container}"></div>
 
         <!-- 댓글 영역 -->
         <aside class="w-80 bg-gray-800 p-4 overflow-auto">
@@ -33,6 +33,6 @@ additionalScript='/script/story/viewer.js')">
     </section>
 </main>
 
-<footer th:replace="views/layout :: footer"></footer>
+<footer th:replace="~{views/layout :: footer}"></footer>
 </body>
 </html>

@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
-<head th:replace="views/layout :: head">
+<head th:replace="~{views/layout :: head}">
     <title>홈</title>
 </head>
 <body class="index-page">
 <!-- Header -->
-<header th:replace="views/layout :: header"></header>
+<header th:replace="~{views/layout :: header}"></header>
 
 <!-- Main Content -->
 <main>
@@ -13,8 +13,10 @@
         <h1 class="text-4xl font-bold text-gray-800 mb-6">담소에서 당신만의 크리에이터를 만나보세요.</h1>
         <p class="text-lg text-gray-600 mb-8">원하는 카테고리와 스토리를 검색하고 독점 스토리를 구독하세요.</p>
         <div class="cta-buttons">
-            <a th:href="@{/creators}" class="btn-cta bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded">크리에이터 찾아보기</a>
-            <a th:href="@{/categories}" class="btn-cta bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded">카테고리 둘러보기</a>
+            <a th:href="@{/creators}"
+               class="btn-cta bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded">크리에이터 찾아보기</a>
+            <a th:href="@{/categories}"
+               class="btn-cta bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded">카테고리 둘러보기</a>
         </div>
     </section>
 
@@ -43,25 +45,31 @@
                 <img src="/favicon.ico" alt="크리에이터 1" class="w-full rounded-md mb-4">
                 <h3 class="text-xl font-semibold text-gray-800 mb-2">크리에이터 이름 1</h3>
                 <p class="text-gray-600">카테고리: 음악</p>
-                <a th:href="@{/creators/1}" class="btn-view mt-4 block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">자세히 보기</a>
+                <a th:href="@{/creators/1}"
+                   class="btn-view mt-4 block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">자세히
+                    보기</a>
             </div>
             <div class="creator-card w-64 bg-white shadow-lg rounded-lg p-6">
                 <img src="/favicon.ico" alt="크리에이터 2" class="w-full rounded-md mb-4">
                 <h3 class="text-xl font-semibold text-gray-800 mb-2">크리에이터 이름 2</h3>
                 <p class="text-gray-600">카테고리: 요리</p>
-                <a th:href="@{/creators/2}" class="btn-view mt-4 block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">자세히 보기</a>
+                <a th:href="@{/creators/2}"
+                   class="btn-view mt-4 block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">자세히
+                    보기</a>
             </div>
             <div class="creator-card w-64 bg-white shadow-lg rounded-lg p-6">
                 <img src="/favicon.ico" alt="크리에이터 3" class="w-full rounded-md mb-4">
                 <h3 class="text-xl font-semibold text-gray-800 mb-2">크리에이터 이름 3</h3>
                 <p class="text-gray-600">카테고리: 뷰티</p>
-                <a th:href="@{/creators/3}" class="btn-view mt-4 block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">자세히 보기</a>
+                <a th:href="@{/creators/3}"
+                   class="btn-view mt-4 block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">자세히
+                    보기</a>
             </div>
         </div>
     </section>
 </main>
 
 <!-- Footer -->
-<footer th:replace="views/layout :: footer"></footer>
+<footer th:replace="~{views/layout :: footer}"></footer>
 </body>
 </html>

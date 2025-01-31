@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:hx-on="http://www.w3.org/1999/xhtml" lang="ko">
-<head th:replace="views/layout :: head(additionalCss='/css/story/quill.snow.css,/css/story/cropper.min.css,/css/story/dropzone.min.css',
-additionalScript='/script/story/quill.min.js,/script/story/cropper.min.js,/script/story/dropzone.min.js,/script/story/sortable.min.js,/script/story/editor/pageEditor.js,/script/story/editor/textEditor.js,/script/story/editor/imageEditor.js,/script/story/editor/videoEditor.js')">
+<head th:replace="~{views/layout :: head(additionalCss='/css/story/quill.snow.css,/css/story/cropper.min.css,/css/story/dropzone.min.css',
+additionalScript='/script/story/quill.min.js,/script/story/cropper.min.js,/script/story/dropzone.min.js,/script/story/sortable.min.js,/script/story/editor/pageEditor.js,/script/story/editor/textEditor.js,/script/story/editor/imageEditor.js,/script/story/editor/videoEditor.js')}">
     <title>스토리 편집</title>
 </head>
 <body class="content-edit-page flex flex-col min-h-screen bg-gray-100">
 <!-- Header -->
-<header th:replace="views/layout :: header"></header>
+<header th:replace="~{views/layout :: header}"></header>
 
 <main class="flex-grow flex justify-center items-center py-12">
     <section class="content-edit-container bg-white shadow-lg rounded-lg p-8 max-w-5xl w-full">
@@ -112,7 +112,7 @@ additionalScript='/script/story/quill.min.js,/script/story/cropper.min.js,/scrip
 </main>
 
 <!-- Footer -->
-<footer th:replace="views/layout :: footer"></footer>
+<footer th:replace="~{views/layout :: footer}"></footer>
 
 <script>
     document.body.addEventListener('htmx:oobAfterSwap', async (event) => {
