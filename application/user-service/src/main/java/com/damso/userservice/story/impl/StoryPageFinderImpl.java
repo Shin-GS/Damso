@@ -66,7 +66,7 @@ public class StoryPageFinderImpl implements StoryPageFinder {
     public StoryViewPageResponse getStoryPage(Long storyId,
                                               Long memberId) {
         Long firstPageId = storyFinder.getEntity(storyId).getStoryPages().get(0).getId();
-        return getStoryPage(storyId, firstPageId);
+        return getStoryPage(storyId, memberId, firstPageId);
     }
 
     @Override

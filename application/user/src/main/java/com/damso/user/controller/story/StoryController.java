@@ -35,7 +35,7 @@ public class StoryController {
         return "views/story/view";
     }
 
-    @GetMapping("/{storyId}/edit")
+    @GetMapping("/edit/{storyId}")
     public String storyEdit(@PathVariable("storyId") Long storyId,
                             @SessionMemberId Long memberId,
                             Model model) {

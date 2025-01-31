@@ -26,7 +26,7 @@ additionalScript='/script/story/quill.min.js,/script/story/cropper.min.js,/scrip
                 <input type="text"
                        id="title"
                        name="title"
-                       th:hx-put="@{'/hx/stories/' + ${storyId} + '/title'}"
+                       th:hx-put="@{'/hx/stories/edit/' + ${storyId} + '/title'}"
                        hx-target="#toast-container"
                        hx-swap="innerHTML"
                        hx-trigger="keyup changed delay:300ms"
@@ -41,14 +41,14 @@ additionalScript='/script/story/quill.min.js,/script/story/cropper.min.js,/scrip
 
         <div id="pages-container"
              class="mt-8"
-             th:hx-get="@{'/hx/stories/' + ${storyId} + '/pages'}"
+             th:hx-get="@{'/hx/stories/edit/' + ${storyId} + '/pages'}"
              hx-trigger="load"
              hx-swap="innerHTML">
         </div>
 
         <div id="content-container"
              class="mt-8"
-             th:hx-get="@{'/hx/stories/' + ${storyId} + '/pages/first-page'}"
+             th:hx-get="@{'/hx/stories/edit/' + ${storyId} + '/pages/first-page'}"
              hx-trigger="load"
              hx-target="#content-container"
              hx-swap="innerHTML">
@@ -59,7 +59,7 @@ additionalScript='/script/story/quill.min.js,/script/story/cropper.min.js,/scrip
             <label>
                 <select id="commentType"
                         name="commentType"
-                        th:hx-put="@{'/hx/stories/' + ${storyId} + '/comment-type'}"
+                        th:hx-put="@{'/hx/stories/edit/' + ${storyId} + '/comment-type'}"
                         hx-target="#toast-container"
                         hx-swap="innerHTML"
                         class="w-full border rounded-md px-4 py-2 focus:ring focus:ring-blue-400">
@@ -76,7 +76,7 @@ additionalScript='/script/story/quill.min.js,/script/story/cropper.min.js,/scrip
             <div class="flex justify-end space-x-4">
                 <button type="button"
                         id="deleteButton"
-                        th:hx-delete="@{'/hx/stories/' + ${storyId}}"
+                        th:hx-delete="@{'/hx/stories/edit/' + ${storyId}}"
                         hx-confirm="스토리를 삭제하면 다시 복구할 수 없습니다. 계속하시겠습니까?"
                         hx-target="#toast-container"
                         hx-swap="innerHTML"
@@ -87,7 +87,7 @@ additionalScript='/script/story/quill.min.js,/script/story/cropper.min.js,/scrip
 
                 <button type="button"
                         id="resetButton"
-                        th:hx-delete="@{'/hx/stories/' + ${storyId} + '/temporary'}"
+                        th:hx-delete="@{'/hx/stories/edit/' + ${storyId} + '/temporary'}"
                         hx-confirm="기존에 작성한 내용이 삭제됩니다. 계속하시겠습니까?"
                         hx-target="#toast-container"
                         hx-swap="innerHTML"
@@ -98,7 +98,7 @@ additionalScript='/script/story/quill.min.js,/script/story/cropper.min.js,/scrip
 
                 <button type="submit"
                         id="publishButton"
-                        th:hx-put="@{'/hx/stories/' + ${storyId} + '/published'}"
+                        th:hx-put="@{'/hx/stories/edit/' + ${storyId} + '/published'}"
                         hx-confirm="작성한 내용이 원본 스토리에 반영됩니다. 계속하시겠습니까?(스토리를 수정하고 임시저장을 완료하셨는지 꼭 확인해주세요!)"
                         hx-target="#toast-container"
                         hx-swap="innerHTML"
@@ -160,7 +160,7 @@ additionalScript='/script/story/quill.min.js,/script/story/cropper.min.js,/scrip
         }
 
         try {
-            const response = await fetch(`/hx/stories/${storyId}/pages/${temporaryStoryPageId}`, {
+            const response = await fetch(`/hx/stories/edit/${storyId}/pages/${temporaryStoryPageId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

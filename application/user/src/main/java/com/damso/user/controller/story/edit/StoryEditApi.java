@@ -1,8 +1,8 @@
 package com.damso.user.controller.story.edit;
 
 import com.damso.common.auth.session.SessionMemberId;
-import com.damso.core.code.SuccessCode;
 import com.damso.common.response.SuccessResponse;
+import com.damso.core.code.SuccessCode;
 import com.damso.userservice.story.StoryEditor;
 import com.damso.userservice.story.StoryPageEditor;
 import com.damso.userservice.story.request.StoryPageReorderRequest;
@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/stories")
+@RequestMapping("/api/stories/edit")
 @RequiredArgsConstructor
 public class StoryEditApi {
     private final StoryEditor storyEditor;

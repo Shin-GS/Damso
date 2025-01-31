@@ -14,7 +14,7 @@ function handleCreateStoriesResponse(event) {
     }
 
     if (response.status >= 200 && response.status < 300) {
-        window.location.href = `/stories/${response.result.storyId}/edit`;
+        window.location.href = `/stories/edit/${response.result.storyId}`;
     }
 }
 

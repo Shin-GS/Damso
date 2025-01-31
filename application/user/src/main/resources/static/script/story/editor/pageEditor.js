@@ -24,7 +24,7 @@ async function initializePageEditor() {
 
         const storyId = container.getAttribute("data-story-id");
         try {
-            const response = await fetch(`/api/stories/${storyId}/pages/reorder`, {
+            const response = await fetch(`/api/stories/edit/${storyId}/pages/reorder`, {
                 method: "PUT",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({pageOrders}),

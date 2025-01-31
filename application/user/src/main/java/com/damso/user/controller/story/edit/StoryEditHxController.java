@@ -14,7 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 @Controller
-@RequestMapping("/hx/stories")
+@RequestMapping("/hx/stories/edit")
 @RequiredArgsConstructor
 public class StoryEditHxController {
     private final StoryEditor storyEditor;
