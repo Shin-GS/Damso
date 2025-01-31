@@ -1,7 +1,7 @@
 package com.damso.common.auth.impl;
 
-import com.damso.cache.CacheAuthToken;
-import com.damso.cache.auth.CacheAuthTokenRepository;
+import com.damso.cache.entity.CacheAuthToken;
+import com.damso.cache.repository.CacheAuthTokenRepository;
 import com.damso.common.auth.JwtTokenProvider;
 import com.damso.common.auth.session.SessionMember;
 import com.damso.core.enums.auth.AuthTokenStatus;

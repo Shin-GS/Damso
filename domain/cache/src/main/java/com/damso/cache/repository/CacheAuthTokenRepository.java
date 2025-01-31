@@ -1,6 +1,6 @@
-package com.damso.cache.auth;
+package com.damso.cache.repository;
 
-import com.damso.cache.CacheAuthToken;
+import com.damso.cache.entity.CacheAuthToken;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;
