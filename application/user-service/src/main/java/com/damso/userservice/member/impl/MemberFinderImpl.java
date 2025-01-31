@@ -1,7 +1,7 @@
 package com.damso.userservice.member.impl;
 
-import com.damso.core.enums.member.MemberSocialAccountType;
 import com.damso.core.code.ErrorCode;
+import com.damso.core.enums.member.MemberSocialAccountType;
 import com.damso.core.exception.BusinessException;
 import com.damso.storage.entity.member.Member;
 import com.damso.storage.entity.member.MemberSocialAccount;
@@ -25,6 +25,12 @@ public class MemberFinderImpl implements MemberFinder {
     public Member getEntity(Long memberId) {
         return memberRepository.findById(memberId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.ENTITY_NOT_FOUND));
+    }
+
+    @Override
+    public Member findEntity(Long memberId) {
+        return memberRepository.findById(memberId)
+                .orElse(null);
     }
 
     @Override

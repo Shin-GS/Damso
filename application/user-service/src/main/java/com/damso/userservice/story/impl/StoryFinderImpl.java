@@ -7,6 +7,7 @@ import com.damso.storage.entity.story.Story;
 import com.damso.storage.repository.story.StoryRepository;
 import com.damso.userservice.member.MemberFinder;
 import com.damso.userservice.story.StoryFinder;
+import com.damso.userservice.story.response.StoryViewResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,13 +26,27 @@ public class StoryFinderImpl implements StoryFinder {
     }
 
     @Override
-    public Story getEditableEntity(Long storyId, Long memberId) {
-        Member member = memberFinder.getEntity(memberId);
+    public Story getEditableEntity(Long storyId,
+                                   Long memberId) {
         Story story = getEntity(storyId);
+        Member member = memberFinder.getEntity(memberId);
         if (story.isEditable(member)) {
             return story;
         }
 
         throw new BusinessException(ErrorCode.STORY_UNAUTHORIZED);
+    }
+
+    @Override
+    public StoryViewResponse getStoryView(Long storyId,
+                                          Long memberId) {
+        Story story = getEntity(storyId);
+        Member member = memberFinder.findEntity(memberId);
+        // todo 조회 권한 여부 체크 추가 필요
+        if (!story.isPublished()) {
+            throw new BusinessException(ErrorCode.STORY_UNAUTHORIZED);
+        }
+
+        return StoryViewResponse.of(story, member);
     }
 }

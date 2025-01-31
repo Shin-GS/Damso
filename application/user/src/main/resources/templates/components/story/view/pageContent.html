@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<div th:fragment="story-container"
+     id="story-container"
+     hx-swap-oob="true"
+     class="relative flex-grow bg-black flex justify-center items-center">
+    <div th:if="${page.storyType.code} == 'TEXT'"
+         class="quill-container w-full h-full bg-white text-black p-4 rounded-md shadow-lg overflow-auto">
+        <div class="ql-editor" th:utext="${page.text}"></div>
+    </div>
+
+    <div th:if="${page.storyType.code} == 'IMAGE'"
+         class="w-full h-full flex items-center justify-center">
+        <img th:each="image : ${page.files}"
+             th:src="${image}"
+             class="object-contain w-full h-full"
+             alt="">
+    </div>
+
+    <div th:if="${page.storyType.code} == 'VIDEO'"
+         class="w-full h-full flex justify-center items-center">
+        <video th:each="video : ${page.files}"
+               controls class="w-full h-full object-contain">
+            <source th:src="${video}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <button id="prev-page"
+            class="absolute left-2 top-1/2 transform -translate-y-1/2 bg-gray-700 bg-opacity-50 p-2 rounded-full"
+            th:hx-get="@{'/hx/stories/' + ${page.storyId} + '/pages/' + ${page.prevPageId}}"
+            hx-trigger="click"
+            hx-target="#story-container"
+            hx-swap="innerHTML"
+            th:disabled="${page.prevPageId == null}">
+        ◀
+    </button>
+
+    <button id="next-page"
+            class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gray-700 bg-opacity-50 p-2 rounded-full"
+            th:hx-get="@{'/hx/stories/' + ${page.storyId} + '/pages/' + ${page.nextPageId}}"
+            hx-trigger="click"
+            hx-target="#story-container"
+            hx-swap="innerHTML"
+            th:disabled="${page.nextPageId == null}">
+        ▶
+    </button>
+</div>
+</html>

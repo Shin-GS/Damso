@@ -1,4 +1,4 @@
-package com.damso.user.controller.story;
+package com.damso.user.controller.story.edit;
 
 import com.damso.common.auth.session.SessionMemberId;
 import com.damso.core.enums.story.StoryType;
