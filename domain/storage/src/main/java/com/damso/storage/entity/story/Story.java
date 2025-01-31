@@ -105,9 +105,7 @@ public class Story extends CommonTime {
 
     public void reorderPages() {
         AtomicInteger sortNumber = new AtomicInteger(0);
-        storyPages.stream()
-                .filter(storyPage -> !storyPage.isDeleted())
-                .sorted(Comparator.comparingInt(StoryPage::getPageOrder))
+        this.getSortedPages()
                 .forEach(storyPage -> storyPage.setPageOrder(sortNumber.getAndIncrement()));
     }
 
