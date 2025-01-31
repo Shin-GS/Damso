@@ -24,7 +24,7 @@ function resetQueue() {
 // Dropzone 초기화
 function initializeDropzone() {
     new Dropzone("#upload-dropzone", {
-        url: '/hx/stories/upload/image',
+        url: '/hx/stories/edit/upload/image',
         autoProcessQueue: false,
         acceptedFiles: 'image/*',
         init: function () {
@@ -155,7 +155,7 @@ async function handleFileUpload(file, modal) {
     formData.append("file", file);
 
     try {
-        const response = await fetch('/hx/stories/upload/image', {
+        const response = await fetch('/hx/stories/edit/upload/image', {
             method: 'POST',
             body: formData
         });

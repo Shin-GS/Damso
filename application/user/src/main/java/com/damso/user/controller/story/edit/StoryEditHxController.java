@@ -5,19 +5,27 @@ import com.damso.common.request.ModelAndViewBuilder;
 import com.damso.userservice.story.StoryEditor;
 import com.damso.userservice.story.request.StoryUpdateCommentTypeRequest;
 import com.damso.userservice.story.request.StoryUpdateTitleRequest;
+import com.damso.userservice.upload.ImageFileUploader;
+import com.damso.userservice.upload.VideoFileUploader;
+import com.damso.userservice.upload.response.FileUploadResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/hx/stories/edit")
 @RequiredArgsConstructor
 public class StoryEditHxController {
     private final StoryEditor storyEditor;
+    private final ImageFileUploader imageFileUploader;
+    private final VideoFileUploader videoFileUploader;
 
     @PutMapping("/{storyId}/title")
     public List<ModelAndView> updateTitle(@PathVariable("storyId") Long storyId,
@@ -63,6 +71,30 @@ public class StoryEditHxController {
         storyEditor.delete(storyId, memberId);
         return new ModelAndViewBuilder()
                 .addFragment("templates/components/toast.html", "components/toast :: success", "message", "스토리 삭제에 성공했습니다.")
+                .build();
+    }
+
+    @PostMapping("/upload/image")
+    public List<ModelAndView> uploadImage(@RequestPart("file") MultipartFile image,
+                                          @SessionMemberId Long memberId) {
+        FileUploadResponse upload = imageFileUploader.upload(image, memberId);
+
+        Map<String, Object> imageUploadData = new HashMap<>();
+        imageUploadData.put("files", List.of(upload.url()));
+        return new ModelAndViewBuilder()
+                .addFragment("templates/components/story/edit/upload.html", "components/story/edit/upload :: story-upload-image", imageUploadData)
+                .build();
+    }
+
+    @PostMapping("/upload/video")
+    public List<ModelAndView> uploadVideo(@RequestPart("file") MultipartFile video,
+                                          @SessionMemberId Long memberId) {
+        FileUploadResponse upload = videoFileUploader.upload(video, memberId);
+
+        Map<String, Object> videoUploadData = new HashMap<>();
+        videoUploadData.put("files", List.of(upload.url()));
+        return new ModelAndViewBuilder()
+                .addFragment("templates/components/story/edit/upload.html", "components/story/edit/upload :: story-upload-video", videoUploadData)
                 .build();
     }
 }

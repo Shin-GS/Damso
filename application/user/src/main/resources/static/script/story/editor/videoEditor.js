@@ -51,7 +51,7 @@ function initializeVideoEditor() {
             const formData = new FormData();
             formData.append('file', file);
 
-            fetch('/hx/stories/upload/video', {
+            fetch('/hx/stories/edit/upload/video', {
                 method: 'POST',
                 body: formData,
                 signal: new AbortController().signal, // 연결 시간 초과 방지
