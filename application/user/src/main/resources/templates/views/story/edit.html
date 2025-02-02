@@ -146,7 +146,7 @@ additionalScript='/script/story/quill.min.js,/script/story/cropper.min.js,/scrip
         if (storyType === 'TEXT') {
             const textContent = document.querySelector('.ql-editor').innerHTML;
             const plainText = document.querySelector('.ql-editor').textContent;
-            payload.text = textContent;
+            payload.text = DOMPurify.sanitize(textContent);
             payload.plainText = plainText;
         }
 

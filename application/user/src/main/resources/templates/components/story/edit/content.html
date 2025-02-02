@@ -30,10 +30,34 @@
 
     <div th:if="${story.storyType.code} == 'TEXT'">
         <div class="editor-container bg-white shadow-md rounded-lg p-6">
+            <input type="hidden"
+                   id="initial-text"
+                   th:value="${story.text}">
             <div id="text-editor-container"
-                 class="quill-editor w-full max-w-4xl mx-auto min-h-[200px]"
-                 contenteditable="true">
-                <p th:utext="${story.text}"></p>
+                 class="quill-editor w-full max-w-4xl mx-auto min-h-[200px]">
+            </div>
+            <div id="shortcut-modal"
+                 class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 z-50">
+                <div class="relative w-3/4 max-w-md mx-auto mt-20 p-6 bg-white rounded-lg">
+                    <button id="modal-close-btn"
+                            class="absolute top-2 right-2 text-black">
+                        X
+                    </button>
+                    <h3 class="text-xl font-semibold mb-4">Shortcut</h3>
+                    <ul>
+                        <li><strong>Ctrl + B</strong>: 볼드</li>
+                        <li><strong>Ctrl + I</strong>: 이탤릭</li>
+                        <li><strong>Ctrl + U</strong>: 밑줄</li>
+                        <li><strong>Ctrl + Z</strong>: 실행 취소</li>
+                        <li><strong>Ctrl + Shift + Z</strong>: 다시 실행</li>
+                        <li><strong>Ctrl + K</strong>: 링크 추가/수정</li>
+                        <li><strong>Ctrl + Shift + L</strong>: 순서 있는 목록</li>
+                        <li><strong>Ctrl + Shift + U</strong>: 순서 없는 목록</li>
+                        <li><strong>Alt + 1</strong>: 헤더 1</li>
+                        <li><strong>Alt + 2</strong>: 헤더 2</li>
+                        <li><strong>Alt + 3</strong>: 헤더 3</li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
