@@ -107,7 +107,7 @@ public class StoryPage extends CommonTime {
     }
 
     public String getStoryPlainText() {
-        return ObjectUtils.isEmpty(this.storyText) ? "" : this.storyText.getPlanText();
+        return ObjectUtils.isEmpty(this.storyText) ? "" : this.storyText.getPlainText();
     }
 
     public List<String> getStoryFilePaths() {

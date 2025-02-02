@@ -98,7 +98,7 @@ public class StoryPageEditorImpl implements StoryPageEditor {
         TemporaryStoryPage temporaryStoryPage = temporaryStory.getStoryPage(temporaryStoryPageId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.ENTITY_NOT_FOUND));
         temporaryStoryPage.update(request.text(),
-                request.planText(),
+                request.plainText(),
                 request.files());
     }
 }

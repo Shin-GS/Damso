@@ -80,10 +80,10 @@ public class TemporaryStoryPage extends CommonTime {
     }
 
     public void update(String text,
-                       String planText,
+                       String plainText,
                        List<String> files) {
         switch (this.storyType) {
-            case TEXT -> updateStoryText(text, planText);
+            case TEXT -> updateStoryText(text, plainText);
             case IMAGE -> updateStoryImages(files);
             case VIDEO -> updateStoryVideo(files);
         }
@@ -136,7 +136,7 @@ public class TemporaryStoryPage extends CommonTime {
     }
 
     public String getStoryPlainText() {
-        return ObjectUtils.isEmpty(this.temporaryStoryText) ? "" : this.temporaryStoryText.getPlanText();
+        return ObjectUtils.isEmpty(this.temporaryStoryText) ? "" : this.temporaryStoryText.getPlainText();
     }
 
     public List<String> getImagePaths() {
