@@ -30,7 +30,7 @@ public class StoryEditPageHxController {
     @GetMapping
     public List<ModelAndView> getPages(@PathVariable("storyId") Long storyId,
                                        @SessionMemberId Long memberId) {
-        List<StoryEditPageResponse> storyPages = storyPageFinder.getTemporaryStoryPages(storyId, memberId);
+        List<StoryEditPageResponse> storyPages = storyPageFinder.resolveTemporaryStoryPages(storyId, memberId);
 
         Map<String, Object> pageData = new HashMap<>();
         pageData.put("storyPages", storyPages);
@@ -46,7 +46,7 @@ public class StoryEditPageHxController {
                                          @SessionMemberId Long memberId) {
         storyPageEditor.create(storyId, memberId);
 
-        List<StoryEditPageResponse> storyPages = storyPageFinder.getTemporaryStoryPages(storyId, memberId);
+        List<StoryEditPageResponse> storyPages = storyPageFinder.resolveTemporaryStoryPages(storyId, memberId);
         Long lastTemporaryStoryPageId = storyPages.get(storyPages.size() - 1).id(); // last page
         Map<String, Object> pageData = new HashMap<>();
         pageData.put("storyPages", storyPages);
@@ -72,7 +72,7 @@ public class StoryEditPageHxController {
         Long temporaryStoryPageIdToMove = storyPageEditor.delete(storyId, memberId, temporaryStoryPageId);
 
         Map<String, Object> pageData = new HashMap<>();
-        pageData.put("storyPages", storyPageFinder.getTemporaryStoryPages(storyId, memberId));
+        pageData.put("storyPages", storyPageFinder.resolveTemporaryStoryPages(storyId, memberId));
         pageData.put("storyId", storyId);
         pageData.put("currentPageId", temporaryStoryPageIdToMove);
 
@@ -100,7 +100,7 @@ public class StoryEditPageHxController {
         contentData.put("files", storyPageInfo.files());
 
         Map<String, Object> pageData = new HashMap<>();
-        pageData.put("storyPages", storyPageFinder.getTemporaryStoryPages(storyId, memberId));
+        pageData.put("storyPages", storyPageFinder.resolveTemporaryStoryPages(storyId, memberId));
         pageData.put("storyId", storyId);
         pageData.put("currentPageId", temporaryStoryPageId);
         return new ModelAndViewBuilder()
@@ -137,7 +137,7 @@ public class StoryEditPageHxController {
         contentData.put("files", storyPageInfo.files());
 
         Map<String, Object> pageData = new HashMap<>();
-        pageData.put("storyPages", storyPageFinder.getTemporaryStoryPages(storyId, memberId));
+        pageData.put("storyPages", storyPageFinder.resolveTemporaryStoryPages(storyId, memberId));
         pageData.put("storyId", storyId);
         pageData.put("currentPageId", temporaryStoryPageId);
         return new ModelAndViewBuilder()

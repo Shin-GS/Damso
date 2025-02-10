@@ -1,4 +1,4 @@
-package com.damso.storage.entity.story;
+package com.damso.storage.entity.story.content;
 
 import com.damso.core.enums.story.StoryFileType;
 import com.damso.storage.entity.base.CommonTime;

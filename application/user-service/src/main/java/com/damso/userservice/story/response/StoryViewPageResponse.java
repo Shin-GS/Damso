@@ -1,7 +1,7 @@
 package com.damso.userservice.story.response;
 
 import com.damso.core.enums.story.StoryType;
-import com.damso.storage.entity.story.StoryPage;
+import com.damso.storage.entity.story.content.StoryPage;
 
 import java.util.List;
 

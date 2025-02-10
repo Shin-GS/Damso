@@ -4,6 +4,7 @@ import com.damso.core.enums.story.StoryCommentType;
 import com.damso.core.enums.story.StoryStatusType;
 import com.damso.storage.entity.base.CommonTime;
 import com.damso.storage.entity.member.Member;
+import com.damso.storage.entity.story.content.StoryPage;
 import com.damso.storage.entity.story.temporary.TemporaryStory;
 import com.damso.storage.entity.story.temporary.TemporaryStoryPage;
 import com.damso.storage.entity.subscribe.SubscriptionPlanStory;
@@ -60,6 +61,10 @@ public class Story extends CommonTime {
         this.commentType = StoryCommentType.ALL;
         this.storyPages.add(new StoryPage(this));
         this.reorderPages();
+    }
+
+    public boolean isEditable() {
+        return !this.status.equals(StoryStatusType.DELETED);
     }
 
     public boolean isEditable(Member member) {

@@ -1,9 +1,10 @@
-package com.damso.storage.entity.story;
+package com.damso.storage.entity.story.content;
 
 import com.damso.core.enums.story.StoryFileType;
 import com.damso.core.enums.story.StoryType;
 import com.damso.storage.converter.BooleanConverter;
 import com.damso.storage.entity.base.CommonTime;
+import com.damso.storage.entity.story.Story;
 import com.damso.storage.entity.story.temporary.TemporaryStoryPage;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

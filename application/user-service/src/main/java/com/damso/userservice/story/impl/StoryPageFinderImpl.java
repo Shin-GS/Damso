@@ -3,7 +3,7 @@ package com.damso.userservice.story.impl;
 import com.damso.core.code.ErrorCode;
 import com.damso.core.exception.BusinessException;
 import com.damso.storage.entity.story.Story;
-import com.damso.storage.entity.story.StoryPage;
+import com.damso.storage.entity.story.content.StoryPage;
 import com.damso.storage.entity.story.temporary.TemporaryStory;
 import com.damso.storage.entity.story.temporary.TemporaryStoryPage;
 import com.damso.userservice.story.StoryEditor;
@@ -11,13 +11,11 @@ import com.damso.userservice.story.StoryFinder;
 import com.damso.userservice.story.StoryPageFinder;
 import com.damso.userservice.story.response.StoryEditPageInfoResponse;
 import com.damso.userservice.story.response.StoryEditPageResponse;
-import com.damso.userservice.story.response.StoryViewCommentResponse;
 import com.damso.userservice.story.response.StoryViewPageResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -29,9 +27,17 @@ public class StoryPageFinderImpl implements StoryPageFinder {
     private final StoryEditor storyEditor;
 
     @Override
+    public StoryPage getStoryPageEntity(Long storyId,
+                                        Long storyPageId) {
+        Story story = storyFinder.getEditableEntity(storyId);
+        return story.getStoryPage(storyPageId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.ENTITY_NOT_FOUND));
+    }
+
+    @Override
     @Transactional
-    public List<StoryEditPageResponse> getTemporaryStoryPages(Long storyId,
-                                                              Long memberId) {
+    public List<StoryEditPageResponse> resolveTemporaryStoryPages(Long storyId,
+                                                                  Long memberId) {
         Story story = storyFinder.getEditableEntity(storyId, memberId);
         TemporaryStory temporaryStory = storyEditor.resolveTemporaryStory(story);
         return temporaryStory.getEditableTemporaryStoryPages().stream()
@@ -69,13 +75,13 @@ public class StoryPageFinderImpl implements StoryPageFinder {
                 .getSortedPages()
                 .get(0)
                 .getId();
-        return getStoryPage(storyId, memberId, firstPageId);
+        return getStoryPage(storyId, firstPageId, memberId);
     }
 
     @Override
     public StoryViewPageResponse getStoryPage(Long storyId,
-                                              Long memberId,
-                                              Long storyPageId) {
+                                              Long storyPageId,
+                                              Long memberId) {
         Story story = storyFinder.getEntity(storyId);
         // todo 조회 권한 여부 체크 추가 필요
         if (!story.isPublished()) {
@@ -85,21 +91,5 @@ public class StoryPageFinderImpl implements StoryPageFinder {
         StoryPage storyPage = story.getStoryPage(storyPageId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.ENTITY_NOT_FOUND));
         return StoryViewPageResponse.of(storyPage);
-    }
-
-    @Override
-    public List<StoryViewCommentResponse> getPageComments(Long storyId,
-                                                          Long memberId,
-                                                          Long storyPageId) {
-        Story story = storyFinder.getEntity(storyId);
-        // todo 조회 권한 여부 체크 추가 필요
-        if (!story.isPublished()) {
-            throw new BusinessException(ErrorCode.STORY_UNAUTHORIZED);
-        }
-
-        StoryPage storyPage = story.getStoryPage(storyPageId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.ENTITY_NOT_FOUND));
-
-        return new ArrayList<>();
     }
 }

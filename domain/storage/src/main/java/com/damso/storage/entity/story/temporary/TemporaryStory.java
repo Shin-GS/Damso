@@ -4,7 +4,7 @@ import com.damso.core.enums.story.StoryCommentType;
 import com.damso.core.enums.story.StoryTemporaryStatusType;
 import com.damso.storage.entity.base.CommonTime;
 import com.damso.storage.entity.story.Story;
-import com.damso.storage.entity.story.StoryPage;
+import com.damso.storage.entity.story.content.StoryPage;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

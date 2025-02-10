@@ -1,4 +1,4 @@
-package com.damso.storage.entity.story;
+package com.damso.storage.entity.story.content;
 
 import com.damso.core.utils.common.StringUtil;
 import com.damso.storage.entity.base.CommonTime;
