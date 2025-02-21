@@ -4,6 +4,10 @@
      id="story-container"
      hx-swap-oob="true"
      class="relative flex-grow bg-white flex justify-center items-center max-w-[800px] w-full aspect-[16/9] border border-gray-300 rounded-xl shadow-md overflow-hidden">
+    <input type="hidden"
+           id="storyPageId"
+           name="storyPageId"
+           th:value="${page.id}">
 
     <div th:if="${page.storyType.code} == 'TEXT'"
          class="quill-container w-full h-full bg-white text-gray-900 p-6 rounded-md shadow-lg overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400">

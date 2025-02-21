@@ -61,4 +61,20 @@ public class StoryComment extends CommonTime {
     public boolean isEditable(Member member) {
         return this.member.equals(member) && this.status.equals(StoryCommentStatusType.NORMAL);
     }
+
+    public void update(String text) {
+        this.text = text;
+    }
+
+    public void delete() {
+        this.status = StoryCommentStatusType.DELETED;
+    }
+
+    public Long getStoryId() {
+        return ObjectUtils.isEmpty(story) ? null : story.getId();
+    }
+
+    public Long getStoryPageId() {
+        return ObjectUtils.isEmpty(storyPage) ? null : storyPage.getId();
+    }
 }
