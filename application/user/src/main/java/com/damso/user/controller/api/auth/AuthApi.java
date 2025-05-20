@@ -1,4 +1,4 @@
-package com.damso.user.controller.auth;
+package com.damso.user.controller.api.auth;
 
 import com.damso.common.auth.CustomAuthenticationManager;
 import com.damso.common.auth.JwtTokenProvider;
@@ -9,6 +9,7 @@ import com.damso.userservice.auth.RefreshInfoFetcher;
 import com.damso.userservice.auth.request.EmailDuplicationRequest;
 import com.damso.userservice.auth.request.EmailLoginRequest;
 import com.damso.userservice.auth.request.EmailSignupRequest;
+import com.damso.userservice.auth.response.RefreshInfoResponse;
 import com.damso.userservice.member.MemberRegister;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -25,7 +26,7 @@ public class AuthApi {
     private final RefreshInfoFetcher refreshInfoFetcher;
 
     @PostMapping("/login/email")
-    public SuccessResponse loginWithEmail(@Valid @ModelAttribute EmailLoginRequest request,
+    public SuccessResponse<Object> loginWithEmail(@Valid @ModelAttribute EmailLoginRequest request,
                                           HttpServletResponse response) {
         Long memberId = customAuthenticationManager.authenticateNotAdmin(request.email(), request.password());
         jwtTokenProvider.generateJwtCookie(response, memberId);
@@ -33,13 +34,13 @@ public class AuthApi {
     }
 
     @PostMapping("/signup/email/check-email")
-    public SuccessResponse checkEmail(@Valid @RequestBody EmailDuplicationRequest request) {
+    public SuccessResponse<Object> checkEmail(@Valid @RequestBody EmailDuplicationRequest request) {
         memberRegister.checkEmailDuplication(request.email());
         return SuccessResponse.of(SuccessCode.SUCCESS);
     }
 
     @PostMapping("/signup/email")
-    public SuccessResponse signup(@Valid @ModelAttribute EmailSignupRequest request,
+    public SuccessResponse<Object> signup(@Valid @ModelAttribute EmailSignupRequest request,
                                   HttpServletResponse response) {
         Long memberId = memberRegister.signup(request);
         jwtTokenProvider.generateJwtCookie(response, memberId);
@@ -47,13 +48,13 @@ public class AuthApi {
     }
 
     @PostMapping("/logout")
-    public SuccessResponse logout(HttpServletResponse response) {
+    public SuccessResponse<Object> logout(HttpServletResponse response) {
         jwtTokenProvider.deleteJwtCookie(response);
         return SuccessResponse.of(SuccessCode.SUCCESS);
     }
 
     @GetMapping("/refresh-info")
-    public SuccessResponse refreshInfo(@SessionMemberId Long memberId) {
+    public SuccessResponse<RefreshInfoResponse> refreshInfo(@SessionMemberId Long memberId) {
         return SuccessResponse.of(SuccessCode.SUCCESS, refreshInfoFetcher.refresh(memberId));
     }
 }

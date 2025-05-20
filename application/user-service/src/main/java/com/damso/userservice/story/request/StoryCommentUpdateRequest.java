@@ -5,4 +5,8 @@ import com.damso.common.request.pattern.StoryRegexPattern;
 
 public record StoryCommentUpdateRequest(
         @ValidPattern(value = StoryRegexPattern.class, fieldCode = "COMMENT_TEXT", notEmpty = true) String text) {
+
+    public static StoryCommentUpdateRequest of(String text) {
+        return new StoryCommentUpdateRequest(text);
+    }
 }

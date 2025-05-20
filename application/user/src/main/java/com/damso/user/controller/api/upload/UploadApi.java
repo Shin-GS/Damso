@@ -1,8 +1,8 @@
-package com.damso.user.controller.upload;
+package com.damso.user.controller.api.upload;
 
 import com.damso.common.auth.session.SessionMemberId;
-import com.damso.core.code.SuccessCode;
 import com.damso.common.response.SuccessResponse;
+import com.damso.core.code.SuccessCode;
 import com.damso.userservice.upload.ImageFileUploader;
 import com.damso.userservice.upload.VideoFileUploader;
 import com.damso.userservice.upload.response.FileUploadResponse;
@@ -21,15 +21,15 @@ public class UploadApi {
     private final VideoFileUploader videoFileUploader;
 
     @PostMapping("/image")
-    public SuccessResponse uploadImage(@RequestPart("file") MultipartFile image,
-                                       @SessionMemberId Long memberId) {
+    public SuccessResponse<FileUploadResponse> uploadImage(@RequestPart("file") MultipartFile image,
+                                                           @SessionMemberId Long memberId) {
         FileUploadResponse uploadResponse = imageFileUploader.upload(image, memberId);
         return SuccessResponse.of(SuccessCode.SUCCESS, uploadResponse);
     }
 
     @PostMapping("/video")
-    public SuccessResponse uploadVideo(@RequestPart("file") MultipartFile video,
-                                       @SessionMemberId Long memberId) {
+    public SuccessResponse<FileUploadResponse> uploadVideo(@RequestPart("file") MultipartFile video,
+                                                           @SessionMemberId Long memberId) {
         FileUploadResponse uploadResponse = videoFileUploader.upload(video, memberId);
         return SuccessResponse.of(SuccessCode.SUCCESS, uploadResponse);
     }

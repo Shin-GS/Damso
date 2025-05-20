@@ -1,11 +1,12 @@
 package com.damso.userservice.story;
 
-import com.damso.userservice.story.request.StoryCommentCreateRequest;
 import com.damso.userservice.story.request.StoryCommentUpdateRequest;
 import com.damso.userservice.story.response.StoryCommentEditResponse;
 
 public interface StoryCommentEditor {
-    StoryCommentEditResponse createComment(StoryCommentCreateRequest request,
+    StoryCommentEditResponse createComment(Long storyId,
+                                           Long pageId,
+                                           StoryCommentUpdateRequest request,
                                            Long memberId);
 
     StoryCommentEditResponse updateComment(Long commentId,

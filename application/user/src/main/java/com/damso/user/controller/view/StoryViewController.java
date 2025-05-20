@@ -1,4 +1,4 @@
-package com.damso.user.controller.story;
+package com.damso.user.controller.view;
 
 import com.damso.common.auth.session.SessionMemberId;
 import com.damso.common.request.pattern.CommonRegexPattern;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/stories")
 @RequiredArgsConstructor
-public class StoryController {
+public class StoryViewController {
     private final CodeFinder codeFinder;
     private final StoryFinder storyFinder;
     private final StoryEditor storyEditor;

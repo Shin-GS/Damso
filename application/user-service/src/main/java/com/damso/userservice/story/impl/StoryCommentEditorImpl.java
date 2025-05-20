@@ -11,7 +11,6 @@ import com.damso.userservice.member.MemberFinder;
 import com.damso.userservice.story.StoryCommentEditor;
 import com.damso.userservice.story.StoryFinder;
 import com.damso.userservice.story.StoryPageFinder;
-import com.damso.userservice.story.request.StoryCommentCreateRequest;
 import com.damso.userservice.story.request.StoryCommentUpdateRequest;
 import com.damso.userservice.story.response.StoryCommentEditResponse;
 import lombok.RequiredArgsConstructor;
@@ -28,11 +27,13 @@ public class StoryCommentEditorImpl implements StoryCommentEditor {
     private final StoryCommentRepository storyCommentRepository;
 
     @Override
-    public StoryCommentEditResponse createComment(StoryCommentCreateRequest request,
+    public StoryCommentEditResponse createComment(Long storyId,
+                                                  Long pageId,
+                                                  StoryCommentUpdateRequest request,
                                                   Long memberId) {
         Member member = memberFinder.getEntity(memberId);
-        Story story = storyFinder.getEditableEntity(request.storyId());
-        StoryPage storyPage = storyPageFinder.getStoryPageEntity(request.storyId(), request.storyPageId());
+        Story story = storyFinder.getEditableEntity(storyId);
+        StoryPage storyPage = storyPageFinder.getStoryPageEntity(storyId, pageId);
         // todo 구독 권한 체크 필요
 
         StoryComment storyComment = storyCommentRepository.save(new StoryComment(story, storyPage, member, request.text()));
