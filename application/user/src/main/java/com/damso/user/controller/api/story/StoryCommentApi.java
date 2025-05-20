@@ -23,7 +23,7 @@ public class StoryCommentApi {
     private final StoryCommentFinder storyCommentFinder;
     private final StoryCommentEditor storyCommentEditor;
 
-    @GetMapping("/{storyId}/pages/{pageId}")
+    @GetMapping("/{storyId}/pages/{pageId}/comments")
     public SuccessResponse<List<StoryViewCommentResponse>> findComments(@PathVariable("storyId") Long storyId,
                                                                         @PathVariable("pageId") Long pageId,
                                                                         @SessionMemberId Long memberId,
@@ -31,7 +31,7 @@ public class StoryCommentApi {
         return SuccessResponse.of(SuccessCode.SUCCESS, storyCommentFinder.findComments(storyId, pageId, memberId, pageable));
     }
 
-    @PostMapping("/{storyId}/pages/{pageId}")
+    @PostMapping("/{storyId}/pages/{pageId}/comments")
     public SuccessResponse<StoryCommentEditResponse> createComment(@PathVariable("storyId") Long storyId,
                                                                    @PathVariable("pageId") Long pageId,
                                                                    @RequestBody @Valid StoryCommentUpdateRequest request,
