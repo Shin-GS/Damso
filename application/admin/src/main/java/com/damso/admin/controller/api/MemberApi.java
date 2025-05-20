@@ -1,11 +1,12 @@
-package com.damso.admin.controller.member;
+package com.damso.admin.controller.api;
 
 import com.damso.adminservice.member.MemberEditor;
 import com.damso.adminservice.member.MemberFinder;
 import com.damso.adminservice.member.request.MemberModifyRequest;
 import com.damso.adminservice.member.request.MemberRegisterRequest;
-import com.damso.core.code.SuccessCode;
+import com.damso.adminservice.member.response.MemberInfoResponse;
 import com.damso.common.response.SuccessResponse;
+import com.damso.core.code.SuccessCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,19 +18,19 @@ public class MemberApi {
     private final MemberEditor memberEditor;
 
     @PostMapping
-    public SuccessResponse register(@RequestBody MemberRegisterRequest request) {
+    public SuccessResponse<Object> register(@RequestBody MemberRegisterRequest request) {
         memberEditor.register(request);
         return SuccessResponse.of(SuccessCode.SUCCESS);
     }
 
     @GetMapping("/{memberId}")
-    public SuccessResponse get(@PathVariable("memberId") Long memberId) {
+    public SuccessResponse<MemberInfoResponse> get(@PathVariable("memberId") Long memberId) {
         return SuccessResponse.of(SuccessCode.SUCCESS, memberFinder.get(memberId));
     }
 
     @PutMapping("/{memberId}")
-    public SuccessResponse modify(@PathVariable("memberId") Long memberId,
-                                  @RequestBody MemberModifyRequest request) {
+    public SuccessResponse<Object> modify(@PathVariable("memberId") Long memberId,
+                                          @RequestBody MemberModifyRequest request) {
         memberEditor.modify(memberId, request);
         return SuccessResponse.of(SuccessCode.SUCCESS);
     }

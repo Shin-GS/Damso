@@ -1,4 +1,4 @@
-package com.damso.admin.controller.auth;
+package com.damso.admin.controller.view;
 
 import com.damso.common.request.pattern.CommonRegexPattern;
 import com.damso.common.request.pattern.MemberRegexPattern;
@@ -7,7 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class AuthController {
+public class AuthViewController {
     @GetMapping("/login")
     public String login(Model model) {
         model.addAttribute("memberRegexPattern", CommonRegexPattern.getMap(MemberRegexPattern.class));

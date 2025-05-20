@@ -1,4 +1,4 @@
-package com.damso.admin.controller.menu;
+package com.damso.admin.controller.hx;
 
 import com.damso.adminservice.auth.RefreshInfoFetcher;
 import com.damso.adminservice.auth.response.RefreshInfoResponse;

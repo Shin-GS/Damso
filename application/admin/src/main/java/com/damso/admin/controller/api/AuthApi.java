@@ -1,12 +1,12 @@
-package com.damso.admin.controller.auth;
+package com.damso.admin.controller.api;
 
 import com.damso.adminservice.auth.RefreshInfoFetcher;
 import com.damso.adminservice.auth.request.LoginRequest;
 import com.damso.common.auth.CustomAuthenticationManager;
 import com.damso.common.auth.JwtTokenProvider;
 import com.damso.common.auth.session.SessionMemberId;
-import com.damso.core.code.SuccessCode;
 import com.damso.common.response.SuccessResponse;
+import com.damso.core.code.SuccessCode;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,21 +21,21 @@ public class AuthApi {
     private final RefreshInfoFetcher refreshInfoFetcher;
 
     @PostMapping("/login")
-    public SuccessResponse login(@Valid @ModelAttribute LoginRequest request,
-                                 HttpServletResponse response) {
+    public SuccessResponse<Object> login(@Valid @ModelAttribute LoginRequest request,
+                                         HttpServletResponse response) {
         Long memberId = customAuthenticationManager.authenticateAdmin(request.email(), request.password());
         jwtTokenProvider.generateJwtCookie(response, memberId);
         return SuccessResponse.of(SuccessCode.SUCCESS);
     }
 
     @PostMapping("/logout")
-    public SuccessResponse logout(HttpServletResponse response) {
+    public SuccessResponse<Object> logout(HttpServletResponse response) {
         jwtTokenProvider.deleteJwtCookie(response);
         return SuccessResponse.of(SuccessCode.SUCCESS);
     }
 
     @GetMapping("/refresh-info")
-    public SuccessResponse refreshInfo(@SessionMemberId Long memberId) {
+    public SuccessResponse<Object> refreshInfo(@SessionMemberId Long memberId) {
         return SuccessResponse.of(SuccessCode.SUCCESS, refreshInfoFetcher.refresh(memberId));
     }
 }
