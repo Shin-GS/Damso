@@ -28,19 +28,19 @@ public class TemporaryStoryText extends CommonTime {
     private String text;
 
     @Column(name = "STORY_PLAN_TEXT", columnDefinition = "TEXT", nullable = false)
-    private String planText;
+    private String plainText;
 
     public TemporaryStoryText(TemporaryStoryPage temporaryStoryPage,
                               String text,
-                              String planText) {
+                              String plainText) {
         this.temporaryStoryPage = temporaryStoryPage;
         this.text = StringUtil.defaultIfEmpty(text, "");
-        this.planText = StringUtil.defaultIfEmpty(planText, "");
+        this.plainText = StringUtil.defaultIfEmpty(plainText, "");
     }
 
     public void update(String text,
-                       String planText) {
+                       String plainText) {
         this.text = StringUtil.defaultIfEmpty(text, "");
-        this.planText = StringUtil.defaultIfEmpty(planText, "");
+        this.plainText = StringUtil.defaultIfEmpty(plainText, "");
     }
 }

@@ -9,7 +9,12 @@ additionalScript='/script/story/viewer.js')}">
 
 <main class="flex-grow flex flex-col items-center py-8">
     <div class="w-full max-w-[1200px] flex justify-between items-center px-6 mb-4">
-        <h1 class="text-3xl font-bold text-gray-800" th:text="${story.title}"></h1>
+        <h1 class="text-3xl font-bold text-gray-800"
+            th:text="${story.title}"></h1>
+        <input type="hidden"
+               id="storyId"
+               name="storyId"
+               th:value="${story.id}">
         <a th:if="${story.editable}"
            th:href="@{/stories/edit/{storyId}(storyId=${story.id})}"
            class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg shadow-md">
@@ -17,14 +22,26 @@ additionalScript='/script/story/viewer.js')}">
         </a>
     </div>
 
-    <section class="bg-white shadow-md rounded-xl p-6 max-w-[1200px] w-full flex flex-col lg:flex-row gap-6 border border-gray-200">
-        <div th:replace="~{components/story/view/pageContent :: story-container}" class="flex-grow"></div>
+    <section
+            class="bg-white shadow-md rounded-xl p-6 max-w-[1200px] w-full flex flex-col lg:flex-row gap-6 border border-gray-200">
+        <div th:replace="~{components/story/view/pageContent :: story-container}"
+             class="flex-grow"></div>
 
         <aside class="w-full lg:w-[400px] bg-gray-100 p-6 overflow-auto border-t lg:border-l border-gray-300 rounded-b-xl lg:rounded-b-none lg:rounded-r-xl">
             <h2 class="text-xl font-bold text-gray-700 mb-6">댓글</h2>
             <div class="mt-4">
-                <textarea id="comment-input" class="w-full p-3 text-gray-900 rounded border border-gray-300 focus:ring focus:ring-blue-200" placeholder="댓글 입력..."></textarea>
-                <button id="submit-comment" class="w-full bg-blue-500 hover:bg-blue-600 text-white mt-4 py-2 rounded shadow">
+                <label for="commentInput"></label>
+                <textarea id="commentInput"
+                          name="text"
+                          class="w-full p-3 text-gray-900 rounded border border-gray-300 focus:ring focus:ring-blue-200"
+                          placeholder="Enter your comment..."
+                          required></textarea>
+
+                <button hx-post="/hx/stories/pages/comments"
+                        hx-target="#comments-container"
+                        hx-swap="outerHTML"
+                        hx-include="#commentInput, #storyId, #storyPageId"
+                        class="w-full bg-blue-500 hover:bg-blue-600 text-white mt-4 py-2 rounded shadow">
                     댓글 작성
                 </button>
             </div>

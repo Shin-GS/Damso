@@ -33,9 +33,10 @@ public enum ErrorCode {
     OAUTH_INFO_NOT_VALID(400, "B003", "OAuth 정보가 유효하지 않습니다."),
     PASSWORD_NOT_MATCHED(400, "B004", "비밀번호가 일치하지 않습니다."),
     MEMBER_NOT_ACTIVE(400, "B005", "탈퇴 혹은 차단된 회원입니다."),
-    STORY_UNAUTHORIZED(400, "B006", "작성자가 아니거나 삭제된 스토리입니다."),
+    STORY_UNAUTHORIZED(400, "B006", "스토리 접근 권한이 없습니다."),
     STORY_PAGE_MAX_EXCEED(400, "B007", "페이지는 최대 10개까지 생성 가능합니다."),
     STORY_PAGE_MIN_EXCEED(400, "B008", "최소 1개의 페이지를 가지고 있어야 합니다."),
+    STORY_COMMENT_UNAUTHORIZED(400, "B009", "스토리 댓글 접근 권한이 없습니다."),
 
     //S : 서버에러
     INTERNAL_SERVER_ERROR(500, "S001", "internal server error");

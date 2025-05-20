@@ -1,4 +1,4 @@
-package com.damso.cache;
+package com.damso.cache.entity;
 
 import lombok.Getter;
 import org.springframework.data.annotation.Id;

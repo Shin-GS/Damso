@@ -26,6 +26,16 @@ public class StoryFinderImpl implements StoryFinder {
     }
 
     @Override
+    public Story getEditableEntity(Long storyId) {
+        Story story = getEntity(storyId);
+        if (story.isEditable()) {
+            return story;
+        }
+
+        throw new BusinessException(ErrorCode.ENTITY_NOT_FOUND);
+    }
+
+    @Override
     public Story getEditableEntity(Long storyId,
                                    Long memberId) {
         Story story = getEntity(storyId);

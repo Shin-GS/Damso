@@ -4,6 +4,7 @@ import com.damso.core.enums.story.StoryCommentType;
 import com.damso.core.enums.story.StoryStatusType;
 import com.damso.storage.entity.base.CommonTime;
 import com.damso.storage.entity.member.Member;
+import com.damso.storage.entity.story.content.StoryPage;
 import com.damso.storage.entity.story.temporary.TemporaryStory;
 import com.damso.storage.entity.story.temporary.TemporaryStoryPage;
 import com.damso.storage.entity.subscribe.SubscriptionPlanStory;
@@ -62,6 +63,10 @@ public class Story extends CommonTime {
         this.reorderPages();
     }
 
+    public boolean isEditable() {
+        return !this.status.equals(StoryStatusType.DELETED);
+    }
+
     public boolean isEditable(Member member) {
         return this.member.equals(member) && !this.status.equals(StoryStatusType.DELETED);
     }
@@ -105,9 +110,7 @@ public class Story extends CommonTime {
 
     public void reorderPages() {
         AtomicInteger sortNumber = new AtomicInteger(0);
-        storyPages.stream()
-                .filter(storyPage -> !storyPage.isDeleted())
-                .sorted(Comparator.comparingInt(StoryPage::getPageOrder))
+        this.getSortedPages()
                 .forEach(storyPage -> storyPage.setPageOrder(sortNumber.getAndIncrement()));
     }
 

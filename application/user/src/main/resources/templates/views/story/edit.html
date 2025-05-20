@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:hx-on="http://www.w3.org/1999/xhtml" lang="ko">
 <head th:replace="~{views/layout :: head(additionalCss='/css/story/quill.snow.css,/css/story/cropper.min.css,/css/story/dropzone.min.css',
-additionalScript='/script/story/quill.min.js,/script/story/cropper.min.js,/script/story/dropzone.min.js,/script/story/sortable.min.js,/script/story/editor/pageEditor.js,/script/story/editor/textEditor.js,/script/story/editor/imageEditor.js,/script/story/editor/videoEditor.js')}">
+additionalScript='/script/story/quill.min.js,/script/story/cropper.min.js,/script/story/dropzone.min.js,/script/story/sortable.min.js,/script/story/editor/pageEditor.js,/script/story/editor/textEditor.js,/script/story/editor/imageEditor.js,/script/story/editor/videoEditor.js,/script/story/purify.min.js')}">
     <title>스토리 편집</title>
 </head>
 <body class="content-edit-page flex flex-col min-h-screen bg-gray-100">
@@ -146,7 +146,7 @@ additionalScript='/script/story/quill.min.js,/script/story/cropper.min.js,/scrip
         if (storyType === 'TEXT') {
             const textContent = document.querySelector('.ql-editor').innerHTML;
             const plainText = document.querySelector('.ql-editor').textContent;
-            payload.text = textContent;
+            payload.text = DOMPurify.sanitize(textContent);
             payload.plainText = plainText;
         }
 

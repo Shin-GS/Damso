@@ -4,7 +4,7 @@ import com.damso.core.enums.story.StoryCommentType;
 import com.damso.core.enums.story.StoryTemporaryStatusType;
 import com.damso.storage.entity.base.CommonTime;
 import com.damso.storage.entity.story.Story;
-import com.damso.storage.entity.story.StoryPage;
+import com.damso.storage.entity.story.content.StoryPage;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -52,9 +52,7 @@ public class TemporaryStory extends CommonTime {
         this.title = story.getTitle();
         this.commentType = story.getCommentType();
         this.status = StoryTemporaryStatusType.WRITING;
-        story.getStoryPages().stream()
-                .sorted(Comparator.comparingInt(StoryPage::getPageOrder))
-                .filter(storyPage -> !storyPage.isDeleted())
+        story.getSortedPages()
                 .forEach(this::addPage);
         this.reorderPages();
     }

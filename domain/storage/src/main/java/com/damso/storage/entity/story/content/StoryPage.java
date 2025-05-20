@@ -1,9 +1,10 @@
-package com.damso.storage.entity.story;
+package com.damso.storage.entity.story.content;
 
 import com.damso.core.enums.story.StoryFileType;
 import com.damso.core.enums.story.StoryType;
 import com.damso.storage.converter.BooleanConverter;
 import com.damso.storage.entity.base.CommonTime;
+import com.damso.storage.entity.story.Story;
 import com.damso.storage.entity.story.temporary.TemporaryStoryPage;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -107,7 +108,7 @@ public class StoryPage extends CommonTime {
     }
 
     public String getStoryPlainText() {
-        return ObjectUtils.isEmpty(this.storyText) ? "" : this.storyText.getPlanText();
+        return ObjectUtils.isEmpty(this.storyText) ? "" : this.storyText.getPlainText();
     }
 
     public List<String> getStoryFilePaths() {

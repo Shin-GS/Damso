@@ -6,7 +6,11 @@ import com.damso.userservice.story.response.StoryViewResponse;
 public interface StoryFinder {
     Story getEntity(Long storyId);
 
-    Story getEditableEntity(Long storyId, Long memberId);
+    Story getEditableEntity(Long storyId);
 
-    StoryViewResponse getStoryView(Long storyId, Long memberId);
+    Story getEditableEntity(Long storyId,
+                            Long memberId);
+
+    StoryViewResponse getStoryView(Long storyId,
+                                   Long memberId);
 }

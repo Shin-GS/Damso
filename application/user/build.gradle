@@ -101,7 +101,8 @@ def cdnFiles = [
         [url: "https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js", dest: "src/main/resources/static/script/story/cropper.min.js"],
         [url: "https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/min/dropzone.min.css", dest: "src/main/resources/static/css/story/dropzone.min.css"],
         [url: "https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/min/dropzone.min.js", dest: "src/main/resources/static/script/story/dropzone.min.js"],
-        [url: "https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js", dest: "src/main/resources/static/script/story/sortable.min.js"]
+        [url: "https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js", dest: "src/main/resources/static/script/story/sortable.min.js"],
+        [url: "https://cdn.jsdelivr.net/npm/dompurify@2.4.0/dist/purify.min.js", dest: "src/main/resources/static/script/story/purify.min.js"]
 ]
 
 tasks.register('downloadCdnFiles') {

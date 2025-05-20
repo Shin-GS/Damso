@@ -1,6 +1,6 @@
 package com.damso.common.auth;
 
-import com.damso.cache.auth.CacheAuthTokenRepository;
+import com.damso.cache.repository.CacheAuthTokenRepository;
 import com.damso.core.enums.auth.AuthTokenStatus;
 import com.damso.core.enums.auth.AuthTokenType;
 import jakarta.servlet.FilterChain;
