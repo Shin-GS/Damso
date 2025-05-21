@@ -4,11 +4,14 @@
      id="pages-container"
      hx-swap-oob="true"
      class="mt-8">
+    <!--/*@thymesVar id="storyId" type="Long"*/-->
     <div class="flex flex-col items-center w-full"
          id="sortable-page-container"
          th:attr="data-story-id=${storyId}">
         <div id="sortable-page-list-wrapper" class="w-full overflow-x-auto">
             <div id="sortable-page-list" class="flex gap-4 w-max items-start">
+                <!--/*@thymesVar id="storyPages" type="java.util.List<com.damso.userservice.story.response.StoryEditPageResponse>"*/-->
+                <!--/*@thymesVar id="currentPageId" type="Long"*/-->
                 <div th:each="page, iterStat : ${storyPages}"
                      th:id="'page-' + ${page.id}"
                      th:data-id="${page.id}"

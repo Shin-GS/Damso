@@ -8,6 +8,7 @@ additionalScript='/script/story/viewer.js')}">
 <header th:replace="~{views/layout :: header}"></header>
 
 <main class="flex-grow flex flex-col items-center py-8">
+    <!--/*@thymesVar id="story" type="com.damso.userservice.story.response.StoryViewResponse"*/-->
     <div class="w-full max-w-[1200px] flex justify-between items-center px-6 mb-4">
         <h1 class="text-3xl font-bold text-gray-800"
             th:text="${story.title}"></h1>

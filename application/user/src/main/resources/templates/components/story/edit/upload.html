@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       lang="ko">
+<!--/*@thymesVar id="files" type="java.util.List<String>"*/-->
 <div th:fragment="story-upload-image"
      th:if="${files != null && !files.isEmpty()}"
      th:each="image : ${files}"

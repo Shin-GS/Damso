@@ -13,6 +13,7 @@
     <script type="module" src="/script/common.js"></script>
 
     <!-- Additional CSS -->
+    <!--/*@thymesVar id="additionalCss" type="java.lang.String"*/-->
     <th:block th:if="${additionalCss}">
         <th:block th:each="css : ${additionalCss.split(',')}">
             <link th:href="${css}" rel="stylesheet">
@@ -20,6 +21,7 @@
     </th:block>
 
     <!-- Additional Script -->
+    <!--/*@thymesVar id="additionalScript" type="java.lang.String"*/-->
     <th:block th:if="${additionalScript}">
         <th:block th:each="script : ${additionalScript.split(',')}">
             <script th:src="${script}"></script>

@@ -4,6 +4,7 @@
      id="comments-container"
      hx-swap-oob="true"
      class="mt-8">
+    <!--/*@thymesVar id="comments" type="java.util.List<com.damso.userservice.story.response.StoryViewCommentResponse>"*/-->
     <div th:each="comment : ${comments}" class="mb-2 p-2 bg-gray-700 rounded">
         <p class="text-sm"><strong th:text="${comment.username}"></strong></p>
         <p th:text="${comment.text}" class="text-gray-300"></p>

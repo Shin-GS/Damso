@@ -21,6 +21,7 @@
             <!-- 이메일 -->
             <div class="form-group">
                 <label for="email" class="block text-left font-medium text-gray-700">이메일</label>
+                <!--/*@thymesVar id="memberRegexPattern" type="com.damso.common.request.pattern.MemberRegexPattern"*/-->
                 <input type="email" id="email" name="email" placeholder="이메일을 입력하세요" required
                        class="mt-1 p-3 w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                        th:pattern="${memberRegexPattern.EMAIL.fePattern}"
@@ -30,6 +31,7 @@
             <!-- 비밀번호 -->
             <div class="form-group">
                 <label for="password" class="block text-left font-medium text-gray-700">비밀번호</label>
+                <!--/*@thymesVar id="memberRegexPattern" type="com.damso.common.request.pattern.MemberRegexPattern"*/-->
                 <input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요" required
                        class="mt-1 p-3 w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                        th:pattern="${memberRegexPattern.PASSWORD.fePattern}"

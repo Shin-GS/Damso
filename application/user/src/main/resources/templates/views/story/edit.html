@@ -23,6 +23,8 @@ additionalScript='/script/story/quill.min.js,/script/story/cropper.min.js,/scrip
         <div>
             <label class="block font-medium mb-2">스토리 제목</label>
             <label>
+                <!--/*@thymesVar id="story" type="com.damso.userservice.story.response.StoryEditPageInfoResponse"*/-->
+                <!--/*@thymesVar id="storyRegexPattern" type="com.damso.common.request.pattern.StoryRegexPattern"*/-->
                 <input type="text"
                        id="title"
                        name="title"
@@ -39,6 +41,7 @@ additionalScript='/script/story/quill.min.js,/script/story/cropper.min.js,/scrip
             </label>
         </div>
 
+        <!--/*@thymesVar id="storyId" type="Long"*/-->
         <div id="pages-container"
              class="mt-8"
              th:hx-get="@{'/hx/stories/edit/' + ${storyId} + '/pages'}"
@@ -63,6 +66,7 @@ additionalScript='/script/story/quill.min.js,/script/story/cropper.min.js,/scrip
                         hx-target="#toast-container"
                         hx-swap="innerHTML"
                         class="w-full border rounded-md px-4 py-2 focus:ring focus:ring-blue-400">
+                    <!--/*@thymesVar id="option" type="com.damso.core.enums.story.StoryCommentType"*/-->
                     <option th:each="option : ${commentTypes}"
                             th:value="${option.code}"
                             th:text="${option.value}"
