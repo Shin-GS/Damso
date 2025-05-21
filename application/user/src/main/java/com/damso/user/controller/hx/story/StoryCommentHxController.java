@@ -10,7 +10,9 @@ import com.damso.userservice.story.response.StoryViewCommentResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -23,6 +25,19 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class StoryCommentHxController {
     private final StoryCommentApi storyCommentApi;
+
+    @GetMapping("/{storyId}/pages/{pageId}/comments")
+    public List<ModelAndView> findComments(@PathVariable("storyId") Long storyId,
+                                           @PathVariable("pageId") Long pageId,
+                                           @SessionMemberId Long memberId,
+                                           @PageableDefault(size = 30) Pageable pageable) {
+        List<StoryViewCommentResponse> comments = storyCommentApi.findComments(storyId, pageId, memberId, pageable).getResult();
+        return new ModelAndViewBuilder()
+                .addFragment("templates/components/story/view/comment.html",
+                        "components/story/view/comment :: comment-list",
+                        Map.of("comments", comments))
+                .build();
+    }
 
     @PostMapping("/pages/comments")
     public List<ModelAndView> createComment(@ModelAttribute @Valid StoryCommentCreateHxRequest request,
