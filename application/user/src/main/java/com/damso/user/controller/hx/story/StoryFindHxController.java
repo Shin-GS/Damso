@@ -25,11 +25,19 @@ public class StoryFindHxController {
     private final StoryFindApi storyFindApi;
     private final StoryCommentApi storyCommentApi;
 
+    @GetMapping("/{storyId}/pages/first-page")
+    public List<ModelAndView> storyViewFirstPage(@PathVariable("storyId") Long storyId,
+                                                 @SessionMemberId Long memberId,
+                                                 @PageableDefault(size = 5) Pageable pageable) {
+        StoryViewPageResponse firstPage = storyFindApi.getFirstStoryPage(storyId, memberId).getResult();
+        return storyViewPage(storyId, firstPage.id(), memberId, pageable);
+    }
+
     @GetMapping("/{storyId}/pages/{pageId}")
     public List<ModelAndView> storyViewPage(@PathVariable("storyId") Long storyId,
                                             @PathVariable("pageId") Long pageId,
                                             @SessionMemberId Long memberId,
-                                            @PageableDefault(size = 30) Pageable pageable) {
+                                            @PageableDefault(size = 5) Pageable pageable) {
         StoryViewPageResponse story = storyFindApi.getStoryPage(storyId, pageId, memberId).getResult();
         List<StoryViewCommentResponse> comments = storyCommentApi.findComments(storyId, pageId, memberId, pageable).getResult();
         return new ModelAndViewBuilder()

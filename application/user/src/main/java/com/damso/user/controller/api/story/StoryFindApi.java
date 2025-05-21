@@ -17,6 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class StoryFindApi {
     private final StoryPageFinder storyPageFinder;
 
+    @GetMapping("/{storyId}/pages/first-page")
+    public SuccessResponse<StoryViewPageResponse> getFirstStoryPage(@PathVariable("storyId") Long storyId,
+                                                                    @SessionMemberId Long memberId) {
+        return SuccessResponse.of(SuccessCode.SUCCESS, storyPageFinder.getStoryPage(storyId, memberId));
+    }
+
     @GetMapping("/{storyId}/pages/{pageId}")
     public SuccessResponse<StoryViewPageResponse> getStoryPage(@PathVariable("storyId") Long storyId,
                                                                @PathVariable("pageId") Long pageId,
