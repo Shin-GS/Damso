@@ -45,7 +45,7 @@ public class StoryEditPageHxController {
 
         List<StoryEditPageResponse> storyPages = storyEditPageApi.getPages(storyId, memberId).getResult();
         Long lastTemporaryStoryPageId = storyPages.get(storyPages.size() - 1).id(); // last page
-        StoryEditPageInfoResponse pageContent = storyEditPageApi.getPageContent(storyId, memberId, lastTemporaryStoryPageId).getResult();
+        StoryEditPageInfoResponse pageContent = storyEditPageApi.getPageContent(storyId, lastTemporaryStoryPageId, memberId).getResult();
         List<CodeResponse> codes = codeFinder.getCodes(StoryType.class);
         return new ModelAndViewBuilder()
                 .addFragment("templates/components/story/edit/pageList.html",
@@ -69,10 +69,10 @@ public class StoryEditPageHxController {
     public List<ModelAndView> deletePage(@PathVariable("storyId") Long storyId,
                                          @PathVariable("temporaryStoryPageId") Long temporaryStoryPageId,
                                          @SessionMemberId Long memberId) {
-        Long temporaryStoryPageIdToMove = storyEditPageApi.deletePage(storyId, memberId, temporaryStoryPageId).getResult();
+        Long temporaryStoryPageIdToMove = storyEditPageApi.deletePage(storyId, temporaryStoryPageId, memberId).getResult();
 
         List<StoryEditPageResponse> storyPages = storyEditPageApi.getPages(storyId, memberId).getResult();
-        StoryEditPageInfoResponse pageContent = storyEditPageApi.getPageContent(storyId, memberId, temporaryStoryPageIdToMove).getResult();
+        StoryEditPageInfoResponse pageContent = storyEditPageApi.getPageContent(storyId, temporaryStoryPageIdToMove, memberId).getResult();
         List<CodeResponse> codes = codeFinder.getCodes(StoryType.class);
         return new ModelAndViewBuilder()
                 .addFragment("templates/components/story/edit/pageList.html",
@@ -96,7 +96,7 @@ public class StoryEditPageHxController {
     public List<ModelAndView> getPageContent(@PathVariable("storyId") Long storyId,
                                              @PathVariable("temporaryStoryPageId") Long temporaryStoryPageId,
                                              @SessionMemberId Long memberId) {
-        StoryEditPageInfoResponse pageContent = storyEditPageApi.getPageContent(storyId, memberId, temporaryStoryPageId).getResult();
+        StoryEditPageInfoResponse pageContent = storyEditPageApi.getPageContent(storyId, temporaryStoryPageId, memberId).getResult();
 
         List<StoryEditPageResponse> storyPages = storyEditPageApi.getPages(storyId, memberId).getResult();
         List<CodeResponse> codes = codeFinder.getCodes(StoryType.class);
@@ -134,7 +134,7 @@ public class StoryEditPageHxController {
                                              @SessionMemberId Long memberId) {
         storyEditPageApi.updatePageType(storyId, temporaryStoryPageId, storyType, memberId);
 
-        StoryEditPageInfoResponse pageContent = storyEditPageApi.getPageContent(storyId, memberId, temporaryStoryPageId).getResult();
+        StoryEditPageInfoResponse pageContent = storyEditPageApi.getPageContent(storyId, temporaryStoryPageId, memberId).getResult();
         List<StoryEditPageResponse> storyPages = storyEditPageApi.getPages(storyId, memberId).getResult();
         List<CodeResponse> codes = codeFinder.getCodes(StoryType.class);
         return new ModelAndViewBuilder()
