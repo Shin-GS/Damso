@@ -84,7 +84,7 @@ public class SecurityConfig {
         );
 
         request
-                .requestMatchers(userRolePatterns.toArray(String[]::new)).hasAnyRole(MemberRoleType.USER.name())
+                .requestMatchers(userRolePatterns.toArray(String[]::new)).hasAnyRole(MemberRoleType.USER.name(), MemberRoleType.CREATOR.name())
                 .anyRequest().permitAll();
     }
 
