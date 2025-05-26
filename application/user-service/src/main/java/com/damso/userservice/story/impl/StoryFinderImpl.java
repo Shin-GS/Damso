@@ -7,10 +7,14 @@ import com.damso.storage.entity.story.Story;
 import com.damso.storage.repository.story.StoryRepository;
 import com.damso.userservice.member.MemberFinder;
 import com.damso.userservice.story.StoryFinder;
+import com.damso.userservice.story.request.StorySearchRequest;
+import com.damso.userservice.story.response.StorySearchResponse;
 import com.damso.userservice.story.response.StoryViewResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -58,5 +62,12 @@ public class StoryFinderImpl implements StoryFinder {
         }
 
         return StoryViewResponse.of(story, member);
+    }
+
+    @Override
+    public List<StorySearchResponse> findList(StorySearchRequest request) {
+        return storyRepository.findAll().stream()
+                .map(StorySearchResponse::of)
+                .toList();
     }
 }

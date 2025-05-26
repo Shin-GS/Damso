@@ -25,6 +25,11 @@ public class StoryViewController {
     private final StoryEditor storyEditor;
     private final StoryPageFinder storyPageFinder;
 
+    @GetMapping("/list")
+    public String storyList() {
+        return "views/story/list";
+    }
+
     @GetMapping("/{storyId}")
     public String storyView(@PathVariable("storyId") Long storyId,
                             @SessionMemberId Long memberId,

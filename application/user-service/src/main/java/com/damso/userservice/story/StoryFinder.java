@@ -1,7 +1,11 @@
 package com.damso.userservice.story;
 
 import com.damso.storage.entity.story.Story;
+import com.damso.userservice.story.request.StorySearchRequest;
+import com.damso.userservice.story.response.StorySearchResponse;
 import com.damso.userservice.story.response.StoryViewResponse;
+
+import java.util.List;
 
 public interface StoryFinder {
     Story getEntity(Long storyId);
@@ -13,4 +17,6 @@ public interface StoryFinder {
 
     StoryViewResponse getStoryView(Long storyId,
                                    Long memberId);
+
+    List<StorySearchResponse> findList(StorySearchRequest request);
 }

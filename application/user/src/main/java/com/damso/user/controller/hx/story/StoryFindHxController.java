@@ -4,6 +4,8 @@ import com.damso.common.auth.session.SessionMemberId;
 import com.damso.common.request.ModelAndViewBuilder;
 import com.damso.user.controller.api.story.StoryCommentApi;
 import com.damso.user.controller.api.story.StoryFindApi;
+import com.damso.userservice.story.request.StorySearchRequest;
+import com.damso.userservice.story.response.StorySearchResponse;
 import com.damso.userservice.story.response.StoryViewCommentResponse;
 import com.damso.userservice.story.response.StoryViewPageResponse;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,16 @@ import java.util.Map;
 public class StoryFindHxController {
     private final StoryFindApi storyFindApi;
     private final StoryCommentApi storyCommentApi;
+
+    @GetMapping
+    public List<ModelAndView> storyList(StorySearchRequest request) {
+        List<StorySearchResponse> stories = storyFindApi.storyList(request).getResult();
+        return new ModelAndViewBuilder()
+                .addFragment("templates/components/story/list/container.html",
+                        "components/story/list/container :: story-list-container",
+                        Map.of("stories", stories, "nextPage", request.getPage() + 1))
+                .build();
+    }
 
     @GetMapping("/{storyId}/pages/first-page")
     public List<ModelAndView> storyViewFirstPage(@PathVariable("storyId") Long storyId,

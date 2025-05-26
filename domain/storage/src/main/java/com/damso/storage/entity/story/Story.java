@@ -120,4 +120,8 @@ public class Story extends CommonTime {
                 .sorted(Comparator.comparing(StoryPage::getPageOrder))
                 .toList();
     }
+
+    public String getCreatorName() {
+        return ObjectUtils.isEmpty(this.member) ? "" : this.member.getName();
+    }
 }
