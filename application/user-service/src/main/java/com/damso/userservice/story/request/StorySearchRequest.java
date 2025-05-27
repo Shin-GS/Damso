@@ -10,6 +10,6 @@ public class StorySearchRequest {
     private String keyword;
     private List<String> category = new ArrayList<>();
     private String sort = "created_at";
-    private Integer page = 1;
+    private Integer page = 0;
     private Integer size = 15;
 }

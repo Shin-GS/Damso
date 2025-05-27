@@ -13,6 +13,7 @@
           class="w-full max-w-5xl mb-8 grid grid-cols-1 md:grid-cols-4 gap-4"
           hx-get="/hx/stories"
           hx-target="#story-container"
+          hx-swap="innerHTML"
           hx-push-url="true">
         <input type="hidden" name="size" value=15>
         <label>
@@ -55,10 +56,13 @@
     </form>
 
     <!-- 콘텐츠 리스트 -->
-    <div id="story-list-container"
-         hx-get="/hx/stories"
+    <div id="story-card-List"
+         hx-get="/hx/stories?page=0"
+         hx-trigger="load"
          hx-include="#filter-form"
-         hx-trigger="revealed"></div>
+         hx-target="#story-card-List"
+         hx-swap="innerHTML">
+    </div>
 </main>
 
 <footer th:replace="~{views/layout :: footer}"></footer>

@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
-<div th:fragment="story-list-container"
-     id="story-list-container"
-     class="w-full max-w-5xl grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+<div th:fragment="story-card-List">
     <!--/*@thymesVar id="stories" type="java.util.List<com.damso.userservice.story.response.StorySearchResponse>"*/-->
     <div th:each="story : ${stories}"
          th:insert="~{components/story/list/card :: story-card(story=${story})}">
@@ -10,13 +8,12 @@
 
     <!-- 무한 스크롤 트리거 -->
     <!--/*@thymesVar id="nextPage" type="Integer"*/-->
-    <div id="infinite-trigger"
-         th:if="${!#lists.isEmpty(stories)}"
+    <div th:if="${!#lists.isEmpty(stories)}"
          th:hx-get="@{'/hx/stories?page=' + ${nextPage}}"
          hx-trigger="revealed"
          hx-include="#filter-form"
-         hx-target="#story-list-container"
-         hx-swap="afterend"
+         hx-target="#story-card-List"
+         hx-swap="beforeend"
          hx-indicator="#spinner"
          class="mt-6 text-center text-gray-500">
         <div class="htmx-indicator">Loading...</div>

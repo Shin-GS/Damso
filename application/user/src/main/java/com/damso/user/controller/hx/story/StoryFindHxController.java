@@ -31,8 +31,8 @@ public class StoryFindHxController {
     public List<ModelAndView> storyList(StorySearchRequest request) {
         List<StorySearchResponse> stories = storyFindApi.storyList(request).getResult();
         return new ModelAndViewBuilder()
-                .addFragment("templates/components/story/list/container.html",
-                        "components/story/list/container :: story-list-container",
+                .addFragment("templates/components/story/list/cardList.html",
+                        "components/story/list/cardList :: story-card-List",
                         Map.of("stories", stories, "nextPage", request.getPage() + 1))
                 .build();
     }
