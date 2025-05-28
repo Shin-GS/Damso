@@ -4,7 +4,8 @@
      class="mt-8">
     <div class="bg-white border border-gray-200 rounded-lg shadow hover:shadow-md transition">
         <!--/*@thymesVar id="story" type="com.damso.userservice.story.response.StorySearchResponse"*/-->
-        <a th:href="@{'/stories/' + ${story.id}}">
+        <a th:href="@{'/stories/' + ${story.id}}"
+           target="_blank">
             <img th:src="${story.thumbnailUrl}"
                  alt="썸네일"
                  class="w-full h-48 object-cover rounded-t-lg"/>
