@@ -25,7 +25,7 @@ public class StoryViewController {
     private final StoryEditor storyEditor;
     private final StoryPageFinder storyPageFinder;
 
-    @GetMapping("/list")
+    @GetMapping
     public String storyList() {
         return "views/story/list";
     }
