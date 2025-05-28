@@ -6,54 +6,68 @@
 <body class="story-view-page flex flex-col min-h-screen bg-white text-gray-900">
 <header th:replace="~{views/layout :: header}"></header>
 
+<form id="filter-form"
+      class="w-full max-w-5xl mb-8 grid grid-cols-1 md:grid-cols-4 gap-4"
+      hx-get="/hx/stories"
+      hx-target="#story-card-List"
+      hx-swap="innerHTML"
+      hx-push-url="true"
+      hx-trigger="submit"
+      hx-include="#filter-form">
+    <input type="hidden" name="size" value=15>
+    <label>
+        <!--/*@thymesVar id="keyword" type="String"*/-->
+        <input type="text"
+               class="col-span-1 md:col-span-2 p-2 border border-gray-300 rounded-md w-full"
+               name="keyword"
+               placeholder="검색어를 입력하세요"
+               th:value="${keyword}"/>
+    </label>
+
+    <label>
+        <!--/*@thymesVar id="category" type="String"*/-->
+        <select multiple
+                class="p-2 border border-gray-300 rounded-md w-full h-32 overflow-y-auto"
+                name="category">
+            <option value="daily"
+                    th:selected="${category != null && #lists.contains(category, 'daily')}">
+                일상
+            </option>
+            <option value="tech"
+                    th:selected="${category != null && #lists.contains(category, 'tech')}">
+                기술
+            </option>
+            <option value="art"
+                    th:selected="${category != null && #lists.contains(category, 'art')}">
+                예술
+            </option>
+        </select>
+    </label>
+
+    <!--/*@thymesVar id="sort" type="String"*/-->
+    <label>
+        <select class="p-2 border border-gray-300 rounded-md w-full"
+                name="sort">
+            <option value="latest"
+                    th:selected="${sort != null && sort == 'latest'}">
+                최신순
+            </option>
+            <option value="popular"
+                    th:selected="${sort != null && sort == 'popular'}">
+                인기순
+            </option>
+        </select>
+    </label>
+
+    <div>
+        <button type="submit"
+                class="w-full p-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+            검색
+        </button>
+    </div>
+</form>
 <main class="flex-grow flex flex-col items-center py-8 px-4">
     <!-- 필터 바 -->
-    <form id="filter-form"
-          method="get"
-          class="w-full max-w-5xl mb-8 grid grid-cols-1 md:grid-cols-4 gap-4"
-          hx-get="/hx/stories"
-          hx-target="#story-container"
-          hx-swap="innerHTML"
-          hx-push-url="true">
-        <input type="hidden" name="size" value=15>
-        <label>
-            <!--/*@thymesVar id="keyword" type="String"*/-->
-            <input type="text"
-                   class="col-span-1 md:col-span-2 p-2 border border-gray-300 rounded-md w-full"
-                   name="keyword"
-                   placeholder="검색어를 입력하세요"
-                   th:value="${keyword}"/>
-        </label>
-
-        <label>
-            <!--/*@thymesVar id="category" type="String"*/-->
-            <select multiple
-                    class="p-2 border border-gray-300 rounded-md w-full h-32 overflow-y-auto"
-                    name="category"
-                    th:value="${category}">
-                <option value="daily">일상</option>
-                <option value="tech">기술</option>
-                <option value="art">예술</option>
-            </select>
-        </label>
-
-        <label>
-            <!--/*@thymesVar id="sort" type="String"*/-->
-            <select class="p-2 border border-gray-300 rounded-md w-full"
-                    name="sort"
-                    th:value="${sort}">
-                <option value="latest">최신순</option>
-                <option value="popular">인기순</option>
-            </select>
-        </label>
-
-        <div>
-            <button type="submit"
-                    class="w-full p-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
-                검색
-            </button>
-        </div>
-    </form>
 
     <!-- 콘텐츠 리스트 -->
     <div id="story-card-List"
